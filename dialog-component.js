@@ -5,6 +5,11 @@ class TangleMsgBoxElement extends HTMLElement {
    */
   constructor() {
     super();
+    const style = document.createElement('style');
+    style.innerHTML = `
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    `;
+    document.head.appendChild(style);
     this.build();
   }
   /**
@@ -38,16 +43,15 @@ class TangleMsgBoxElement extends HTMLElement {
    * Create the styling
    */
   setStyle() {
-    const padding = "1em";
     return `
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 
     * {
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Poppins', sans-serif !important;
     }
 
-    .tangle-msg-box-modal {
-      font-family: inherit;
+    .tangle-msg-box-modal {+
+    font-family: 'Poppins';
       font-size: inherit;
       width: 100%;
       height: 100%;
@@ -99,26 +103,43 @@ class TangleMsgBoxElement extends HTMLElement {
     
     .tangle-msg-box-dialog-header {
       color: inherit;
-      background-color: rgba(0, 0, 0, 0.05);
-      padding: ${padding};
-      border-bottom: solid 1px rgba(0, 0, 0, 0.15);
+      background-color: #191919;
+      text-align: center;
+      font-weight: 500;
+      font-size: 16px;
+      padding: 16px;
+      padding-top: 42px;
+      padding-bottom: 0px;
     }
     
     .tangle-msg-box-dialog-body {
       color: inherit;
-      padding: ${padding};
+      background-color: #191919;
+      padding-bottom: 24px;
+      padding-top: 16px;
     }
     
     .tangle-msg-box-dialog-body > p {
-      color: inherit;
+      text-align: center;
+      font-size: 12px;
+      color: #9B9B9B;
+      line-height: 18px;
+      font-weight: 300;
       padding: 0;
-      margin: 0;
+      margin:0;
+      margin-left: 27px;
+      margin-right: 27px;
     }
     
     .tangle-msg-box-dialog-footer {
       color: inherit;
+      background-color: #191919;
       display: flex;
+      flex-direction: column-reverse;
       justify-content: stretch;
+      padding-left: 22px;
+      padding-right: 22px;
+      padding-bottom: 8px;
     }
     
     .tangle-msg-box-dialog-button {
@@ -127,11 +148,12 @@ class TangleMsgBoxElement extends HTMLElement {
       font-size: inherit;
       background-color: rgba(0, 0, 0, 0);
       width: 100%;
-      padding: 1em;
-      margin-top: 22px;
-      margin-bottom: 22px;
+      max-width: 100%;
+      margin-top: 8px;
+      padding: 16px;
+      padding-top: 14.5px;
+      padding-bottom: 14.5px;
       border: none;
-      border-top: solid 1px rgba(0, 0, 0, 0.15);
       outline: 0;
       border-radius: 0px;
       transition: background-color 225ms ease-out;
@@ -151,8 +173,7 @@ class TangleMsgBoxElement extends HTMLElement {
       font-size: inherit;
       width: 100%;
       padding: 0.5em;
-      border: solid 1px rgba(0, 0, 0, 0.15);
-      margin-top: ${padding};
+      margin-top: 16px;
       outline: 0;
       box-sizing: border-box;
       border-radius: 0;
@@ -161,7 +182,6 @@ class TangleMsgBoxElement extends HTMLElement {
     }
     
     .tangle-msg-box-dialog-textbox:focus {
-      border: solid 1px rgba(13, 134, 255, 0.8);
       box-shadow: 0 0 0.1em 0.2em rgba(13, 134, 255, 0.5);
     }
     
@@ -171,7 +191,6 @@ class TangleMsgBoxElement extends HTMLElement {
     
     .tangle-msg-box-dialog {
       color: white;
-      background-color: black;
     }
     
     .tangle-msg-box-dialog-textbox {
@@ -180,20 +199,34 @@ class TangleMsgBoxElement extends HTMLElement {
     .tangle-msg-box-dialog-header {
       background: #191919;
     }
+
+    /* Zpet button */
     .tangle-msg-box-dialog-button{
-      margin:10px;
       border-radius: 20px;
-      background: #191919 !important;
+      font-weight: 500;
+      font-size: 14px;
+      color: #777777 !important;
       cursor: pointer;
     }
     .tangle-msg-box-dialog-button:hover{
-      background: #262626 !important;
+      // background: #262626 !important;
+      color: white;
     }
+    /* Pokračovat button */
     .tangle-msg-box-dialog-button:last-of-type {
       background: #FF257E !important;
+      color: white !important;
     }
     .tangle-msg-box-dialog-button:last-of-type:hover {
       background: #FF4A94 !important;
+    }
+
+    #exitElm {
+      height:0;
+      width:0;
+      margin-top: -30px;
+      float: right;
+      transform: translateX(-20px);
     }
   `;
   }
@@ -231,12 +264,34 @@ class TangleMsgBoxElement extends HTMLElement {
   createDialog(content, title) {
     const dialogHeaderElm = this.shadowRoot.querySelector(".tangle-msg-box-dialog-header");
     const dialogBodyElm = this.shadowRoot.querySelector(".tangle-msg-box-dialog-body > p");
+    const exitElm = `<div id="exitElm"><svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.6">
+<path d="M18.0312 6.01025L6.01037 18.0311" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.0312 6.01025L6.01037 18.0311" stroke="url(#paint0_linear_2500_2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.0312 18.0312L6.01037 6.01043" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18.0312 18.0312L6.01037 6.01043" stroke="url(#paint1_linear_2500_2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_2500_2" x1="18.3847" y1="6.36381" x2="6.36393" y2="18.3846" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_2500_2" x1="17.6776" y1="18.3848" x2="5.65682" y2="6.36399" gradientUnits="userSpaceOnUse">
+<stop stop-color="white"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>
+</div>
+` 
     dialogBodyElm.innerHTML = content;
     if (title === null) {
-      dialogHeaderElm.remove();
+      // dialogHeaderElm.remove();
     } else {
       dialogHeaderElm.innerHTML = title;
     }
+    dialogHeaderElm.innerHTML = exitElm + dialogHeaderElm.innerHTML;  
+    this.shadowRoot.querySelector('#exitElm').onclick = this.disposeDialog.bind(this);
   }
   /**
    * Execute "animationend" event of the dialog, then dispose
@@ -261,7 +316,7 @@ class TangleMsgBoxElement extends HTMLElement {
     const dialogFooterElm = self.shadowRoot.querySelector(".tangle-msg-box-dialog-footer");
     const dialogConfirmBtn = document.createElement("button");
     dialogConfirmBtn.classList.add("tangle-msg-box-dialog-button");
-    dialogConfirmBtn.innerText = "Potvrdit";
+    dialogConfirmBtn.innerText = "Pokračovat";
     dialogFooterElm.append(dialogConfirmBtn);
     dialogConfirmBtn.focus();
     return new Promise(function (resolve) {
@@ -279,9 +334,9 @@ class TangleMsgBoxElement extends HTMLElement {
     const dialogCancelBtn = document.createElement("button");
     const dialogConfirmBtn = document.createElement("button");
     dialogCancelBtn.classList.add("tangle-msg-box-dialog-button");
-    dialogCancelBtn.innerText = "Zrušit";
+    dialogCancelBtn.innerText = "Zpět";
     dialogConfirmBtn.classList.add("tangle-msg-box-dialog-button");
-    dialogConfirmBtn.innerText = "Potvrdit";
+    dialogConfirmBtn.innerText = "Pokračovat";
     dialogFooterElm.append(dialogCancelBtn, dialogConfirmBtn);
     dialogCancelBtn.focus();
     return new Promise(function (resolve) {
@@ -316,9 +371,9 @@ class TangleMsgBoxElement extends HTMLElement {
     const dialogCancelBtn = document.createElement("button");
     const dialogConfirmBtn = document.createElement("button");
     dialogCancelBtn.classList.add("tangle-msg-box-dialog-button");
-    dialogCancelBtn.innerText = "Zrušit";
+    dialogCancelBtn.innerText = "Zpět";
     dialogConfirmBtn.classList.add("tangle-msg-box-dialog-button");
-    dialogConfirmBtn.innerText = "Potvrdit";
+    dialogConfirmBtn.innerText = "Pokračovat";
     dialogFooterElm.append(dialogCancelBtn, dialogConfirmBtn);
     dialogMessageTextBox.focus();
     // Prompt message textbox KeyPress event

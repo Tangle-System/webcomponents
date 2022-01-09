@@ -7,7 +7,7 @@ document.getElementById("alert").onclick = async () => {
 };
 
 document.getElementById("confirm").onclick = async () => {
-  const ano = await TangleMsgBox.confirm("Chcete pozadí změnit na modrou ?", "Mám dotaz.");
+  const ano = await TangleMsgBox.confirm("Opravdu chcete uvést aplikaci do továrního nastavení? Tímto krokem odstraníte všechna uložená data.", "Tovární nastavení aplikace");
   if (ano) {
     document.body.style.background = "aqua";
   }
