@@ -62,11 +62,11 @@ class TangleMsgBoxElement extends HTMLElement {
     
     .tangle-msg-box-dialog {
       width: calc(100% - 2em);
-      max-width: 400px;
+      max-width: 314px;
       overflow: hidden;
       box-sizing: border-box;
       box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.5);
-      border-radius: 10px;
+      border-radius: 25px;
       animation: msg-box-dialog-show 265ms cubic-bezier(0.18, 0.89, 0.32, 1.28)
     }
     
@@ -128,6 +128,8 @@ class TangleMsgBoxElement extends HTMLElement {
       background-color: rgba(0, 0, 0, 0);
       width: 100%;
       padding: 1em;
+      margin-top: 22px;
+      margin-bottom: 22px;
       border: none;
       border-top: solid 1px rgba(0, 0, 0, 0.15);
       outline: 0;
