@@ -283,14 +283,14 @@ class TangleMsgBoxElement extends HTMLElement {
 </defs>
 </svg>
 </div>
-` 
+`
     dialogBodyElm.innerHTML = content;
     if (title === null) {
       // dialogHeaderElm.remove();
     } else {
       dialogHeaderElm.innerHTML = title;
     }
-    dialogHeaderElm.innerHTML = exitElm + dialogHeaderElm.innerHTML;  
+    dialogHeaderElm.innerHTML = exitElm + dialogHeaderElm.innerHTML;
     this.shadowRoot.querySelector('#exitElm').onclick = this.disposeDialog.bind(this);
   }
   /**
@@ -355,7 +355,7 @@ class TangleMsgBoxElement extends HTMLElement {
   /**
    * Creates the prompt dialog element
    */
-  setPrompt(content, title) {
+  setPrompt(content, defaultValue, title) {
     const self = this;
     self.createDialog(content, title);
     // Create Textbox and put into the dialog body.
@@ -364,6 +364,7 @@ class TangleMsgBoxElement extends HTMLElement {
     const dialogMessageTextBox = document.createElement("input");
     dialogMessageTextBox.classList.add("tangle-msg-box-dialog-textbox");
     dialogMessageTextBox.type = "text";
+    dialogMessageTextBox.value = defaultValue || "";
     dialogMessageTextBoxContainer.append(dialogMessageTextBox);
     dialogBodyElm.append(dialogMessageTextBoxContainer);
     // Create buttons, and put into the dialog footer.
@@ -434,9 +435,9 @@ export default class TangleMsgBox {
    * @returns {Promise<string>}
    * Creates the confirm dialog element
    */
-  static async prompt(content, title = null) {
+  static async prompt(content, defaultValue, title = null) {
     const dialogBox = document.createElement("tangle-msg-box");
     document.body.appendChild(dialogBox);
-    return await dialogBox.setPrompt(content, title);
+    return await dialogBox.setPrompt(content, defaultValue, title);
   }
 }

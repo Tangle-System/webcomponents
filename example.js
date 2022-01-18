@@ -14,6 +14,6 @@ document.getElementById("confirm").onclick = async () => {
 };
 
 document.getElementById("prompt").onclick = async () => {
-  const jmeno = await TangleMsgBox.prompt("Pls", "Zadejte svoje jméno");
+  const jmeno = await TangleMsgBox.prompt("Jestli nechceš být debil tak se přejmenuj", "debil", "Tvoje úžasné jméno");
   TangleMsgBox.alert(`Nazdárek ${jmeno}`);
 };
