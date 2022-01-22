@@ -1,4 +1,5 @@
-import TangleMsgBox from "./dialog-component.js";
+import { TangleMsgBox } from "./dialog-component.js";
+console.log(TangleMsgBox)
 
 document.getElementById("alert").onclick = async () => {
   // TangleMsgBox.* se může zavolat kdekoliv v kódu, jen bacha na to že je asynchronní (takže vraci promise)
@@ -14,6 +15,18 @@ document.getElementById("confirm").onclick = async () => {
 };
 
 document.getElementById("prompt").onclick = async () => {
-  const jmeno = await TangleMsgBox.prompt("Jestli nechceš být debil tak se přejmenuj", "debil", "Tvoje úžasné jméno");
+  const jmeno = await TangleMsgBox.prompt("Jestli nechceš být debil tak se přejmenuj", "debil", "Tvoje úžasné jméno", "text");
   TangleMsgBox.alert(`Nazdárek ${jmeno}`);
 };
+
+document.getElementById("promptnumber").onclick = async () => {
+  const cislo = await TangleMsgBox.prompt("Kolik máš diod", 141, "Led pásek", "number");
+  TangleMsgBox.alert(`Tolik jo wow: ${cislo} ${typeof cislo}`);
+};
+
+document.getElementById("promptregex").onclick = async () => {
+  const mail = await TangleMsgBox.prompt("Tvuj mail ?", '', "Potřebuji o tebe něco vědět", 'text', { placeholder: "lkov@post.cz", regex: /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/ });
+  TangleMsgBox.alert(`Email: ${mail} ${typeof mail}`);
+};
+
+
