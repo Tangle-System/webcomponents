@@ -244,6 +244,7 @@
     margin: 0;
     margin-left: 27px;
     margin-right: 27px;
+    overflow-wrap: break-word;
   }
 
   .tangle-msg-box-dialog-footer {
