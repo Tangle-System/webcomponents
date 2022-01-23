@@ -27,7 +27,7 @@ document.getElementById("prompt").onclick = async () => {
 };
 
 document.getElementById("promptnumber").onclick = async () => {
-  const cislo = await TangleMsgBox.prompt("Kolik máš diod", 141, "Led pásek", "number");
+  const cislo = await TangleMsgBox.prompt("Kolik máš diod", 141, "Led pásek", "number", { min: 1, max: 300 });
   TangleMsgBox.alert(`Tolik jo wow: ${cislo} ${typeof cislo}`);
 };
 
