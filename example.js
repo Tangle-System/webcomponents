@@ -14,6 +14,13 @@ document.getElementById("confirm").onclick = async () => {
   }
 };
 
+document.getElementById("adopt").onclick = async () => {
+  const ano = await TangleMsgBox.confirm("Zkuste to, prosím, později.", "Přidání se nezdařilo", { confirm: "Zkusit znovu", cancel: "Zpět" });
+  if (ano) {
+    document.body.style.background = "aqua";
+  }
+};
+
 document.getElementById("prompt").onclick = async () => {
   const jmeno = await TangleMsgBox.prompt("Jestli nechceš být debil tak se přejmenuj", "debil", "Tvoje úžasné jméno", "text");
   TangleMsgBox.alert(`Nazdárek ${jmeno}`);
