@@ -33,13 +33,17 @@
 </script>
 
 <main>
-  <svg width="14" height="21" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0.620667 10.5L13.6138 0.540707L13.6138 20.4593L0.620667 10.5Z" fill="white" on:click={_ => value > min && value--} />
-  </svg>
+  <div on:click={_ => value > min && value--}>
+    <svg width="18" height="28" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0.620667 10.5L13.6138 0.540707L13.6138 20.4593L0.620667 10.5Z" fill="white" />
+    </svg>
+  </div>
   <input type="number" bind:value {min} {max} />
-  <svg width="14" height="21" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M13.0483 10.5L0.0551758 20.4593L0.0551758 0.540708L13.0483 10.5Z" fill="white" on:click={_ => value < max && value++} />
-  </svg>
+  <div on:click={_ => value < max && value++}>
+    <svg width="18" height="28" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M13.0483 10.5L0.0551758 20.4593L0.0551758 0.540708L13.0483 10.5Z" fill="white" />
+    </svg>
+  </div>
 </main>
 
 <style>
@@ -49,7 +53,7 @@
     margin-top: 16px;
   }
   input {
-    margin: 0 13px;
+    /* margin: 0 26px; */
     width: 75.79px;
     border-radius: 10px;
     background: #303030;
@@ -65,5 +69,11 @@
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+  }
+  div {
+    padding: 26px;
+  }
+  svg {
+    padding-top: 4px;
   }
 </style>
