@@ -60,6 +60,7 @@
 
   export let min = -999999999;
   export let max = 999999999;
+  export let maxlength = 999999999;
 
   export let confirm = "Potvrdit";
   export let cancel = "Zrušit";
@@ -169,6 +170,7 @@
               </small>
             {/if}
             <input
+              {maxlength}
               type="text"
               class:invalid
               {placeholder}

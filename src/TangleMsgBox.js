@@ -68,11 +68,12 @@ export class TangleMsgBox {
    * @returns {Promise<string>}
    * Creates the confirm dialog element
    */
-  static async prompt(content, value, title = "", inputtype, { placeholder, min, max, regex, invalidText } = { placeholder: undefined, min: undefined, max: undefined, regex: undefined }, { confirm, cancel } = { confirm: "Potvrdit", cancel: "Zrušit" }) {
+  static async prompt(content, value, title = "", inputtype, { placeholder, min, max, regex, invalidText, maxlength } = { placeholder: undefined, min: undefined, max: undefined, regex: undefined, maxlength: undefined }, { confirm, cancel } = { confirm: "Potvrdit", cancel: "Zrušit" }) {
     const dialogBox = document.createElement("tangle-modal");
     dialogBox.setAttribute('value', value)
     title && dialogBox.setAttribute('title', title)
     content && dialogBox.setAttribute('content', content)
+    maxlength > 1 && dialogBox.setAttribute('maxlength', maxlength)
     dialogBox.setAttribute('type', 'prompt')
     dialogBox.setAttribute('inputtype', inputtype)
 
