@@ -46,6 +46,18 @@
     }
   }
 
+  function confirmDialogSecondary() {
+    const dialogElm = msgboxDialog;
+    msgboxCloseDialog = true;
+    dialogElm.addEventListener("animationend", function dialogElmAnimationEnd(evt) {
+      if (evt.animationName === "msg-box-dialog-hide") {
+        dialogElm.removeEventListener("animationend", dialogElmAnimationEnd);
+        dispatch("submit", "secondary");
+        component.remove();
+      }
+    });
+  }
+
   export let value = "";
 
   export let type = "prompt";
@@ -63,9 +75,10 @@
   export let maxlength = 999999999;
 
   export let confirm = "Potvrdit";
+  export let secondary = "";
   export let cancel = "Zrušit";
   export let regex = /.*/;
-  $: regexForValidation = new RegExp(regex.toString().slice(1, -1)); 
+  $: regexForValidation = new RegExp(regex.toString().slice(1, -1));
   // $: console.log({regex,regexForValidation,value, test: regexForValidation.test(value)})
   export let invalidtext = "Zadejte platnou hodnotu";
 
@@ -79,71 +92,23 @@
 </script>
 
 <div class="tangle-msg-box-modal">
-  <div
-    bind:this={msgboxDialog}
-    class="tangle-msg-box-dialog"
-    class:tangle-msg-box-dialog-hide={msgboxCloseDialog}
-  >
+  <div bind:this={msgboxDialog} class="tangle-msg-box-dialog" class:tangle-msg-box-dialog-hide={msgboxCloseDialog}>
     <div class="tangle-msg-box-dialog-header">
       <div id="exitElm" on:click={exitDialog}>
         {#if type !== "alert"}
-          <svg
-            width="25"
-            height="25"
-            viewBox="0 0 25 25"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g opacity="0.6">
-              <path
-                d="M18.0312 6.01025L6.01037 18.0311"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M18.0312 6.01025L6.01037 18.0311"
-                stroke="url(#paint0_linear_2500_2)"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M18.0312 18.0312L6.01037 6.01043"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M18.0312 18.0312L6.01037 6.01043"
-                stroke="url(#paint1_linear_2500_2)"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
+              <path d="M18.0312 6.01025L6.01037 18.0311" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M18.0312 6.01025L6.01037 18.0311" stroke="url(#paint0_linear_2500_2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M18.0312 18.0312L6.01037 6.01043" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M18.0312 18.0312L6.01037 6.01043" stroke="url(#paint1_linear_2500_2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </g>
             <defs>
-              <linearGradient
-                id="paint0_linear_2500_2"
-                x1="18.3847"
-                y1="6.36381"
-                x2="6.36393"
-                y2="18.3846"
-                gradientUnits="userSpaceOnUse"
-              >
+              <linearGradient id="paint0_linear_2500_2" x1="18.3847" y1="6.36381" x2="6.36393" y2="18.3846" gradientUnits="userSpaceOnUse">
                 <stop stop-color="white" />
                 <stop offset="1" stop-color="white" stop-opacity="0" />
               </linearGradient>
-              <linearGradient
-                id="paint1_linear_2500_2"
-                x1="17.6776"
-                y1="18.3848"
-                x2="5.65682"
-                y2="6.36399"
-                gradientUnits="userSpaceOnUse"
-              >
+              <linearGradient id="paint1_linear_2500_2" x1="17.6776" y1="18.3848" x2="5.65682" y2="6.36399" gradientUnits="userSpaceOnUse">
                 <stop stop-color="white" />
                 <stop offset="1" stop-color="white" stop-opacity="0" />
               </linearGradient>
@@ -160,7 +125,7 @@
       {#if type === "prompt"}
         {#if inputtype === "number"}
           <p style="display: flex; justify-content:center">
-            <tangle-number-input {min} {max} {value} on:change={(e) => (value = e.detail.value)} />
+            <tangle-number-input {min} {max} {value} on:change={e => (value = e.detail.value)} />
           </p>
         {:else}
           <p>
@@ -169,21 +134,17 @@
                 {invalidtext}
               </small>
             {/if}
-            <input
-              {maxlength}
-              type="text"
-              class:invalid
-              {placeholder}
-              class="tangle-msg-box-dialog-textbox"
-              bind:value
-            />
+            <input {maxlength} type="text" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value />
           </p>
         {/if}
       {/if}
     </div>
     <div class="tangle-msg-box-dialog-footer">
-      {#if type !== "alert"}
-        <button class="tangle-msg-box-dialog-button" on:click={exitDialog}>{cancel}</button>
+      {#if type !== "alert" && !secondary}
+        <button class="tangle-msg-box-dialog-button cancel" on:click={exitDialog}>{cancel}</button>
+      {/if}
+      {#if secondary}
+        <button class="tangle-msg-box-dialog-button secondary" on:click={confirmDialogSecondary}>{secondary}</button>
       {/if}
       <button class="tangle-msg-box-dialog-button" on:click={confirmDialog}>{confirm}</button>
     </div>
@@ -257,7 +218,7 @@
     justify-content: stretch;
     padding-left: 22px;
     padding-right: 22px;
-    padding-bottom: 8px;
+    padding-bottom: 20px;
   }
 
   .tangle-msg-box-dialog-button {
@@ -339,7 +300,9 @@
   .tangle-msg-box-dialog-button:last-of-type:hover {
     background: #ff4a94 !important;
   }
-
+  .tangle-msg-box-dialog-button.cancel {
+    margin-bottom: -10px;
+  }
   #exitElm {
     height: 0;
     width: 0;
@@ -383,5 +346,9 @@
 
   .invalid {
     border: 1px solid red;
+  }
+  .secondary {
+    background: #303030 !important;
+    margin-top: 15px;
   }
 </style>

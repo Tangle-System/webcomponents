@@ -15,7 +15,7 @@ document.getElementById("confirm").onclick = async () => {
 };
 
 document.getElementById("adopt").onclick = async () => {
-  const ano = await TangleMsgBox.confirm("Zkuste to, prosím, později.", "Přidání se nezdařilo", { confirm: "Zkusit znovu", cancel: "Zpět" });
+  const ano = await TangleMsgBox.confirm("Zkuste to, prosím, později.", "Přidání se nezdařilo", { confirm: "Zkusit znovu", secondary: "Zpět" });
   if (ano) {
     document.body.style.background = "aqua";
   }
