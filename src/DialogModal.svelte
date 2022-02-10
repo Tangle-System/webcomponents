@@ -152,6 +152,8 @@
 </div>
 
 <style>
+  .input {
+  }
   * {
     font-family: "Poppins", sans-serif !important;
   }
@@ -205,8 +207,8 @@
     font-weight: 300;
     padding: 0;
     margin: 0;
-    margin-left: 27px;
-    margin-right: 27px;
+    margin-left: 22px;
+    margin-right: 22px;
     overflow-wrap: break-word;
   }
 
@@ -260,6 +262,7 @@
     font-size: 16px;
     font-weight: 500;
     color: white;
+    margin-bottom: -10px !important;
   }
 
   .tangle-msg-box-dialog-textbox:focus {
