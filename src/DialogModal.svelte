@@ -9,7 +9,13 @@
     style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`;
     document.body.appendChild(style);
     return () => style.remove();
+
+
   });
+    document.addEventListener('keydown',(e) => {
+      e.key === 'Enter' && confirmDialog();
+      e.key === 'Escape' && exitDialog();
+    })
 
   const component = get_current_component();
   const svelteDispatch = createEventDispatcher();
@@ -78,6 +84,7 @@
   export let secondary = "";
   export let cancel = "Zrušit";
   export let regex = /.*/;
+  
   $: regexForValidation = new RegExp(regex.toString().slice(1, -1));
   // $: console.log({regex,regexForValidation,value, test: regexForValidation.test(value)})
   export let invalidtext = "Zadejte platnou hodnotu";
@@ -89,6 +96,9 @@
   $: invalid = !validate(value);
 
   // new RegExp('.+\\*.+')
+
+  let confirmBtn;
+  let cancelBtn;
 </script>
 
 <div class="tangle-msg-box-modal">
@@ -141,12 +151,12 @@
     </div>
     <div class="tangle-msg-box-dialog-footer">
       {#if type !== "alert" && !secondary}
-        <button class="tangle-msg-box-dialog-button cancel" on:click={exitDialog}>{cancel}</button>
+        <button class="tangle-msg-box-dialog-button cancel" bind:this={cancelBtn} on:click={exitDialog}>{cancel}</button>
       {/if}
       {#if secondary}
-        <button class="tangle-msg-box-dialog-button secondary" on:click={confirmDialogSecondary}>{secondary}</button>
+        <button class="tangle-msg-box-dialog-button secondary"  on:click={confirmDialogSecondary}>{secondary}</button>
       {/if}
-      <button class="tangle-msg-box-dialog-button" on:click={confirmDialog}>{confirm}</button>
+      <button class="tangle-msg-box-dialog-button" bind:this={confirmBtn} on:click={confirmDialog}>{confirm}</button>
     </div>
   </div>
 </div>

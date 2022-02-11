@@ -50,7 +50,8 @@
   main {
     display: flex;
     align-items: center;
-    margin-top: 16px;
+    margin-top: 4px; 
+    margin-bottom:-16px;
   }
   input {
     /* margin: 0 26px; */
