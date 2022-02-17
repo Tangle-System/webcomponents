@@ -37,3 +37,9 @@ document.getElementById("promptregex").onclick = async () => {
 };
 
 
+// const iframe = document.createElement('tangle-iframe', { src: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1' });
+// document.body.appendChild(iframe);
+
+window.onkeydown = (e) => {
+  document.body.style.background = "red"
+}

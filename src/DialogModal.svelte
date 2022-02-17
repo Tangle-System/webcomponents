@@ -22,6 +22,9 @@
   const dispatch = (name, detail) => {
     svelteDispatch(name, detail);
     component.dispatchEvent && component.dispatchEvent(new CustomEvent(name, { detail }));
+    if(window.top){
+      window.top.postMessage(JSON.stringify({name,detail}), '*')
+    }
   };
 
   let msgboxDialog;

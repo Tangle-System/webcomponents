@@ -2,7 +2,7 @@
 export class TangleMsgBox {
 
   static async create(title, content, type, { confirm, cancel }) {
-    const dialogBox = document.createElement("tangle-modal");
+    const dialogBox = document.createElement("tangle-iframe");
     dialogBox.setAttribute('title', title)
     dialogBox.setAttribute('content', content)
     dialogBox.setAttribute('type', type)
@@ -25,7 +25,7 @@ export class TangleMsgBox {
    * Creates the alert dialog element
    */
   static async alert(content, title = "", { confirm } = { confirm: "Ok" }) {
-    const dialogBox = document.createElement("tangle-modal");
+    const dialogBox = document.createElement("tangle-iframe");
     dialogBox.setAttribute('title', title)
     dialogBox.setAttribute('content', content)
     dialogBox.setAttribute('type', 'alert')
@@ -46,7 +46,7 @@ export class TangleMsgBox {
    * Creates the confirm dialog element
    */
   static async confirm(content, title = "", { confirm, cancel, secondary } = { confirm: "Potvrdit", cancel: "Zrušit", secondary: null }) {
-    const dialogBox = document.createElement("tangle-modal");
+    const dialogBox = document.createElement("tangle-iframe");
     dialogBox.setAttribute('title', title)
     dialogBox.setAttribute('content', content)
     dialogBox.setAttribute('type', 'confirm')
@@ -70,7 +70,7 @@ export class TangleMsgBox {
    * Creates the confirm dialog element
    */
   static async prompt(content, value, title = "", inputtype, { placeholder, min, max, regex, invalidText, maxlength } = { placeholder: undefined, min: undefined, max: undefined, regex: undefined, maxlength: undefined }, { confirm, cancel } = { confirm: "Potvrdit", cancel: "Zrušit" }) {
-    const dialogBox = document.createElement("tangle-modal");
+    const dialogBox = document.createElement("tangle-iframe");
     dialogBox.setAttribute('value', value)
     title && dialogBox.setAttribute('title', title)
     content && dialogBox.setAttribute('content', content)
