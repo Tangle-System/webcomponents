@@ -91,6 +91,7 @@ export class TangleMsgBox {
 
     return new Promise((resolve, reject) => {
       dialogBox.addEventListener('submit', function submit(e) {
+        console.log(e, 'data are here wow')
         resolve(e.detail)
         dialogBox.removeEventListener('submit', submit)
       })

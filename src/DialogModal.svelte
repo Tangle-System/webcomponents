@@ -5,25 +5,24 @@
   import { get_current_component, onMount } from "svelte/internal";
 
   onMount(async () => {
+    component.focus();
     const style = document.createElement("style");
-    style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`
+    style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`;
     document.body.appendChild(style);
     return () => style.remove();
-
-
   });
-    document.addEventListener('keydown',(e) => {
-      e.key === 'Enter' && confirmDialog();
-      e.key === 'Escape' && exitDialog();
-    })
+  document.addEventListener("keydown", e => {
+    e.key === "Enter" && confirmDialog();
+    e.key === "Escape" && exitDialog();
+  });
 
   const component = get_current_component();
   const svelteDispatch = createEventDispatcher();
   const dispatch = (name, detail) => {
     svelteDispatch(name, detail);
     component.dispatchEvent && component.dispatchEvent(new CustomEvent(name, { detail }));
-    if(window.top){
-      window.top.postMessage(JSON.stringify({name,detail}), '*')
+    if (window.top) {
+      window.top.postMessage(JSON.stringify({ name, detail }), "*");
     }
   };
 
@@ -87,7 +86,7 @@
   export let secondary = "";
   export let cancel = "Zrušit";
   export let regex = /.*/;
-  
+
   $: regexForValidation = new RegExp(regex.toString().slice(1, -1));
   // $: console.log({regex,regexForValidation,value, test: regexForValidation.test(value)})
   export let invalidtext = "Zadejte platnou hodnotu";
@@ -157,7 +156,7 @@
         <button class="tangle-msg-box-dialog-button cancel" bind:this={cancelBtn} on:click={exitDialog}>{cancel}</button>
       {/if}
       {#if secondary}
-        <button class="tangle-msg-box-dialog-button secondary"  on:click={confirmDialogSecondary}>{secondary}</button>
+        <button class="tangle-msg-box-dialog-button secondary" on:click={confirmDialogSecondary}>{secondary}</button>
       {/if}
       <button class="tangle-msg-box-dialog-button" bind:this={confirmBtn} on:click={confirmDialog}>{confirm}</button>
     </div>
@@ -165,7 +164,6 @@
 </div>
 
 <style>
-
   .input {
   }
   * {

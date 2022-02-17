@@ -44,13 +44,13 @@
   // })
 
   window.onmessage = function (e) {
-    console.log("From iframe", e);
     let data = {};
     try {
       data = JSON.parse(e.data);
     } catch (e) {}
 
     if (data?.name === "submit") {
+      console.log("Dispatching event", data);
       dispatch("submit", data.detail);
       component.remove();
     }
@@ -108,8 +108,8 @@
     left: 0;
     top: 0;
     border: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     z-index: 1000000;
   }
 </style>
