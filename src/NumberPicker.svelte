@@ -2,7 +2,7 @@
 
 <script>
   import { createEventDispatcher } from "svelte";
-  import { get_current_component } from "svelte/internal";
+  import { get_current_component, onMount } from "svelte/internal";
 
   export let min = -999999999;
   export let max = 999999999;
@@ -30,6 +30,11 @@
     return val;
   }
   $: limitNumber(value);
+  let inputField;
+
+  onMount(() => {
+    inputField.focus();
+  })
 </script>
 
 <main>
@@ -38,7 +43,7 @@
       <path d="M0.620667 10.5L13.6138 0.540707L13.6138 20.4593L0.620667 10.5Z" fill="white" />
     </svg>
   </div>
-  <input type="number" bind:value {min} {max} />
+  <input type="number" bind:value {min} {max} bind:this={inputField} />
   <div on:click={_ => value < max && value++}>
     <svg width="18" height="28" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M13.0483 10.5L0.0551758 20.4593L0.0551758 0.540708L13.0483 10.5Z" fill="white" />
@@ -50,8 +55,8 @@
   main {
     display: flex;
     align-items: center;
-    margin-top: 4px; 
-    margin-bottom:-16px;
+    margin-top: 4px;
+    margin-bottom: -16px;
   }
   input {
     /* margin: 0 26px; */

@@ -56,6 +56,8 @@
     }
   };
 
+  let iframe;
+
   onMount(async () => {
     script = await fetch("dialog-component.js").then(v => v.text());
 
@@ -93,13 +95,15 @@
 </body>
 </html>
 `;
+
+    iframe.focus();
   });
 
   let t = "";
   let script = ``;
 </script>
 
-<iframe title="Lumexum modal" srcdoc={t} />
+<iframe bind:this={iframe} title="Lumexum modal" srcdoc={t} />
 
 <!-- <tangle-modal></tangle-modal> -->
 <style>

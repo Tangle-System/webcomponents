@@ -4,11 +4,17 @@
   import { createEventDispatcher } from "svelte";
   import { get_current_component, onMount } from "svelte/internal";
 
+  let inputField;
   onMount(async () => {
     component.focus();
     const style = document.createElement("style");
     style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`;
     document.body.appendChild(style);
+
+    setTimeout(() => {
+      inputField.focus();
+    }, 0);
+
     return () => style.remove();
   });
   document.addEventListener("keydown", e => {
@@ -137,7 +143,7 @@
       {#if type === "prompt"}
         {#if inputtype === "number"}
           <p style="display: flex; justify-content:center">
-            <tangle-number-input {min} {max} {value} on:change={e => (value = e.detail.value)} />
+            <tangle-number-input {min} {max} {value} on:change={e => (value = e.detail.value)} bind:this={inputField} />
           </p>
         {:else}
           <p>
@@ -146,7 +152,7 @@
                 {invalidtext}
               </small>
             {/if}
-            <input {maxlength} type="text" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value />
+            <input {maxlength} type="text" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
           </p>
         {/if}
       {/if}
