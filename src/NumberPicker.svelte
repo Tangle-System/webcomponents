@@ -33,8 +33,11 @@
   let inputField;
 
   onMount(() => {
-    inputField.focus();
-  })
+    setTimeout(() => {
+      inputField.focus();
+      inputField.click();
+    }, 10);
+  });
 </script>
 
 <main>

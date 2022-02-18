@@ -13,6 +13,7 @@
 
     setTimeout(() => {
       inputField.focus();
+      inputField.click();
     }, 0);
 
     return () => style.remove();
@@ -41,7 +42,7 @@
     dialogElm.addEventListener("animationend", function dialogElmAnimationEnd(evt) {
       if (evt.animationName === "msg-box-dialog-hide") {
         dialogElm.removeEventListener("animationend", dialogElmAnimationEnd);
-        dispatch("submit", false);
+        dispatch("submit", undefined);
         component.remove();
       }
     });
