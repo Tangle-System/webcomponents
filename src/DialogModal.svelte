@@ -4,24 +4,36 @@
   import { createEventDispatcher } from "svelte";
   import { get_current_component, onMount } from "svelte/internal";
 
+  let inputField;
   onMount(async () => {
+    component.focus();
     const style = document.createElement("style");
-    style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`
+    style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`;
     document.body.appendChild(style);
+
+    setTimeout(() => {
+      inputField.focus();
+      inputField.click();
+      setTimeout(() => {
+        document.execCommand("selectall", null, false);
+      },100)
+    }, 0);
+
     return () => style.remove();
-
-
   });
-    document.addEventListener('keydown',(e) => {
-      e.key === 'Enter' && confirmDialog();
-      e.key === 'Escape' && exitDialog();
-    })
+  document.addEventListener("keydown", e => {
+    e.key === "Enter" && confirmDialog();
+    e.key === "Escape" && exitDialog();
+  });
 
   const component = get_current_component();
   const svelteDispatch = createEventDispatcher();
   const dispatch = (name, detail) => {
     svelteDispatch(name, detail);
     component.dispatchEvent && component.dispatchEvent(new CustomEvent(name, { detail }));
+    if (window.top) {
+      window.top.postMessage(JSON.stringify({ name, detail }), "*");
+    }
   };
 
   let msgboxDialog;
@@ -33,7 +45,7 @@
     dialogElm.addEventListener("animationend", function dialogElmAnimationEnd(evt) {
       if (evt.animationName === "msg-box-dialog-hide") {
         dialogElm.removeEventListener("animationend", dialogElmAnimationEnd);
-        dispatch("submit", false);
+        dispatch("submit", undefined);
         component.remove();
       }
     });
@@ -84,7 +96,7 @@
   export let secondary = "";
   export let cancel = "Zrušit";
   export let regex = /.*/;
-  
+
   $: regexForValidation = new RegExp(regex.toString().slice(1, -1));
   // $: console.log({regex,regexForValidation,value, test: regexForValidation.test(value)})
   export let invalidtext = "Zadejte platnou hodnotu";
@@ -135,7 +147,7 @@
       {#if type === "prompt"}
         {#if inputtype === "number"}
           <p style="display: flex; justify-content:center">
-            <tangle-number-input {min} {max} {value} on:change={e => (value = e.detail.value)} />
+            <tangle-number-input {min} {max} {value} on:change={e => (value = e.detail.value)} bind:this={inputField} />
           </p>
         {:else}
           <p>
@@ -144,7 +156,7 @@
                 {invalidtext}
               </small>
             {/if}
-            <input {maxlength} type="text" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value />
+            <input {maxlength} type="text" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
           </p>
         {/if}
       {/if}
@@ -154,7 +166,7 @@
         <button class="tangle-msg-box-dialog-button cancel" bind:this={cancelBtn} on:click={exitDialog}>{cancel}</button>
       {/if}
       {#if secondary}
-        <button class="tangle-msg-box-dialog-button secondary"  on:click={confirmDialogSecondary}>{secondary}</button>
+        <button class="tangle-msg-box-dialog-button secondary" on:click={confirmDialogSecondary}>{secondary}</button>
       {/if}
       <button class="tangle-msg-box-dialog-button" bind:this={confirmBtn} on:click={confirmDialog}>{confirm}</button>
     </div>
@@ -162,7 +174,6 @@
 </div>
 
 <style>
-
   .input {
   }
   * {
