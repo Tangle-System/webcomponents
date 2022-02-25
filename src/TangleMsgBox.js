@@ -49,10 +49,12 @@ export class TangleMsgBox {
     const dialogBox = document.createElement("tangle-modal");
     dialogBox.setAttribute('title', title)
     dialogBox.setAttribute('content', content)
-    dialogBox.setAttribute('type', 'confirm')
-    confirm && dialogBox.setAttribute('confirm', confirm)
-    cancel && dialogBox.setAttribute('cancel', cancel)
-    secondary && dialogBox.setAttribute('secondary', secondary)
+    dialogBox.setAttribute('type', 'confirm');
+
+    (confirm || confirm === "") && dialogBox.setAttribute('confirm', confirm);
+    (cancel || cancel === "") && dialogBox.setAttribute('cancel', cancel);
+    (secondary || secondary === "") && dialogBox.setAttribute('secondary', secondary);
+
     document.body.appendChild(dialogBox);
 
     return new Promise((resolve, reject) => {
@@ -81,11 +83,33 @@ export class TangleMsgBox {
     typeof min === 'number' && dialogBox.setAttribute('min', min)
     typeof max === 'number' && dialogBox.setAttribute('max', max)
 
-    placeholder && dialogBox.setAttribute('placeholder', placeholder)
-    confirm && dialogBox.setAttribute('confirm', confirm)
-    cancel && dialogBox.setAttribute('cancel', cancel)
+    placeholder && dialogBox.setAttribute('placeholder', placeholder);
+    (confirm || confirm === "") && dialogBox.setAttribute('confirm', confirm);
+    (cancel || cancel === "") && dialogBox.setAttribute('cancel', cancel);
     regex && dialogBox.setAttribute('regex', regex)
     invalidText && dialogBox.setAttribute('invalidtext', invalidText)
+
+    document.body.appendChild(dialogBox);
+
+    return new Promise((resolve, reject) => {
+      dialogBox.addEventListener('submit', function submit(e) {
+        resolve(e.detail)
+        dialogBox.removeEventListener('submit', submit)
+      })
+    });
+  }
+
+  static async choose(content, { defaultValue, options }, title = "", { confirm, cancel } = { confirm: "Potvrdit", cancel: "Zrušit" }) {
+    const dialogBox = document.createElement("tangle-modal");
+    dialogBox.setAttribute('type', 'choose')
+    title && dialogBox.setAttribute('title', title)
+    content && dialogBox.setAttribute('content', content)
+
+    defaultValue && dialogBox.setAttribute('defaultvalue', defaultValue)
+    options && dialogBox.setAttribute('jsonoptions', JSON.stringify(options));
+
+    (confirm || confirm === "") && dialogBox.setAttribute('confirm', confirm);
+    (cancel || cancel === "") && dialogBox.setAttribute('cancel', cancel);
 
     document.body.appendChild(dialogBox);
 
