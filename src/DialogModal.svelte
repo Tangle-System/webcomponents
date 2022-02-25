@@ -312,7 +312,9 @@
   }
 
   .tangle-msg-box-dialog-textbox:focus {
-    box-shadow: 0 0 0.1em 0.2em rgba(13, 134, 255, 0.5);
+    /* box-shadow: 0 0 0.1em 0.2em rgba(13, 134, 255, 0.5); */
+    box-shadow: none;
+    
   }
 
   .tangle-msg-box-modal {
