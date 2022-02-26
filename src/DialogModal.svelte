@@ -6,6 +6,8 @@
 
   let inputField;
   onMount(async () => {
+  console.log(inputtype)
+
     value = value || defaultvalue;
     component.focus();
     const style = document.createElement("style");
@@ -13,12 +15,14 @@
     document.body.appendChild(style);
 
     setTimeout(() => {
-      inputField && inputField.focus();
-      inputField && inputField.click();
-      inputField &&
-        setTimeout(() => {
-          document.execCommand("selectall", null, false);
-        }, 100);
+      if(inputtype.match(/text|email|tel|url/)){
+        inputField && inputField.focus();
+        inputField && inputField.click();
+        inputField &&
+          setTimeout(() => {
+            document.execCommand("selectall", null, false);
+          }, 0);
+      }
     }, 0);
 
     return () => style.remove();
@@ -169,7 +173,19 @@
                 {invalidtext}
               </small>
             {/if}
+            {#if inputtype === "time"}
+            <input {maxlength} type="time" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else if inputtype === "date"}
+            <input {maxlength} type="date" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else if inputtype === "datetime"}
+            <input {maxlength} type="datetime" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else if inputtype === "tel"}
+            <input {maxlength} type="tel" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else if inputtype === "url"}
+            <input {maxlength} type="url" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else}
             <input {maxlength} type="text" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {/if}
           </p>
         {/if}
       {/if}
