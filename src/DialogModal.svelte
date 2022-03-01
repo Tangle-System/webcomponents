@@ -4,18 +4,30 @@
   import { createEventDispatcher } from "svelte";
   import { get_current_component, onMount } from "svelte/internal";
 
+  let styleElement;
+  const component = get_current_component();
+  const svelteDispatch = createEventDispatcher();
+  const dispatch = (name, detail) => {
+    svelteDispatch(name, detail);
+    component.dispatchEvent && component.dispatchEvent(new CustomEvent(name, { detail }));
+    if (window.top) {
+      window.top.postMessage(JSON.stringify({ name, detail }), "*");
+    }
+  };
+
   let inputField;
   onMount(async () => {
-  console.log(inputtype)
+    console.log(inputtype);
 
     value = value || defaultvalue;
     component.focus();
     const style = document.createElement("style");
     style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`;
-    document.body.appendChild(style);
+    component.appendChild(style);
+    styleElement.innerHTML = styles;
 
     setTimeout(() => {
-      if(inputtype.match(/text|email|tel|url/)){
+      if (inputtype.match(/text|email|tel|url/)) {
         inputField && inputField.focus();
         inputField && inputField.click();
         inputField &&
@@ -31,16 +43,6 @@
     e.key === "Enter" && confirmDialog();
     e.key === "Escape" && exitDialog();
   });
-
-  const component = get_current_component();
-  const svelteDispatch = createEventDispatcher();
-  const dispatch = (name, detail) => {
-    svelteDispatch(name, detail);
-    component.dispatchEvent && component.dispatchEvent(new CustomEvent(name, { detail }));
-    if (window.top) {
-      window.top.postMessage(JSON.stringify({ name, detail }), "*");
-    }
-  };
 
   let msgboxDialog;
   let msgboxCloseDialog = false;
@@ -104,6 +106,7 @@
   export let jsonoptions = "[]";
   export let defaultvalue = "";
   export let value = "";
+  export let styles = "";
 
   function handleChooseOption(v) {
     value = v;
@@ -174,17 +177,17 @@
               </small>
             {/if}
             {#if inputtype === "time"}
-            <input {maxlength} type="time" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+              <input {maxlength} type="time" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
             {:else if inputtype === "date"}
-            <input {maxlength} type="date" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+              <input {maxlength} type="date" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
             {:else if inputtype === "datetime"}
-            <input {maxlength} type="datetime" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+              <input {maxlength} type="datetime" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
             {:else if inputtype === "tel"}
-            <input {maxlength} type="tel" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+              <input {maxlength} type="tel" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
             {:else if inputtype === "url"}
-            <input {maxlength} type="url" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+              <input {maxlength} type="url" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
             {:else}
-            <input {maxlength} type="text" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+              <input {maxlength} type="text" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
             {/if}
           </p>
         {/if}
@@ -209,9 +212,15 @@
       {/if}
     </div>
   </div>
+  <style bind:this={styleElement}>
+  </style>
 </div>
 
 <style>
+  :root {
+    --body-bg: #191919;
+    --text: #9b9b9b;
+  }
   .input {
   }
   * {
@@ -241,11 +250,17 @@
     box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.5);
     border-radius: 25px;
     animation: msg-box-dialog-show 265ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    background: #191919;
+  }
+
+  .tangle-msg-box-dialog .tangle-msg-box-dialog-header,
+  .tangle-msg-box-dialog .tangle-msg-box-dialog-body,
+  .tangle-msg-box-dialog .tangle-msg-box-dialog-footer {
+    background-color: inherit;
   }
 
   .tangle-msg-box-dialog-header {
     color: inherit;
-    background-color: #191919;
     text-align: center;
     font-weight: 500;
     font-size: 16px;
@@ -256,7 +271,6 @@
 
   .tangle-msg-box-dialog-body {
     color: inherit;
-    background-color: #191919;
     padding-bottom: 24px;
     padding-top: 16px;
   }
@@ -264,7 +278,7 @@
   .tangle-msg-box-dialog-body > p {
     text-align: center;
     font-size: 12px;
-    color: #9b9b9b;
+    color: var(--text);
     line-height: 18px;
     font-weight: 300;
     padding: 0;
@@ -276,7 +290,7 @@
 
   .tangle-msg-box-dialog-footer {
     color: inherit;
-    background-color: #191919;
+
     display: flex;
     flex-direction: column-reverse;
     justify-content: stretch;
@@ -330,7 +344,6 @@
   .tangle-msg-box-dialog-textbox:focus {
     /* box-shadow: 0 0 0.1em 0.2em rgba(13, 134, 255, 0.5); */
     box-shadow: none;
-    
   }
 
   .tangle-msg-box-modal {

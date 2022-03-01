@@ -1,20 +1,31 @@
+/**
+ * @type {string}
+ */
+let styles;
 
 export class TangleMsgBox {
+  /**
+   * @param {string} stringWithStyles
+   */
+  static setStyles(stringWithStyles) {
+    styles = stringWithStyles;
+  }
 
   static async create(title, content, type, { confirm, cancel }) {
     const dialogBox = document.createElement("tangle-modal");
-    dialogBox.setAttribute('title', title)
-    dialogBox.setAttribute('content', content)
-    dialogBox.setAttribute('type', type)
-    confirm && dialogBox.setAttribute('confirm', confirm)
-    cancel && dialogBox.setAttribute('cancel', cancel)
+    dialogBox.setAttribute("styles", styles);
+    dialogBox.setAttribute("title", title);
+    dialogBox.setAttribute("content", content);
+    dialogBox.setAttribute("type", type);
+    confirm && dialogBox.setAttribute("confirm", confirm);
+    cancel && dialogBox.setAttribute("cancel", cancel);
     document.body.appendChild(dialogBox);
 
     return new Promise((resolve, reject) => {
-      dialogBox.addEventListener('submit', function submit(e) {
-        resolve(e.detail)
-        dialogBox.removeEventListener('submit', submit)
-      })
+      dialogBox.addEventListener("submit", function submit(e) {
+        resolve(e.detail);
+        dialogBox.removeEventListener("submit", submit);
+      });
     });
   }
 
@@ -26,17 +37,19 @@ export class TangleMsgBox {
    */
   static async alert(content, title = "", { confirm } = { confirm: "Ok" }) {
     const dialogBox = document.createElement("tangle-modal");
-    dialogBox.setAttribute('title', title)
-    dialogBox.setAttribute('content', content)
-    dialogBox.setAttribute('type', 'alert')
-    confirm && dialogBox.setAttribute('confirm', confirm)
+    dialogBox.setAttribute("styles", styles);
+
+    dialogBox.setAttribute("title", title);
+    dialogBox.setAttribute("content", content);
+    dialogBox.setAttribute("type", "alert");
+    confirm && dialogBox.setAttribute("confirm", confirm);
     document.body.appendChild(dialogBox);
 
     return new Promise((resolve, reject) => {
-      dialogBox.addEventListener('submit', function submit(e) {
-        resolve(e.detail)
-        dialogBox.removeEventListener('submit', submit)
-      })
+      dialogBox.addEventListener("submit", function submit(e) {
+        resolve(e.detail);
+        dialogBox.removeEventListener("submit", submit);
+      });
     });
   }
   /**
@@ -47,21 +60,23 @@ export class TangleMsgBox {
    */
   static async confirm(content, title = "", { confirm, cancel, secondary } = { confirm: "Potvrdit", cancel: "Zrušit", secondary: null }) {
     const dialogBox = document.createElement("tangle-modal");
-    dialogBox.setAttribute('title', title)
-    dialogBox.setAttribute('content', content)
-    dialogBox.setAttribute('type', 'confirm');
+    dialogBox.setAttribute("styles", styles);
 
-    (confirm || confirm === "") && dialogBox.setAttribute('confirm', confirm);
-    (cancel || cancel === "") && dialogBox.setAttribute('cancel', cancel);
-    (secondary || secondary === "") && dialogBox.setAttribute('secondary', secondary);
+    dialogBox.setAttribute("title", title);
+    dialogBox.setAttribute("content", content);
+    dialogBox.setAttribute("type", "confirm");
+
+    (confirm || confirm === "") && dialogBox.setAttribute("confirm", confirm);
+    (cancel || cancel === "") && dialogBox.setAttribute("cancel", cancel);
+    (secondary || secondary === "") && dialogBox.setAttribute("secondary", secondary);
 
     document.body.appendChild(dialogBox);
 
     return new Promise((resolve, reject) => {
-      dialogBox.addEventListener('submit', function submit(e) {
-        resolve(e.detail)
-        dialogBox.removeEventListener('submit', submit)
-      })
+      dialogBox.addEventListener("submit", function submit(e) {
+        resolve(e.detail);
+        dialogBox.removeEventListener("submit", submit);
+      });
     });
   }
   /**
@@ -71,53 +86,62 @@ export class TangleMsgBox {
    * @returns {Promise<string>}
    * Creates the confirm dialog element
    */
-  static async prompt(content, value, title = "", inputtype, { placeholder, min, max, regex, invalidText, maxlength } = { placeholder: undefined, min: undefined, max: undefined, regex: undefined, maxlength: undefined }, { confirm, cancel } = { confirm: "Potvrdit", cancel: "Zrušit" }) {
+  static async prompt(
+    content,
+    value,
+    title = "",
+    inputtype,
+    { placeholder, min, max, regex, invalidText, maxlength } = { placeholder: undefined, min: undefined, max: undefined, regex: undefined, maxlength: undefined },
+    { confirm, cancel } = { confirm: "Potvrdit", cancel: "Zrušit" },
+  ) {
     const dialogBox = document.createElement("tangle-modal");
-    dialogBox.setAttribute('value', value)
-    title && dialogBox.setAttribute('title', title)
-    content && dialogBox.setAttribute('content', content)
-    maxlength > 1 && dialogBox.setAttribute('maxlength', maxlength)
-    dialogBox.setAttribute('type', 'prompt')
-    dialogBox.setAttribute('inputtype', inputtype)
+    dialogBox.setAttribute("styles", styles);
+    dialogBox.setAttribute("value", value);
+    title && dialogBox.setAttribute("title", title);
+    content && dialogBox.setAttribute("content", content);
+    maxlength > 1 && dialogBox.setAttribute("maxlength", maxlength);
+    dialogBox.setAttribute("type", "prompt");
+    dialogBox.setAttribute("inputtype", inputtype);
 
-    typeof min === 'number' && dialogBox.setAttribute('min', min)
-    typeof max === 'number' && dialogBox.setAttribute('max', max)
+    typeof min === "number" && dialogBox.setAttribute("min", min);
+    typeof max === "number" && dialogBox.setAttribute("max", max);
 
-    placeholder && dialogBox.setAttribute('placeholder', placeholder);
-    (confirm || confirm === "") && dialogBox.setAttribute('confirm', confirm);
-    (cancel || cancel === "") && dialogBox.setAttribute('cancel', cancel);
-    regex && dialogBox.setAttribute('regex', regex)
-    invalidText && dialogBox.setAttribute('invalidtext', invalidText)
+    placeholder && dialogBox.setAttribute("placeholder", placeholder);
+    (confirm || confirm === "") && dialogBox.setAttribute("confirm", confirm);
+    (cancel || cancel === "") && dialogBox.setAttribute("cancel", cancel);
+    regex && dialogBox.setAttribute("regex", regex);
+    invalidText && dialogBox.setAttribute("invalidtext", invalidText);
 
     document.body.appendChild(dialogBox);
 
     return new Promise((resolve, reject) => {
-      dialogBox.addEventListener('submit', function submit(e) {
-        resolve(e.detail)
-        dialogBox.removeEventListener('submit', submit)
-      })
+      dialogBox.addEventListener("submit", function submit(e) {
+        resolve(e.detail);
+        dialogBox.removeEventListener("submit", submit);
+      });
     });
   }
 
   static async choose(content, { defaultValue, options }, title = "", { confirm, cancel } = { confirm: "Potvrdit", cancel: "Zrušit" }) {
     const dialogBox = document.createElement("tangle-modal");
-    dialogBox.setAttribute('type', 'choose')
-    title && dialogBox.setAttribute('title', title)
-    content && dialogBox.setAttribute('content', content)
+    dialogBox.setAttribute("styles", styles);
+    dialogBox.setAttribute("type", "choose");
+    title && dialogBox.setAttribute("title", title);
+    content && dialogBox.setAttribute("content", content);
 
-    defaultValue && dialogBox.setAttribute('defaultvalue', defaultValue)
-    options && dialogBox.setAttribute('jsonoptions', JSON.stringify(options));
+    defaultValue && dialogBox.setAttribute("defaultvalue", defaultValue);
+    options && dialogBox.setAttribute("jsonoptions", JSON.stringify(options));
 
-    (confirm || confirm === "") && dialogBox.setAttribute('confirm', confirm);
-    (cancel || cancel === "") && dialogBox.setAttribute('cancel', cancel);
+    (confirm || confirm === "") && dialogBox.setAttribute("confirm", confirm);
+    (cancel || cancel === "") && dialogBox.setAttribute("cancel", cancel);
 
     document.body.appendChild(dialogBox);
 
     return new Promise((resolve, reject) => {
-      dialogBox.addEventListener('submit', function submit(e) {
-        resolve(e.detail)
-        dialogBox.removeEventListener('submit', submit)
-      })
+      dialogBox.addEventListener("submit", function submit(e) {
+        resolve(e.detail);
+        dialogBox.removeEventListener("submit", submit);
+      });
     });
   }
 }
@@ -127,3 +151,9 @@ window.TangleMsgBox = TangleMsgBox;
 window.prompt = TangleMsgBox.prompt;
 window.confirm = TangleMsgBox.confirm;
 window.alert = TangleMsgBox.alert;
+
+// use without initializing class
+// const tangleMsgBoxLegacy = new TangleMsgBox();
+// export { tangleMsgBoxLegacy };
+
+// import {tangleMsgBoxLegacy as TangleMsgBox} from '....'

@@ -1,4 +1,34 @@
 import { TangleMsgBox } from "./dialog-component.js";
+
+// TangleMsgBox.setStyles(`
+// :root {
+//   --body-bg:#C3B9D2;
+// }
+// .tangle-msg-box-dialog-header {
+//   // color:red !important
+// }
+// .tangle-msg-box-dialog {
+//   background: #C3B9D2 !important;
+// }
+// .tangle-msg-box-dialog-button:last-of-type {
+//       background: #451CEC !important;
+//     color: white !important;
+
+// }
+//  .tangle-msg-box-dialog-button:last-of-type:hover {
+//     background: #451CEC !important;
+
+//  }
+//  .tangle-msg-box-dialog-header {
+//        color: #451CEC !important;
+//  }
+//  .tangle-msg-box-dialog-textbox {
+//   color: #451CEC !important;
+//   background:white;
+//   outline:none;
+//  }
+// `);
+
 console.log(TangleMsgBox);
 
 document.getElementById("alert").onclick = async () => {
