@@ -182,6 +182,8 @@
               <input {maxlength} type="date" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
             {:else if inputtype === "datetime"}
               <input {maxlength} type="datetime" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else if inputtype === "password"}
+              <input {maxlength} type="password" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
             {:else if inputtype === "tel"}
               <input {maxlength} type="tel" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
             {:else if inputtype === "url"}
