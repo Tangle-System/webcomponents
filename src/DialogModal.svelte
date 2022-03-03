@@ -194,6 +194,9 @@
           </p>
         {/if}
       {/if}
+      {#if type === "choose" && content !== ""}
+          <div style="height:12px;"></div>
+      {/if}
       {#if type === "choose"}
         <div class="choose-box">
           {#each options as o (o.value)}
