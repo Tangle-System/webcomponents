@@ -1,19 +1,19 @@
 /**
  * @type {string}
  */
-let styles;
+window.___tangleMsgBoxStyles;
 
 export class TangleMsgBox {
   /**
    * @param {string} stringWithStyles
    */
   static setStyles(stringWithStyles) {
-    styles = stringWithStyles;
+    window.___tangleMsgBoxStyles = stringWithStyles;
   }
 
   static async create(title, content, type, { confirm, cancel }) {
     const dialogBox = document.createElement("tangle-modal");
-    dialogBox.setAttribute("styles", styles);
+    // dialogBox.setAttribute("styles", styles);
     dialogBox.setAttribute("title", title);
     dialogBox.setAttribute("content", content);
     dialogBox.setAttribute("type", type);
@@ -37,7 +37,7 @@ export class TangleMsgBox {
    */
   static async alert(content, title = "", { confirm } = { confirm: "Ok" }) {
     const dialogBox = document.createElement("tangle-modal");
-    dialogBox.setAttribute("styles", styles);
+    // dialogBox.setAttribute("styles", styles);
 
     dialogBox.setAttribute("title", title);
     dialogBox.setAttribute("content", content);
@@ -60,7 +60,7 @@ export class TangleMsgBox {
    */
   static async confirm(content, title = "", { confirm, cancel, secondary } = { confirm: "Potvrdit", cancel: "Zrušit", secondary: null }) {
     const dialogBox = document.createElement("tangle-modal");
-    dialogBox.setAttribute("styles", styles);
+    // dialogBox.setAttribute("styles", styles);
 
     dialogBox.setAttribute("title", title);
     dialogBox.setAttribute("content", content);
@@ -95,7 +95,7 @@ export class TangleMsgBox {
     { confirm, cancel } = { confirm: "Potvrdit", cancel: "Zrušit" },
   ) {
     const dialogBox = document.createElement("tangle-modal");
-    dialogBox.setAttribute("styles", styles);
+    // dialogBox.setAttribute("styles", styles);
     dialogBox.setAttribute("value", value);
     title && dialogBox.setAttribute("title", title);
     content && dialogBox.setAttribute("content", content);
@@ -124,7 +124,7 @@ export class TangleMsgBox {
 
   static async choose(content, { defaultValue, options }, title = "", { confirm, cancel } = { confirm: "Potvrdit", cancel: "Zrušit" }) {
     const dialogBox = document.createElement("tangle-modal");
-    dialogBox.setAttribute("styles", styles);
+    // dialogBox.setAttribute("styles", styles);
     dialogBox.setAttribute("type", "choose");
     title && dialogBox.setAttribute("title", title);
     content && dialogBox.setAttribute("content", content);

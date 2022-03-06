@@ -4,7 +4,6 @@
   import { createEventDispatcher } from "svelte";
   import { get_current_component, onMount } from "svelte/internal";
 
-  let styleElement;
   const component = get_current_component();
   const svelteDispatch = createEventDispatcher();
   const dispatch = (name, detail) => {
@@ -24,7 +23,6 @@
     const style = document.createElement("style");
     style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`;
     component.appendChild(style);
-    styleElement.innerHTML = styles;
 
     setTimeout(() => {
       if (inputtype.match(/text|email|tel|url/)) {
@@ -106,7 +104,6 @@
   export let jsonoptions = "[]";
   export let defaultvalue = "";
   export let value = "";
-  export let styles = "";
 
   function handleChooseOption(v) {
     value = v;
@@ -195,7 +192,7 @@
         {/if}
       {/if}
       {#if type === "choose" && content !== ""}
-          <div style="height:12px;"></div>
+        <div style="height:12px;" />
       {/if}
       {#if type === "choose"}
         <div class="choose-box">
@@ -217,8 +214,7 @@
       {/if}
     </div>
   </div>
-  <style bind:this={styleElement}>
-  </style>
+  {@html "<style>" + window.___tangleMsgBoxStyles + "</style>"}
 </div>
 
 <style>
@@ -344,7 +340,7 @@
     font-weight: 500;
     color: white;
     margin-bottom: -10px !important;
-    outline:none !important;
+    outline: none !important;
   }
 
   .tangle-msg-box-dialog-textbox:focus {
