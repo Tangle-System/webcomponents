@@ -66,6 +66,8 @@
     font-size: 16px;
     font-weight: 500;
     color: white;
+    outline: none !important;
+    box-shadow:none !important;
   }
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {

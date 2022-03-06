@@ -344,6 +344,7 @@
     font-weight: 500;
     color: white;
     margin-bottom: -10px !important;
+    outline:none !important;
   }
 
   .tangle-msg-box-dialog-textbox:focus {
