@@ -1,8 +1,10 @@
+import { t } from "./i18n";
+// TODO handle confirm, cancel text HERE instead in sveltecomponent
+
 /**
  * @type {string}
  */
 window.___tangleMsgBoxStyles;
-
 export class TangleMsgBox {
   /**
    * @param {string} stringWithStyles
@@ -58,7 +60,7 @@ export class TangleMsgBox {
    * @returns {Promise<boolean>}
    * Creates the confirm dialog element
    */
-  static async confirm(content, title = "", { confirm, cancel, secondary } = { confirm: "Potvrdit", cancel: "Zrušit", secondary: null }) {
+  static async confirm(content, title = "", { confirm, cancel, secondary } = { confirm: t("Potvrdit"), cancel: t("Zrušit"), secondary: null }) {
     const dialogBox = document.createElement("tangle-modal");
     // dialogBox.setAttribute("styles", styles);
 
@@ -92,7 +94,7 @@ export class TangleMsgBox {
     title = "",
     inputtype,
     { placeholder, min, max, regex, invalidText, maxlength } = { placeholder: undefined, min: undefined, max: undefined, regex: undefined, maxlength: undefined },
-    { confirm, cancel } = { confirm: "Potvrdit", cancel: "Zrušit" },
+    { confirm, cancel } = { confirm: t("Potvrdit"), cancel: t("Zrušit") },
   ) {
     const dialogBox = document.createElement("tangle-modal");
     // dialogBox.setAttribute("styles", styles);
@@ -122,7 +124,7 @@ export class TangleMsgBox {
     });
   }
 
-  static async choose(content, { defaultValue, options }, title = "", { confirm, cancel } = { confirm: "Potvrdit", cancel: "Zrušit" }) {
+  static async choose(content, { defaultValue, options }, title = "", { confirm, cancel } = { confirm: t("Potvrdit"), cancel: t("Zrušit") }) {
     const dialogBox = document.createElement("tangle-modal");
     // dialogBox.setAttribute("styles", styles);
     dialogBox.setAttribute("type", "choose");

@@ -3,6 +3,9 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { get_current_component, onMount } from "svelte/internal";
+  import { t } from "./i18n";
+
+
 
   const component = get_current_component();
   const svelteDispatch = createEventDispatcher();
@@ -96,9 +99,9 @@
   export let max = 999999999;
   export let maxlength = 999999999;
 
-  export let confirm = "Potvrdit";
+  export let confirm = "";
   export let secondary = "";
-  export let cancel = "Zrušit";
+  export let cancel = "";
   export let regex = /.*/;
 
   export let jsonoptions = "[]";
@@ -116,7 +119,7 @@
 
   $: regexForValidation = new RegExp(regex.toString().slice(1, -1));
   // $: console.log({regex,regexForValidation,value, test: regexForValidation.test(value)})
-  export let invalidtext = "Zadejte platnou hodnotu";
+  export let invalidtext = t("Zadejte platnou hodnotu");
 
   function validate(value) {
     return regexForValidation.test(value);
@@ -204,13 +207,13 @@
     </div>
     <div class="tangle-msg-box-dialog-footer">
       {#if type !== "alert" && !secondary && cancel !== "null"}
-        <button class="tangle-msg-box-dialog-button cancel" bind:this={cancelBtn} on:click={exitDialog}>{cancel}</button>
+        <button class="tangle-msg-box-dialog-button cancel" bind:this={cancelBtn} on:click={exitDialog}>{cancel || t("Zrušit")}</button>
       {/if}
       {#if secondary && secondary !== "null"}
         <button class="tangle-msg-box-dialog-button secondary" on:click={confirmDialogSecondary}>{secondary}</button>
       {/if}
-      {#if confirm && confirm !== "null"}
-        <button class="tangle-msg-box-dialog-button" bind:this={confirmBtn} on:click={confirmDialog}>{confirm}</button>
+      {#if confirm !== "null"}
+        <button class="tangle-msg-box-dialog-button" bind:this={confirmBtn} on:click={confirmDialog}>{confirm || t("Potvrdit")}</button>
       {/if}
     </div>
   </div>
