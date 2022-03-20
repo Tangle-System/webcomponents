@@ -3,8 +3,8 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { get_current_component, onMount } from "svelte/internal";
-  import { t } from "./i18n";
-
+  import {i18webcomponents} from "./i18n";
+  const {t} = i18webcomponents;
 
 
   const component = get_current_component();

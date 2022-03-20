@@ -1,5 +1,9 @@
-import { t } from "./i18n";
+import { i18webcomponents } from "./i18n";
+const { t } = i18webcomponents;
 // TODO handle confirm, cancel text HERE instead in sveltecomponent
+i18webcomponents.on("languageChanged", lang => {
+  console.log("Current language", lang);
+});
 
 /**
  * @type {string}
@@ -60,16 +64,15 @@ export class TangleMsgBox {
    * @returns {Promise<boolean>}
    * Creates the confirm dialog element
    */
-  static async confirm(content, title = "", { confirm, cancel, secondary } = { confirm: t("Potvrdit"), cancel: t("Zrušit"), secondary: null }) {
+  static async confirm(content, title = "", { confirm, cancel, secondary } = {}) {
     const dialogBox = document.createElement("tangle-modal");
-    // dialogBox.setAttribute("styles", styles);
 
     dialogBox.setAttribute("title", title);
     dialogBox.setAttribute("content", content);
     dialogBox.setAttribute("type", "confirm");
 
-    (confirm || confirm === "") && dialogBox.setAttribute("confirm", confirm);
-    (cancel || cancel === "") && dialogBox.setAttribute("cancel", cancel);
+    dialogBox.setAttribute("confirm", confirm || t("Potvrdit"));
+    dialogBox.setAttribute("cancel", cancel || t("Zrušit"));
     (secondary || secondary === "") && dialogBox.setAttribute("secondary", secondary);
 
     document.body.appendChild(dialogBox);
@@ -94,7 +97,7 @@ export class TangleMsgBox {
     title = "",
     inputtype,
     { placeholder, min, max, regex, invalidText, maxlength } = { placeholder: undefined, min: undefined, max: undefined, regex: undefined, maxlength: undefined },
-    { confirm, cancel } = { confirm: t("Potvrdit"), cancel: t("Zrušit") },
+    { confirm, cancel } = {},
   ) {
     const dialogBox = document.createElement("tangle-modal");
     // dialogBox.setAttribute("styles", styles);
@@ -109,8 +112,8 @@ export class TangleMsgBox {
     typeof max === "number" && dialogBox.setAttribute("max", max);
 
     placeholder && dialogBox.setAttribute("placeholder", placeholder);
-    (confirm || confirm === "") && dialogBox.setAttribute("confirm", confirm);
-    (cancel || cancel === "") && dialogBox.setAttribute("cancel", cancel);
+    /*(confirm || confirm === "") &&*/ dialogBox.setAttribute("confirm", confirm || t("Potvrdit"));
+    /*(cancel || cancel === "")  && */ dialogBox.setAttribute("cancel", cancel || t("Zrušit"));
     regex && dialogBox.setAttribute("regex", regex);
     invalidText && dialogBox.setAttribute("invalidtext", invalidText);
 
@@ -124,7 +127,7 @@ export class TangleMsgBox {
     });
   }
 
-  static async choose(content, { defaultValue, options }, title = "", { confirm, cancel } = { confirm: t("Potvrdit"), cancel: t("Zrušit") }) {
+  static async choose(content, { defaultValue, options }, title = "", { confirm, cancel } = {}) {
     const dialogBox = document.createElement("tangle-modal");
     // dialogBox.setAttribute("styles", styles);
     dialogBox.setAttribute("type", "choose");
@@ -134,8 +137,8 @@ export class TangleMsgBox {
     defaultValue && dialogBox.setAttribute("defaultvalue", defaultValue);
     options && dialogBox.setAttribute("jsonoptions", JSON.stringify(options));
 
-    (confirm || confirm === "") && dialogBox.setAttribute("confirm", confirm);
-    (cancel || cancel === "") && dialogBox.setAttribute("cancel", cancel);
+    dialogBox.setAttribute("confirm", confirm || t("Potvrdit"));
+    dialogBox.setAttribute("cancel", cancel || t("Zrušit"));
 
     document.body.appendChild(dialogBox);
 

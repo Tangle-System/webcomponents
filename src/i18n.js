@@ -22,7 +22,7 @@ const en = {
 
 i18.init(
   {
-    lng: "en",
+    fallbackLng: "en",
     debug: true,
     resources: {
       cs: cs,
@@ -35,12 +35,10 @@ i18.init(
   },
   (err, t) => {
     // TEST
-    console.log({ langs: { cs, en } });
-
-    console.log("webcomponents translation", "Zpět", t("Zpět"));
+    // console.log({ langs: { cs, en } });
+    // console.log("webcomponents translation", "Zpět", t("Zpět"));
   },
 );
-i18.changeLanguage("en");
 
-export const t = i18.t;
-export const changeLanguage = i18.changeLanguage;
+// i18.changeLanguage("en");
+export { i18 as i18webcomponents };
