@@ -3,25 +3,9 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { get_current_component, onMount } from "svelte/internal";
+  import {i18webcomponents} from "./i18n";
+  const {t} = i18webcomponents;
 
-  let inputField;
-  onMount(async () => {
-    component.focus();
-    const style = document.createElement("style");
-    style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`;
-    document.body.appendChild(style);
-
-    setTimeout(() => {
-      inputField.focus();
-      inputField.click();
-    }, 0);
-
-    return () => style.remove();
-  });
-  document.addEventListener("keydown", e => {
-    e.key === "Enter" && confirmDialog();
-    e.key === "Escape" && exitDialog();
-  });
 
   const component = get_current_component();
   const svelteDispatch = createEventDispatcher();
@@ -32,6 +16,34 @@
       window.top.postMessage(JSON.stringify({ name, detail }), "*");
     }
   };
+
+  let inputField;
+  onMount(async () => {
+    console.log(inputtype);
+
+    value = value || defaultvalue;
+    component.focus();
+    const style = document.createElement("style");
+    style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`;
+    component.appendChild(style);
+
+    setTimeout(() => {
+      if (inputtype.match(/text|email|tel|url/)) {
+        inputField && inputField.focus();
+        inputField && inputField.click();
+        inputField &&
+          setTimeout(() => {
+            document.execCommand("selectall", null, false);
+          }, 0);
+      }
+    }, 0);
+
+    return () => style.remove();
+  });
+  document.addEventListener("keydown", e => {
+    e.key === "Enter" && confirmDialog();
+    e.key === "Escape" && exitDialog();
+  });
 
   let msgboxDialog;
   let msgboxCloseDialog = false;
@@ -54,7 +66,7 @@
       dialogElm.addEventListener("animationend", function dialogElmAnimationEnd(evt) {
         if (evt.animationName === "msg-box-dialog-hide") {
           dialogElm.removeEventListener("animationend", dialogElmAnimationEnd);
-          dispatch("submit", type === "prompt" ? value : true);
+          dispatch("submit", type === "prompt" || type === "choose" ? value : true);
           component.remove();
         }
       });
@@ -73,8 +85,6 @@
     });
   }
 
-  export let value = "";
-
   export let type = "prompt";
   export let title = "";
   export let content = "";
@@ -89,14 +99,27 @@
   export let max = 999999999;
   export let maxlength = 999999999;
 
-  export let confirm = "Potvrdit";
+  export let confirm = "";
   export let secondary = "";
-  export let cancel = "Zrušit";
+  export let cancel = "";
   export let regex = /.*/;
+
+  export let jsonoptions = "[]";
+  export let defaultvalue = "";
+  export let value = "";
+
+  function handleChooseOption(v) {
+    value = v;
+    if (!(confirm && confirm !== "null")) {
+      confirmDialog();
+    }
+  }
+
+  $: options = JSON.parse(jsonoptions);
 
   $: regexForValidation = new RegExp(regex.toString().slice(1, -1));
   // $: console.log({regex,regexForValidation,value, test: regexForValidation.test(value)})
-  export let invalidtext = "Zadejte platnou hodnotu";
+  export let invalidtext = t("Zadejte platnou hodnotu");
 
   function validate(value) {
     return regexForValidation.test(value);
@@ -153,24 +176,55 @@
                 {invalidtext}
               </small>
             {/if}
-            <input {maxlength} type="text" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {#if inputtype === "time"}
+              <input {maxlength} type="time" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else if inputtype === "date"}
+              <input {maxlength} type="date" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else if inputtype === "datetime"}
+              <input {maxlength} type="datetime" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else if inputtype === "password"}
+              <input {maxlength} type="password" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else if inputtype === "tel"}
+              <input {maxlength} type="tel" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else if inputtype === "url"}
+              <input {maxlength} type="url" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {:else}
+              <input {maxlength} type="text" class:invalid {placeholder} class="tangle-msg-box-dialog-textbox" bind:value bind:this={inputField} />
+            {/if}
           </p>
         {/if}
       {/if}
+      {#if type === "choose" && content !== ""}
+        <div style="height:12px;" />
+      {/if}
+      {#if type === "choose"}
+        <div class="choose-box">
+          {#each options as o (o.value)}
+            <button class="tangle-msg-box-dialog-option option" class:selected={o.value === value} on:click={() => handleChooseOption(o.value)}><span class="icon" style={"background: " + o.icon} />{o.label}</button>
+          {/each}
+        </div>
+      {/if}
     </div>
     <div class="tangle-msg-box-dialog-footer">
-      {#if type !== "alert" && !secondary}
-        <button class="tangle-msg-box-dialog-button cancel" bind:this={cancelBtn} on:click={exitDialog}>{cancel}</button>
+      {#if type !== "alert" && !secondary && cancel !== "null"}
+        <button class="tangle-msg-box-dialog-button cancel" bind:this={cancelBtn} on:click={exitDialog}>{cancel || t("Zrušit")}</button>
       {/if}
-      {#if secondary}
+      {#if secondary && secondary !== "null"}
         <button class="tangle-msg-box-dialog-button secondary" on:click={confirmDialogSecondary}>{secondary}</button>
       {/if}
-      <button class="tangle-msg-box-dialog-button" bind:this={confirmBtn} on:click={confirmDialog}>{confirm}</button>
+      {#if confirm !== "null"}
+        <button class="tangle-msg-box-dialog-button" bind:this={confirmBtn} on:click={confirmDialog}>{confirm || t("Potvrdit")}</button>
+      {/if}
     </div>
   </div>
+  {@html "<style>" + window.___tangleMsgBoxStyles + "</style>"}
 </div>
 
 <style>
+  :root {
+    --body-bg: #191919;
+    --text: #9b9b9b;
+  }
   .input {
   }
   * {
@@ -189,6 +243,7 @@
     top: 0;
     left: 0;
     z-index: 100000;
+    /* user-select: none; */
   }
 
   .tangle-msg-box-dialog {
@@ -199,11 +254,17 @@
     box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.5);
     border-radius: 25px;
     animation: msg-box-dialog-show 265ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    background: #191919;
+  }
+
+  .tangle-msg-box-dialog .tangle-msg-box-dialog-header,
+  .tangle-msg-box-dialog .tangle-msg-box-dialog-body,
+  .tangle-msg-box-dialog .tangle-msg-box-dialog-footer {
+    background-color: inherit;
   }
 
   .tangle-msg-box-dialog-header {
     color: inherit;
-    background-color: #191919;
     text-align: center;
     font-weight: 500;
     font-size: 16px;
@@ -214,7 +275,6 @@
 
   .tangle-msg-box-dialog-body {
     color: inherit;
-    background-color: #191919;
     padding-bottom: 24px;
     padding-top: 16px;
   }
@@ -222,7 +282,7 @@
   .tangle-msg-box-dialog-body > p {
     text-align: center;
     font-size: 12px;
-    color: #9b9b9b;
+    color: var(--text);
     line-height: 18px;
     font-weight: 300;
     padding: 0;
@@ -234,7 +294,7 @@
 
   .tangle-msg-box-dialog-footer {
     color: inherit;
-    background-color: #191919;
+
     display: flex;
     flex-direction: column-reverse;
     justify-content: stretch;
@@ -283,10 +343,12 @@
     font-weight: 500;
     color: white;
     margin-bottom: -10px !important;
+    outline: none !important;
   }
 
   .tangle-msg-box-dialog-textbox:focus {
-    box-shadow: 0 0 0.1em 0.2em rgba(13, 134, 255, 0.5);
+    /* box-shadow: 0 0 0.1em 0.2em rgba(13, 134, 255, 0.5); */
+    box-shadow: none;
   }
 
   .tangle-msg-box-modal {
@@ -326,6 +388,39 @@
   .tangle-msg-box-dialog-button.cancel {
     margin-bottom: -10px;
   }
+  .tangle-msg-box-dialog-option {
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    background-color: rgba(0, 0, 0, 0);
+    width: 100%;
+    max-width: 100%;
+    margin-top: 8px;
+    padding: 16px;
+    padding-top: 14.5px;
+    padding-bottom: 14.5px;
+    border: none;
+    outline: 0;
+    border-radius: 0px;
+    transition: background-color 225ms ease-out;
+
+    /* margin-bottom: -10px; */
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #777777 !important;
+    cursor: pointer;
+    display: flex;
+    background: #303030;
+    border: 1px solid transparent;
+    align-items: center;
+    color: white !important;
+  }
+  .tangle-msg-box-dialog-option.selected {
+    background: #5a5a5a !important;
+    border: 1px solid white;
+  }
+
   #exitElm {
     height: 0;
     width: 0;
@@ -373,5 +468,21 @@
   .secondary {
     background: #303030 !important;
     margin-top: 15px;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 16px;
+    display: block;
+    /* background-size: 100% 100%; */
+    background-repeat: no-repeat;
+    background-size: cover !important;
+    /* background-size: cover; */
+  }
+  .choose-box {
+    margin-left: 22px;
+    margin-right: 22px;
+    margin-bottom: -10px;
   }
 </style>

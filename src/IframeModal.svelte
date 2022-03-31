@@ -3,8 +3,11 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import { get_current_component, onMount } from "svelte/internal";
-  export let value = "";
+  import { i18webcomponents } from "./i18n";
+  import { code } from "./out";
+  const { t } = i18webcomponents;
 
+  export let value = "";
   export let type = "prompt";
   export let title = "";
   export let content = "";
@@ -25,6 +28,9 @@
   export let regex = /.*/;
 
   export let invalidtext = "Zadejte platnou hodnotu";
+
+  export let jsonoptions = "[]";
+  export let defaultvalue = "";
 
   const component = get_current_component();
   const svelteDispatch = createEventDispatcher();
@@ -59,7 +65,8 @@
   let iframe;
 
   onMount(async () => {
-    script = await fetch("dialog-component.js").then(v => v.text());
+    // script = await fetch("dialog-component.js").then(v => v.text());
+    script = code;
 
     modalElement = document.createElement("tangle-modal");
     modalElement.setAttribute("value", value);
@@ -76,10 +83,11 @@
     modalElement.setAttribute("cancel", cancel);
     modalElement.setAttribute("regex", regex);
     modalElement.setAttribute("invalidtext", invalidtext);
+    modalElement.setAttribute("jsonoptions", jsonoptions);
+    modalElement.setAttribute("defaultvalue", defaultvalue);
     modalElement = modalElement;
-    console.log(modalElement);
 
-    t = `
+    tag = `
   <!DOCTYPE html>
 <html lang="cs">
 <head>
@@ -97,14 +105,13 @@
 `;
 
     iframe.focus();
-    
   });
 
-  let t = "";
+  let tag = "";
   let script = ``;
 </script>
 
-<iframe bind:this={iframe} title="Lumexum modal" srcdoc={t} />
+<iframe bind:this={iframe} title="Lumexum modal" srcdoc={tag} />
 
 <!-- <tangle-modal></tangle-modal> -->
 <style>

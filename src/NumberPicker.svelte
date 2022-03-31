@@ -52,6 +52,7 @@
       <path d="M13.0483 10.5L0.0551758 20.4593L0.0551758 0.540708L13.0483 10.5Z" fill="white" />
     </svg>
   </div>
+  {@html "<style>" + window.___tangleMsgBoxStyles + "</style>"}
 </main>
 
 <style>
@@ -74,6 +75,8 @@
     font-size: 16px;
     font-weight: 500;
     color: white;
+    outline: none !important;
+    box-shadow:none !important;
   }
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
