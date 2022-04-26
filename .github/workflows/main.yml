@@ -41,5 +41,5 @@ jobs:
           server: 270239.w39.wedos.net
           username: w270239_lukas
           password: ${{ secrets.password }}
-          local-dir: ./build/
+          local-dir: ./public/
           server-dir: /subdom/app/${{ env.branch }}/
