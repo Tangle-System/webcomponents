@@ -33,6 +33,7 @@
   export let defaultvalue = "";
 
   const component = get_current_component();
+
   const svelteDispatch = createEventDispatcher();
   const dispatch = (name, detail) => {
     svelteDispatch(name, detail);
@@ -50,6 +51,7 @@
   // })
 
   window.onmessage = function (e) {
+    console.log({ component });
     let data = {};
     try {
       data = JSON.parse(e.data);

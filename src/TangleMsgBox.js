@@ -9,7 +9,7 @@ i18webcomponents.on("languageChanged", lang => {
  * @type {string}
  */
 window.___tangleMsgBoxStyles;
-export class TangleMsgBox {
+class TangleMsgBoxCreator {
   /**
    * @param {string} stringWithStyles
    */
@@ -147,7 +147,84 @@ export class TangleMsgBox {
         resolve(e.detail);
         dialogBox.removeEventListener("submit", submit);
       });
+    })
+  }
+}
+
+
+class Query {
+  constructor(type, params) {
+    this.type = type;
+    this.params = params;
+
+    this.promise = new Promise((resolve, reject) => {
+      this.reject = reject;
+      this.resolve = resolve;
     });
+  }
+}
+
+let queue = [];
+window.queue = queue
+window.___tangleLocked = false;
+export class TangleMsgBox {
+  static setStyles(stringWithStyles) {
+
+  }
+
+  static async next() {
+    const item = queue && queue[0];
+
+    // console.log({ item })
+    if (item && !___tangleLocked) {
+      const item = queue.shift();
+      ___tangleLocked = true
+      TangleMsgBoxCreator[item.type](...item.params).then(data => {
+        // console.log("box resolved", { data })
+        item.resolve(data);
+        ___tangleLocked = false
+        TangleMsgBox.next()
+      });
+    }
+  }
+
+
+  static async create(title, content, type, { confirm, cancel }) {
+    const returnPromise = new Query("create", [title, content, type, { confirm, cancel }]);
+    queue.push(returnPromise);
+    TangleMsgBox.next();
+    return returnPromise.promise;
+  }
+  static async alert(content, title = "", { confirm } = { confirm: "Ok" }) {
+    const returnPromise = new Query("alert", [content, title, { confirm }]);
+    queue.push(returnPromise);
+    TangleMsgBox.next();
+    return returnPromise.promise;
+  }
+  static async confirm(content, title = "", { confirm, cancel, secondary } = {}) {
+    const returnPromise = new Query("confirm", [content, title, { confirm, cancel, secondary }]);
+    queue.push(returnPromise);
+    TangleMsgBox.next();
+    return returnPromise.promise;
+  }
+  static async prompt(
+    content,
+    value = "",
+    title = "",
+    inputtype,
+    { placeholder, min, max, regex, invalidText, maxlength } = { placeholder: undefined, min: undefined, max: undefined, regex: undefined, maxlength: undefined },
+    { confirm, cancel } = {},
+  ) {
+    const returnPromise = new Query("prompt", [content, value, title, inputtype, { placeholder, min, max, regex, invalidText, maxlength }, { confirm, cancel }]);
+    queue.push(returnPromise);
+    TangleMsgBox.next();
+    return returnPromise.promise;
+  }
+  static async choose(content, { defaultValue, options }, title = "", { confirm, cancel } = {}) {
+    const returnPromise = new Query("choose", [content, { defaultValue, options }, title, { confirm, cancel }]);
+    queue.push(returnPromise);
+    TangleMsgBox.next();
+    return returnPromise.promise;
   }
 }
 
