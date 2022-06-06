@@ -20,6 +20,15 @@ const en = {
   },
 };
 
+const sk = {
+  translation: {
+    "Zadejte platnou hodnotu": "Zadajte platnú hodnotu",
+    Potvrdit: "Potvrdiť",
+    Zrušit: "Zrušiť",
+    Zpět: "Späť",
+  },
+};
+
 i18.init(
   {
     fallbackLng: "en",
@@ -29,6 +38,7 @@ i18.init(
       "cs-CZ": cs,
       en: en,
       "en-US": en,
+      sk: sk,
     },
     keySeparator: "__",
     contextSeparator: "__",
