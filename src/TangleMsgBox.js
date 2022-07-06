@@ -151,7 +151,7 @@ export class TangleMsgBox {
 }
 
 
-export function initGlobals() {
+if (typeof window !== "undefined") {
   window.TangleMsgBox = TangleMsgBox;
 
   window.prompt = TangleMsgBox.prompt;

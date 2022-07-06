@@ -1,3 +1,37 @@
+let SvelteElement$1 = class {
+  constructor() {
+
+  }
+  attachShadow() {
+
+  }
+  connectedCallback() {
+
+  }
+  attributeChangedCallback(attr, _oldValue, newValue) {
+  }
+  disconnectedCallback() {
+  }
+  $destroy() {
+  }
+  $on(type, callback) {
+
+  }
+  $set($$props) {
+  }
+};
+
+globalThis.SvelteElement = SvelteElement$1;
+
+if(typeof customElements === "undefined") {
+  globalThis.customElements = new function () {
+    this.define = function () {
+  
+    };
+    return this;
+  };
+}
+
 function noop$1() { }
 function run(fn) {
     return fn();
@@ -5377,7 +5411,7 @@ class TangleMsgBox {
 }
 
 
-function initGlobals() {
+if (typeof window !== "undefined") {
   window.TangleMsgBox = TangleMsgBox;
 
   window.prompt = TangleMsgBox.prompt;
@@ -5392,8 +5426,10 @@ function initGlobals() {
 
 // import {tangleMsgBoxLegacy as TangleMsgBox} from '....'
 
-new DialogModal({});
-new NumberPicker({});
+if (typeof window !== "undefined") {
+  new DialogModal({});
+  new NumberPicker({});
+}
 
-export { TangleMsgBox, TangleMsgBox as default, i18 as i18webcomponents, initGlobals };
+export { TangleMsgBox, TangleMsgBox as default, i18 as i18webcomponents };
 //# sourceMappingURL=dialog-component.js.map
