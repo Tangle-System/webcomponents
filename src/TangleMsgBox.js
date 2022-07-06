@@ -8,7 +8,6 @@ i18webcomponents.on("languageChanged", lang => {
 /**
  * @type {string}
  */
-window.___tangleMsgBoxStyles;
 export class TangleMsgBox {
   /**
    * @param {string} stringWithStyles
@@ -151,11 +150,15 @@ export class TangleMsgBox {
   }
 }
 
-window.TangleMsgBox = TangleMsgBox;
 
-window.prompt = TangleMsgBox.prompt;
-window.confirm = TangleMsgBox.confirm;
-window.alert = TangleMsgBox.alert;
+export function initGlobals() {
+  window.TangleMsgBox = TangleMsgBox;
+
+  window.prompt = TangleMsgBox.prompt;
+  window.confirm = TangleMsgBox.confirm;
+  window.alert = TangleMsgBox.alert;
+}
+
 
 // use without initializing class
 // const tangleMsgBoxLegacy = new TangleMsgBox();
