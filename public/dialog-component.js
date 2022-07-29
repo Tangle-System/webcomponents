@@ -5276,23 +5276,6 @@ class TangleMsgBox {
     window.___tangleMsgBoxStyles = stringWithStyles;
   }
 
-  static async create(title, content, type, { confirm, cancel }) {
-    const dialogBox = document.createElement("tangle-modal");
-    // dialogBox.setAttribute("styles", styles);
-    dialogBox.setAttribute("title", title);
-    dialogBox.setAttribute("content", content);
-    dialogBox.setAttribute("type", type);
-    confirm && dialogBox.setAttribute("confirm", confirm);
-    cancel && dialogBox.setAttribute("cancel", cancel);
-    document.body.appendChild(dialogBox);
-
-    return new Promise((resolve, reject) => {
-      dialogBox.addEventListener("submit", function submit(e) {
-        resolve(e.detail);
-        dialogBox.removeEventListener("submit", submit);
-      });
-    });
-  }
 
   /**
    * @param {string} content
