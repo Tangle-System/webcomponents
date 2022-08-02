@@ -1,3 +1,4 @@
+/* eslint-disable */
 let SvelteElement$1 = class {
   constructor() {
 
@@ -23,10 +24,10 @@ let SvelteElement$1 = class {
 
 globalThis.SvelteElement = SvelteElement$1;
 
-if(typeof customElements === "undefined") {
+if (typeof customElements === "undefined") {
   globalThis.customElements = new function () {
     this.define = function () {
-  
+
     };
     return this;
   };
@@ -34,156 +35,156 @@ if(typeof customElements === "undefined") {
 
 function noop$1() { }
 function run(fn) {
-    return fn();
+  return fn();
 }
 function blank_object() {
-    return Object.create(null);
+  return Object.create(null);
 }
 function run_all(fns) {
-    fns.forEach(run);
+  fns.forEach(run);
 }
 function is_function(thing) {
-    return typeof thing === 'function';
+  return typeof thing === 'function';
 }
 function not_equal(a, b) {
-    return a != a ? b == b : a !== b;
+  return a != a ? b == b : a !== b;
 }
 function is_empty(obj) {
-    return Object.keys(obj).length === 0;
+  return Object.keys(obj).length === 0;
 }
 function append(target, node) {
-    target.appendChild(node);
+  target.appendChild(node);
 }
 function insert(target, node, anchor) {
-    target.insertBefore(node, anchor || null);
+  target.insertBefore(node, anchor || null);
 }
 function detach(node) {
-    node.parentNode.removeChild(node);
+  node.parentNode.removeChild(node);
 }
 function element(name) {
-    return document.createElement(name);
+  return document.createElement(name);
 }
 function svg_element(name) {
-    return document.createElementNS('http://www.w3.org/2000/svg', name);
+  return document.createElementNS('http://www.w3.org/2000/svg', name);
 }
 function text(data) {
-    return document.createTextNode(data);
+  return document.createTextNode(data);
 }
 function space() {
-    return text(' ');
+  return text(' ');
 }
 function empty() {
-    return text('');
+  return text('');
 }
 function listen(node, event, handler, options) {
-    node.addEventListener(event, handler, options);
-    return () => node.removeEventListener(event, handler, options);
+  node.addEventListener(event, handler, options);
+  return () => node.removeEventListener(event, handler, options);
 }
 function attr(node, attribute, value) {
-    if (value == null)
-        node.removeAttribute(attribute);
-    else if (node.getAttribute(attribute) !== value)
-        node.setAttribute(attribute, value);
+  if (value == null)
+    node.removeAttribute(attribute);
+  else if (node.getAttribute(attribute) !== value)
+    node.setAttribute(attribute, value);
 }
 function set_custom_element_data(node, prop, value) {
-    if (prop in node) {
-        node[prop] = typeof node[prop] === 'boolean' && value === '' ? true : value;
-    }
-    else {
-        attr(node, prop, value);
-    }
+  if (prop in node) {
+    node[prop] = typeof node[prop] === 'boolean' && value === '' ? true : value;
+  }
+  else {
+    attr(node, prop, value);
+  }
 }
 function to_number(value) {
-    return value === '' ? null : +value;
+  return value === '' ? null : +value;
 }
 function children(element) {
-    return Array.from(element.childNodes);
+  return Array.from(element.childNodes);
 }
 function set_data(text, data) {
-    data = '' + data;
-    if (text.wholeText !== data)
-        text.data = data;
+  data = '' + data;
+  if (text.wholeText !== data)
+    text.data = data;
 }
 function set_input_value(input, value) {
-    input.value = value == null ? '' : value;
+  input.value = value == null ? '' : value;
 }
 function set_style(node, key, value, important) {
-    node.style.setProperty(key, value, important ? 'important' : '');
+  node.style.setProperty(key, value, important ? 'important' : '');
 }
 function toggle_class(element, name, toggle) {
-    element.classList[toggle ? 'add' : 'remove'](name);
+  element.classList[toggle ? 'add' : 'remove'](name);
 }
 function custom_event(type, detail, bubbles = false) {
-    const e = document.createEvent('CustomEvent');
-    e.initCustomEvent(type, bubbles, false, detail);
-    return e;
+  const e = document.createEvent('CustomEvent');
+  e.initCustomEvent(type, bubbles, false, detail);
+  return e;
 }
 class HtmlTag {
-    constructor() {
-        this.e = this.n = null;
+  constructor() {
+    this.e = this.n = null;
+  }
+  c(html) {
+    this.h(html);
+  }
+  m(html, target, anchor = null) {
+    if (!this.e) {
+      this.e = element(target.nodeName);
+      this.t = target;
+      this.c(html);
     }
-    c(html) {
-        this.h(html);
+    this.i(anchor);
+  }
+  h(html) {
+    this.e.innerHTML = html;
+    this.n = Array.from(this.e.childNodes);
+  }
+  i(anchor) {
+    for (let i = 0; i < this.n.length; i += 1) {
+      insert(this.t, this.n[i], anchor);
     }
-    m(html, target, anchor = null) {
-        if (!this.e) {
-            this.e = element(target.nodeName);
-            this.t = target;
-            this.c(html);
-        }
-        this.i(anchor);
-    }
-    h(html) {
-        this.e.innerHTML = html;
-        this.n = Array.from(this.e.childNodes);
-    }
-    i(anchor) {
-        for (let i = 0; i < this.n.length; i += 1) {
-            insert(this.t, this.n[i], anchor);
-        }
-    }
-    p(html) {
-        this.d();
-        this.h(html);
-        this.i(this.a);
-    }
-    d() {
-        this.n.forEach(detach);
-    }
+  }
+  p(html) {
+    this.d();
+    this.h(html);
+    this.i(this.a);
+  }
+  d() {
+    this.n.forEach(detach);
+  }
 }
 function attribute_to_object(attributes) {
-    const result = {};
-    for (const attribute of attributes) {
-        result[attribute.name] = attribute.value;
-    }
-    return result;
+  const result = {};
+  for (const attribute of attributes) {
+    result[attribute.name] = attribute.value;
+  }
+  return result;
 }
 
 let current_component;
 function set_current_component(component) {
-    current_component = component;
+  current_component = component;
 }
 function get_current_component() {
-    if (!current_component)
-        throw new Error('Function called outside component initialization');
-    return current_component;
+  if (!current_component)
+    throw new Error('Function called outside component initialization');
+  return current_component;
 }
 function onMount(fn) {
-    get_current_component().$$.on_mount.push(fn);
+  get_current_component().$$.on_mount.push(fn);
 }
 function createEventDispatcher() {
-    const component = get_current_component();
-    return (type, detail) => {
-        const callbacks = component.$$.callbacks[type];
-        if (callbacks) {
-            // TODO are there situations where events could be dispatched
-            // in a server (non-DOM) environment?
-            const event = custom_event(type, detail);
-            callbacks.slice().forEach(fn => {
-                fn.call(component, event);
-            });
-        }
-    };
+  const component = get_current_component();
+  return (type, detail) => {
+    const callbacks = component.$$.callbacks[type];
+    if (callbacks) {
+      // TODO are there situations where events could be dispatched
+      // in a server (non-DOM) environment?
+      const event = custom_event(type, detail);
+      callbacks.slice().forEach(fn => {
+        fn.call(component, event);
+      });
+    }
+  };
 }
 
 const dirty_components = [];
@@ -193,13 +194,13 @@ const flush_callbacks = [];
 const resolved_promise = Promise.resolve();
 let update_scheduled = false;
 function schedule_update() {
-    if (!update_scheduled) {
-        update_scheduled = true;
-        resolved_promise.then(flush);
-    }
+  if (!update_scheduled) {
+    update_scheduled = true;
+    resolved_promise.then(flush);
+  }
 }
 function add_render_callback(fn) {
-    render_callbacks.push(fn);
+  render_callbacks.push(fn);
 }
 // flush() calls callbacks in this order:
 // 1. All beforeUpdate callbacks, in order: parents before children
@@ -222,282 +223,282 @@ function add_render_callback(fn) {
 const seen_callbacks = new Set();
 let flushidx = 0; // Do *not* move this inside the flush() function
 function flush() {
-    const saved_component = current_component;
-    do {
-        // first, call beforeUpdate functions
-        // and update components
-        while (flushidx < dirty_components.length) {
-            const component = dirty_components[flushidx];
-            flushidx++;
-            set_current_component(component);
-            update(component.$$);
-        }
-        set_current_component(null);
-        dirty_components.length = 0;
-        flushidx = 0;
-        while (binding_callbacks.length)
-            binding_callbacks.pop()();
-        // then, once components are updated, call
-        // afterUpdate functions. This may cause
-        // subsequent updates...
-        for (let i = 0; i < render_callbacks.length; i += 1) {
-            const callback = render_callbacks[i];
-            if (!seen_callbacks.has(callback)) {
-                // ...so guard against infinite loops
-                seen_callbacks.add(callback);
-                callback();
-            }
-        }
-        render_callbacks.length = 0;
-    } while (dirty_components.length);
-    while (flush_callbacks.length) {
-        flush_callbacks.pop()();
+  const saved_component = current_component;
+  do {
+    // first, call beforeUpdate functions
+    // and update components
+    while (flushidx < dirty_components.length) {
+      const component = dirty_components[flushidx];
+      flushidx++;
+      set_current_component(component);
+      update(component.$$);
     }
-    update_scheduled = false;
-    seen_callbacks.clear();
-    set_current_component(saved_component);
+    set_current_component(null);
+    dirty_components.length = 0;
+    flushidx = 0;
+    while (binding_callbacks.length)
+      binding_callbacks.pop()();
+    // then, once components are updated, call
+    // afterUpdate functions. This may cause
+    // subsequent updates...
+    for (let i = 0; i < render_callbacks.length; i += 1) {
+      const callback = render_callbacks[i];
+      if (!seen_callbacks.has(callback)) {
+        // ...so guard against infinite loops
+        seen_callbacks.add(callback);
+        callback();
+      }
+    }
+    render_callbacks.length = 0;
+  } while (dirty_components.length);
+  while (flush_callbacks.length) {
+    flush_callbacks.pop()();
+  }
+  update_scheduled = false;
+  seen_callbacks.clear();
+  set_current_component(saved_component);
 }
 function update($$) {
-    if ($$.fragment !== null) {
-        $$.update();
-        run_all($$.before_update);
-        const dirty = $$.dirty;
-        $$.dirty = [-1];
-        $$.fragment && $$.fragment.p($$.ctx, dirty);
-        $$.after_update.forEach(add_render_callback);
-    }
+  if ($$.fragment !== null) {
+    $$.update();
+    run_all($$.before_update);
+    const dirty = $$.dirty;
+    $$.dirty = [-1];
+    $$.fragment && $$.fragment.p($$.ctx, dirty);
+    $$.after_update.forEach(add_render_callback);
+  }
 }
 const outroing = new Set();
 function transition_in(block, local) {
-    if (block && block.i) {
-        outroing.delete(block);
-        block.i(local);
-    }
+  if (block && block.i) {
+    outroing.delete(block);
+    block.i(local);
+  }
 }
 
 function destroy_block(block, lookup) {
-    block.d(1);
-    lookup.delete(block.key);
+  block.d(1);
+  lookup.delete(block.key);
 }
 function update_keyed_each(old_blocks, dirty, get_key, dynamic, ctx, list, lookup, node, destroy, create_each_block, next, get_context) {
-    let o = old_blocks.length;
-    let n = list.length;
-    let i = o;
-    const old_indexes = {};
-    while (i--)
-        old_indexes[old_blocks[i].key] = i;
-    const new_blocks = [];
-    const new_lookup = new Map();
-    const deltas = new Map();
-    i = n;
-    while (i--) {
-        const child_ctx = get_context(ctx, list, i);
-        const key = get_key(child_ctx);
-        let block = lookup.get(key);
-        if (!block) {
-            block = create_each_block(key, child_ctx);
-            block.c();
-        }
-        else if (dynamic) {
-            block.p(child_ctx, dirty);
-        }
-        new_lookup.set(key, new_blocks[i] = block);
-        if (key in old_indexes)
-            deltas.set(key, Math.abs(i - old_indexes[key]));
+  let o = old_blocks.length;
+  let n = list.length;
+  let i = o;
+  const old_indexes = {};
+  while (i--)
+    old_indexes[old_blocks[i].key] = i;
+  const new_blocks = [];
+  const new_lookup = new Map();
+  const deltas = new Map();
+  i = n;
+  while (i--) {
+    const child_ctx = get_context(ctx, list, i);
+    const key = get_key(child_ctx);
+    let block = lookup.get(key);
+    if (!block) {
+      block = create_each_block(key, child_ctx);
+      block.c();
     }
-    const will_move = new Set();
-    const did_move = new Set();
-    function insert(block) {
-        transition_in(block, 1);
-        block.m(node, next);
-        lookup.set(block.key, block);
-        next = block.first;
-        n--;
+    else if (dynamic) {
+      block.p(child_ctx, dirty);
     }
-    while (o && n) {
-        const new_block = new_blocks[n - 1];
-        const old_block = old_blocks[o - 1];
-        const new_key = new_block.key;
-        const old_key = old_block.key;
-        if (new_block === old_block) {
-            // do nothing
-            next = new_block.first;
-            o--;
-            n--;
-        }
-        else if (!new_lookup.has(old_key)) {
-            // remove old block
-            destroy(old_block, lookup);
-            o--;
-        }
-        else if (!lookup.has(new_key) || will_move.has(new_key)) {
-            insert(new_block);
-        }
-        else if (did_move.has(old_key)) {
-            o--;
-        }
-        else if (deltas.get(new_key) > deltas.get(old_key)) {
-            did_move.add(new_key);
-            insert(new_block);
-        }
-        else {
-            will_move.add(old_key);
-            o--;
-        }
+    new_lookup.set(key, new_blocks[i] = block);
+    if (key in old_indexes)
+      deltas.set(key, Math.abs(i - old_indexes[key]));
+  }
+  const will_move = new Set();
+  const did_move = new Set();
+  function insert(block) {
+    transition_in(block, 1);
+    block.m(node, next);
+    lookup.set(block.key, block);
+    next = block.first;
+    n--;
+  }
+  while (o && n) {
+    const new_block = new_blocks[n - 1];
+    const old_block = old_blocks[o - 1];
+    const new_key = new_block.key;
+    const old_key = old_block.key;
+    if (new_block === old_block) {
+      // do nothing
+      next = new_block.first;
+      o--;
+      n--;
     }
-    while (o--) {
-        const old_block = old_blocks[o];
-        if (!new_lookup.has(old_block.key))
-            destroy(old_block, lookup);
+    else if (!new_lookup.has(old_key)) {
+      // remove old block
+      destroy(old_block, lookup);
+      o--;
     }
-    while (n)
-        insert(new_blocks[n - 1]);
-    return new_blocks;
+    else if (!lookup.has(new_key) || will_move.has(new_key)) {
+      insert(new_block);
+    }
+    else if (did_move.has(old_key)) {
+      o--;
+    }
+    else if (deltas.get(new_key) > deltas.get(old_key)) {
+      did_move.add(new_key);
+      insert(new_block);
+    }
+    else {
+      will_move.add(old_key);
+      o--;
+    }
+  }
+  while (o--) {
+    const old_block = old_blocks[o];
+    if (!new_lookup.has(old_block.key))
+      destroy(old_block, lookup);
+  }
+  while (n)
+    insert(new_blocks[n - 1]);
+  return new_blocks;
 }
 function mount_component(component, target, anchor, customElement) {
-    const { fragment, on_mount, on_destroy, after_update } = component.$$;
-    fragment && fragment.m(target, anchor);
-    if (!customElement) {
-        // onMount happens before the initial afterUpdate
-        add_render_callback(() => {
-            const new_on_destroy = on_mount.map(run).filter(is_function);
-            if (on_destroy) {
-                on_destroy.push(...new_on_destroy);
-            }
-            else {
-                // Edge case - component was destroyed immediately,
-                // most likely as a result of a binding initialising
-                run_all(new_on_destroy);
-            }
-            component.$$.on_mount = [];
-        });
-    }
-    after_update.forEach(add_render_callback);
+  const { fragment, on_mount, on_destroy, after_update } = component.$$;
+  fragment && fragment.m(target, anchor);
+  if (!customElement) {
+    // onMount happens before the initial afterUpdate
+    add_render_callback(() => {
+      const new_on_destroy = on_mount.map(run).filter(is_function);
+      if (on_destroy) {
+        on_destroy.push(...new_on_destroy);
+      }
+      else {
+        // Edge case - component was destroyed immediately,
+        // most likely as a result of a binding initialising
+        run_all(new_on_destroy);
+      }
+      component.$$.on_mount = [];
+    });
+  }
+  after_update.forEach(add_render_callback);
 }
 function destroy_component(component, detaching) {
-    const $$ = component.$$;
-    if ($$.fragment !== null) {
-        run_all($$.on_destroy);
-        $$.fragment && $$.fragment.d(detaching);
-        // TODO null out other refs, including component.$$ (but need to
-        // preserve final state?)
-        $$.on_destroy = $$.fragment = null;
-        $$.ctx = [];
-    }
+  const $$ = component.$$;
+  if ($$.fragment !== null) {
+    run_all($$.on_destroy);
+    $$.fragment && $$.fragment.d(detaching);
+    // TODO null out other refs, including component.$$ (but need to
+    // preserve final state?)
+    $$.on_destroy = $$.fragment = null;
+    $$.ctx = [];
+  }
 }
 function make_dirty(component, i) {
-    if (component.$$.dirty[0] === -1) {
-        dirty_components.push(component);
-        schedule_update();
-        component.$$.dirty.fill(0);
-    }
-    component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
+  if (component.$$.dirty[0] === -1) {
+    dirty_components.push(component);
+    schedule_update();
+    component.$$.dirty.fill(0);
+  }
+  component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
 }
 function init(component, options, instance, create_fragment, not_equal, props, append_styles, dirty = [-1]) {
-    const parent_component = current_component;
-    set_current_component(component);
-    const $$ = component.$$ = {
-        fragment: null,
-        ctx: null,
-        // state
-        props,
-        update: noop$1,
-        not_equal,
-        bound: blank_object(),
-        // lifecycle
-        on_mount: [],
-        on_destroy: [],
-        on_disconnect: [],
-        before_update: [],
-        after_update: [],
-        context: new Map(options.context || (parent_component ? parent_component.$$.context : [])),
-        // everything else
-        callbacks: blank_object(),
-        dirty,
-        skip_bound: false,
-        root: options.target || parent_component.$$.root
-    };
-    append_styles && append_styles($$.root);
-    let ready = false;
-    $$.ctx = instance
-        ? instance(component, options.props || {}, (i, ret, ...rest) => {
-            const value = rest.length ? rest[0] : ret;
-            if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
-                if (!$$.skip_bound && $$.bound[i])
-                    $$.bound[i](value);
-                if (ready)
-                    make_dirty(component, i);
-            }
-            return ret;
-        })
-        : [];
-    $$.update();
-    ready = true;
-    run_all($$.before_update);
-    // `false` as a special case of no DOM component
-    $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
-    if (options.target) {
-        if (options.hydrate) {
-            const nodes = children(options.target);
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            $$.fragment && $$.fragment.l(nodes);
-            nodes.forEach(detach);
-        }
-        else {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            $$.fragment && $$.fragment.c();
-        }
-        if (options.intro)
-            transition_in(component.$$.fragment);
-        mount_component(component, options.target, options.anchor, options.customElement);
-        flush();
+  const parent_component = current_component;
+  set_current_component(component);
+  const $$ = component.$$ = {
+    fragment: null,
+    ctx: null,
+    // state
+    props,
+    update: noop$1,
+    not_equal,
+    bound: blank_object(),
+    // lifecycle
+    on_mount: [],
+    on_destroy: [],
+    on_disconnect: [],
+    before_update: [],
+    after_update: [],
+    context: new Map(options.context || (parent_component ? parent_component.$$.context : [])),
+    // everything else
+    callbacks: blank_object(),
+    dirty,
+    skip_bound: false,
+    root: options.target || parent_component.$$.root
+  };
+  append_styles && append_styles($$.root);
+  let ready = false;
+  $$.ctx = instance
+    ? instance(component, options.props || {}, (i, ret, ...rest) => {
+      const value = rest.length ? rest[0] : ret;
+      if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
+        if (!$$.skip_bound && $$.bound[i])
+          $$.bound[i](value);
+        if (ready)
+          make_dirty(component, i);
+      }
+      return ret;
+    })
+    : [];
+  $$.update();
+  ready = true;
+  run_all($$.before_update);
+  // `false` as a special case of no DOM component
+  $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
+  if (options.target) {
+    if (options.hydrate) {
+      const nodes = children(options.target);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      $$.fragment && $$.fragment.l(nodes);
+      nodes.forEach(detach);
     }
-    set_current_component(parent_component);
+    else {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      $$.fragment && $$.fragment.c();
+    }
+    if (options.intro)
+      transition_in(component.$$.fragment);
+    mount_component(component, options.target, options.anchor, options.customElement);
+    flush();
+  }
+  set_current_component(parent_component);
 }
- SvelteElement;
+SvelteElement;
 if (typeof HTMLElement === 'function') {
-    SvelteElement = class extends HTMLElement {
-        constructor() {
-            super();
-            this.attachShadow({ mode: 'open' });
-        }
-        connectedCallback() {
-            const { on_mount } = this.$$;
-            this.$$.on_disconnect = on_mount.map(run).filter(is_function);
-            // @ts-ignore todo: improve typings
-            for (const key in this.$$.slotted) {
-                // @ts-ignore todo: improve typings
-                this.appendChild(this.$$.slotted[key]);
-            }
-        }
-        attributeChangedCallback(attr, _oldValue, newValue) {
-            this[attr] = newValue;
-        }
-        disconnectedCallback() {
-            run_all(this.$$.on_disconnect);
-        }
-        $destroy() {
-            destroy_component(this, 1);
-            this.$destroy = noop$1;
-        }
-        $on(type, callback) {
-            // TODO should this delegate to addEventListener?
-            const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
-            callbacks.push(callback);
-            return () => {
-                const index = callbacks.indexOf(callback);
-                if (index !== -1)
-                    callbacks.splice(index, 1);
-            };
-        }
-        $set($$props) {
-            if (this.$$set && !is_empty($$props)) {
-                this.$$.skip_bound = true;
-                this.$$set($$props);
-                this.$$.skip_bound = false;
-            }
-        }
-    };
+  SvelteElement = class extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+    }
+    connectedCallback() {
+      const { on_mount } = this.$$;
+      this.$$.on_disconnect = on_mount.map(run).filter(is_function);
+      // @ts-ignore todo: improve typings
+      for (const key in this.$$.slotted) {
+        // @ts-ignore todo: improve typings
+        this.appendChild(this.$$.slotted[key]);
+      }
+    }
+    attributeChangedCallback(attr, _oldValue, newValue) {
+      this[attr] = newValue;
+    }
+    disconnectedCallback() {
+      run_all(this.$$.on_disconnect);
+    }
+    $destroy() {
+      destroy_component(this, 1);
+      this.$destroy = noop$1;
+    }
+    $on(type, callback) {
+      // TODO should this delegate to addEventListener?
+      const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
+      callbacks.push(callback);
+      return () => {
+        const index = callbacks.indexOf(callback);
+        if (index !== -1)
+          callbacks.splice(index, 1);
+      };
+    }
+    $set($$props) {
+      if (this.$$set && !is_empty($$props)) {
+        this.$$.skip_bound = true;
+        this.$$set($$props);
+        this.$$.skip_bound = false;
+      }
+    }
+  };
 }
 
 function _typeof(obj) {
@@ -850,15 +851,15 @@ function getLastOfPath(object, path, Empty) {
 
 function setPath(object, path, newValue) {
   var _getLastOfPath = getLastOfPath(object, path, Object),
-      obj = _getLastOfPath.obj,
-      k = _getLastOfPath.k;
+    obj = _getLastOfPath.obj,
+    k = _getLastOfPath.k;
 
   obj[k] = newValue;
 }
 function pushPath(object, path, newValue, concat) {
   var _getLastOfPath2 = getLastOfPath(object, path, Object),
-      obj = _getLastOfPath2.obj,
-      k = _getLastOfPath2.k;
+    obj = _getLastOfPath2.obj,
+    k = _getLastOfPath2.k;
 
   obj[k] = obj[k] || [];
   if (concat) obj[k] = obj[k].concat(newValue);
@@ -866,8 +867,8 @@ function pushPath(object, path, newValue, concat) {
 }
 function getPath(object, path) {
   var _getLastOfPath3 = getLastOfPath(object, path),
-      obj = _getLastOfPath3.obj,
-      k = _getLastOfPath3.k;
+    obj = _getLastOfPath3.obj,
+    k = _getLastOfPath3.k;
 
   if (!obj) return undefined;
   return obj[k];
@@ -949,7 +950,7 @@ function _objectSpread$1(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () { })); return true; } catch (e) { return false; } }
 
 function deepFind(obj, path) {
   var keySeparator = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '.';
@@ -1193,7 +1194,7 @@ function _objectSpread$2(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () { })); return true; } catch (e) { return false; } }
 var checkedLoadedFor = {};
 
 var Translator = function (_EventEmitter) {
@@ -1290,8 +1291,8 @@ var Translator = function (_EventEmitter) {
       var keySeparator = options.keySeparator !== undefined ? options.keySeparator : this.options.keySeparator;
 
       var _this$extractFromKey = this.extractFromKey(keys[keys.length - 1], options),
-          key = _this$extractFromKey.key,
-          namespaces = _this$extractFromKey.namespaces;
+        key = _this$extractFromKey.key,
+        namespaces = _this$extractFromKey.namespaces;
 
       var namespace = namespaces[namespaces.length - 1];
       var lng = options.lng || this.language;
@@ -2331,9 +2332,9 @@ function parseFormatStr(formatStr) {
         if (!opt) return;
 
         var _opt$split = opt.split(':'),
-            _opt$split2 = _toArray(_opt$split),
-            key = _opt$split2[0],
-            rest = _opt$split2.slice(1);
+          _opt$split2 = _toArray(_opt$split),
+          key = _opt$split2[0],
+          rest = _opt$split2.slice(1);
 
         var val = rest.join(':');
         if (!formatOptions[key.trim()]) formatOptions[key.trim()] = val.trim();
@@ -2403,8 +2404,8 @@ var Formatter = function () {
 
       var result = formats.reduce(function (mem, f) {
         var _parseFormatStr = parseFormatStr(f),
-            formatName = _parseFormatStr.formatName,
-            formatOptions = _parseFormatStr.formatOptions;
+          formatName = _parseFormatStr.formatName,
+          formatOptions = _parseFormatStr.formatOptions;
 
         if (_this.formats[formatName]) {
           var formatted = mem;
@@ -2437,7 +2438,7 @@ function _objectSpread$5(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _createSuper$2(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$2(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _isNativeReflectConstruct$2() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct$2() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () { })); return true; } catch (e) { return false; } }
 
 function remove(arr, what) {
   var found = arr.indexOf(what);
@@ -2498,7 +2499,7 @@ var Connector = function (_EventEmitter) {
 
           if (!options.reload && _this2.store.hasResourceBundle(lng, ns)) {
             _this2.state[name] = 2;
-          } else if (_this2.state[name] < 0) ; else if (_this2.state[name] === 1) {
+          } else if (_this2.state[name] < 0); else if (_this2.state[name] === 1) {
             if (pending.indexOf(name) < 0) pending.push(name);
           } else {
             _this2.state[name] = 1;
@@ -2754,9 +2755,9 @@ function _objectSpread$6(target) { for (var i = 1; i < arguments.length; i++) { 
 
 function _createSuper$3(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$3(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-function _isNativeReflectConstruct$3() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct$3() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () { })); return true; } catch (e) { return false; } }
 
-function noop() {}
+function noop() { }
 
 function bindMemberFunctions(inst) {
   var mems = Object.getOwnPropertyNames(Object.getPrototypeOf(inst));
@@ -3409,7 +3410,7 @@ const sk = {
 i18.init(
   {
     fallbackLng: "en",
-    debug: true,
+    debug: false,
     resources: {
       cs: cs,
       "cs-CZ": cs,
@@ -3430,1635 +3431,1635 @@ i18.init(
 /* src\DialogModal.svelte generated by Svelte v3.45.0 */
 
 function get_each_context(ctx, list, i) {
-	const child_ctx = ctx.slice();
-	child_ctx[53] = list[i];
-	return child_ctx;
+  const child_ctx = ctx.slice();
+  child_ctx[53] = list[i];
+  return child_ctx;
 }
 
 // (140:8) {#if type !== "alert"}
 function create_if_block_14(ctx) {
-	let svg;
-	let g;
-	let path0;
-	let path1;
-	let path2;
-	let path3;
-	let defs;
-	let linearGradient0;
-	let stop0;
-	let stop1;
-	let linearGradient1;
-	let stop2;
-	let stop3;
+  let svg;
+  let g;
+  let path0;
+  let path1;
+  let path2;
+  let path3;
+  let defs;
+  let linearGradient0;
+  let stop0;
+  let stop1;
+  let linearGradient1;
+  let stop2;
+  let stop3;
 
-	return {
-		c() {
-			svg = svg_element("svg");
-			g = svg_element("g");
-			path0 = svg_element("path");
-			path1 = svg_element("path");
-			path2 = svg_element("path");
-			path3 = svg_element("path");
-			defs = svg_element("defs");
-			linearGradient0 = svg_element("linearGradient");
-			stop0 = svg_element("stop");
-			stop1 = svg_element("stop");
-			linearGradient1 = svg_element("linearGradient");
-			stop2 = svg_element("stop");
-			stop3 = svg_element("stop");
-			attr(path0, "d", "M18.0312 6.01025L6.01037 18.0311");
-			attr(path0, "stroke", "white");
-			attr(path0, "stroke-width", "2");
-			attr(path0, "stroke-linecap", "round");
-			attr(path0, "stroke-linejoin", "round");
-			attr(path1, "d", "M18.0312 6.01025L6.01037 18.0311");
-			attr(path1, "stroke", "url(#paint0_linear_2500_2)");
-			attr(path1, "stroke-width", "2");
-			attr(path1, "stroke-linecap", "round");
-			attr(path1, "stroke-linejoin", "round");
-			attr(path2, "d", "M18.0312 18.0312L6.01037 6.01043");
-			attr(path2, "stroke", "white");
-			attr(path2, "stroke-width", "2");
-			attr(path2, "stroke-linecap", "round");
-			attr(path2, "stroke-linejoin", "round");
-			attr(path3, "d", "M18.0312 18.0312L6.01037 6.01043");
-			attr(path3, "stroke", "url(#paint1_linear_2500_2)");
-			attr(path3, "stroke-width", "2");
-			attr(path3, "stroke-linecap", "round");
-			attr(path3, "stroke-linejoin", "round");
-			attr(g, "opacity", "0.6");
-			attr(stop0, "stop-color", "white");
-			attr(stop1, "offset", "1");
-			attr(stop1, "stop-color", "white");
-			attr(stop1, "stop-opacity", "0");
-			attr(linearGradient0, "id", "paint0_linear_2500_2");
-			attr(linearGradient0, "x1", "18.3847");
-			attr(linearGradient0, "y1", "6.36381");
-			attr(linearGradient0, "x2", "6.36393");
-			attr(linearGradient0, "y2", "18.3846");
-			attr(linearGradient0, "gradientUnits", "userSpaceOnUse");
-			attr(stop2, "stop-color", "white");
-			attr(stop3, "offset", "1");
-			attr(stop3, "stop-color", "white");
-			attr(stop3, "stop-opacity", "0");
-			attr(linearGradient1, "id", "paint1_linear_2500_2");
-			attr(linearGradient1, "x1", "17.6776");
-			attr(linearGradient1, "y1", "18.3848");
-			attr(linearGradient1, "x2", "5.65682");
-			attr(linearGradient1, "y2", "6.36399");
-			attr(linearGradient1, "gradientUnits", "userSpaceOnUse");
-			attr(svg, "width", "25");
-			attr(svg, "height", "25");
-			attr(svg, "viewBox", "0 0 25 25");
-			attr(svg, "fill", "none");
-			attr(svg, "xmlns", "http://www.w3.org/2000/svg");
-		},
-		m(target, anchor) {
-			insert(target, svg, anchor);
-			append(svg, g);
-			append(g, path0);
-			append(g, path1);
-			append(g, path2);
-			append(g, path3);
-			append(svg, defs);
-			append(defs, linearGradient0);
-			append(linearGradient0, stop0);
-			append(linearGradient0, stop1);
-			append(defs, linearGradient1);
-			append(linearGradient1, stop2);
-			append(linearGradient1, stop3);
-		},
-		d(detaching) {
-			if (detaching) detach(svg);
-		}
-	};
+  return {
+    c() {
+      svg = svg_element("svg");
+      g = svg_element("g");
+      path0 = svg_element("path");
+      path1 = svg_element("path");
+      path2 = svg_element("path");
+      path3 = svg_element("path");
+      defs = svg_element("defs");
+      linearGradient0 = svg_element("linearGradient");
+      stop0 = svg_element("stop");
+      stop1 = svg_element("stop");
+      linearGradient1 = svg_element("linearGradient");
+      stop2 = svg_element("stop");
+      stop3 = svg_element("stop");
+      attr(path0, "d", "M18.0312 6.01025L6.01037 18.0311");
+      attr(path0, "stroke", "white");
+      attr(path0, "stroke-width", "2");
+      attr(path0, "stroke-linecap", "round");
+      attr(path0, "stroke-linejoin", "round");
+      attr(path1, "d", "M18.0312 6.01025L6.01037 18.0311");
+      attr(path1, "stroke", "url(#paint0_linear_2500_2)");
+      attr(path1, "stroke-width", "2");
+      attr(path1, "stroke-linecap", "round");
+      attr(path1, "stroke-linejoin", "round");
+      attr(path2, "d", "M18.0312 18.0312L6.01037 6.01043");
+      attr(path2, "stroke", "white");
+      attr(path2, "stroke-width", "2");
+      attr(path2, "stroke-linecap", "round");
+      attr(path2, "stroke-linejoin", "round");
+      attr(path3, "d", "M18.0312 18.0312L6.01037 6.01043");
+      attr(path3, "stroke", "url(#paint1_linear_2500_2)");
+      attr(path3, "stroke-width", "2");
+      attr(path3, "stroke-linecap", "round");
+      attr(path3, "stroke-linejoin", "round");
+      attr(g, "opacity", "0.6");
+      attr(stop0, "stop-color", "white");
+      attr(stop1, "offset", "1");
+      attr(stop1, "stop-color", "white");
+      attr(stop1, "stop-opacity", "0");
+      attr(linearGradient0, "id", "paint0_linear_2500_2");
+      attr(linearGradient0, "x1", "18.3847");
+      attr(linearGradient0, "y1", "6.36381");
+      attr(linearGradient0, "x2", "6.36393");
+      attr(linearGradient0, "y2", "18.3846");
+      attr(linearGradient0, "gradientUnits", "userSpaceOnUse");
+      attr(stop2, "stop-color", "white");
+      attr(stop3, "offset", "1");
+      attr(stop3, "stop-color", "white");
+      attr(stop3, "stop-opacity", "0");
+      attr(linearGradient1, "id", "paint1_linear_2500_2");
+      attr(linearGradient1, "x1", "17.6776");
+      attr(linearGradient1, "y1", "18.3848");
+      attr(linearGradient1, "x2", "5.65682");
+      attr(linearGradient1, "y2", "6.36399");
+      attr(linearGradient1, "gradientUnits", "userSpaceOnUse");
+      attr(svg, "width", "25");
+      attr(svg, "height", "25");
+      attr(svg, "viewBox", "0 0 25 25");
+      attr(svg, "fill", "none");
+      attr(svg, "xmlns", "http://www.w3.org/2000/svg");
+    },
+    m(target, anchor) {
+      insert(target, svg, anchor);
+      append(svg, g);
+      append(g, path0);
+      append(g, path1);
+      append(g, path2);
+      append(g, path3);
+      append(svg, defs);
+      append(defs, linearGradient0);
+      append(linearGradient0, stop0);
+      append(linearGradient0, stop1);
+      append(defs, linearGradient1);
+      append(linearGradient1, stop2);
+      append(linearGradient1, stop3);
+    },
+    d(detaching) {
+      if (detaching) detach(svg);
+    }
+  };
 }
 
 // (167:6) {#if type === "prompt"}
 function create_if_block_5(ctx) {
-	let if_block_anchor;
+  let if_block_anchor;
 
-	function select_block_type(ctx, dirty) {
-		if (/*inputtype*/ ctx[4] === "number") return create_if_block_6;
-		return create_else_block;
-	}
+  function select_block_type(ctx, dirty) {
+    if (/*inputtype*/ ctx[4] === "number") return create_if_block_6;
+    return create_else_block;
+  }
 
-	let current_block_type = select_block_type(ctx);
-	let if_block = current_block_type(ctx);
+  let current_block_type = select_block_type(ctx);
+  let if_block = current_block_type(ctx);
 
-	return {
-		c() {
-			if_block.c();
-			if_block_anchor = empty();
-		},
-		m(target, anchor) {
-			if_block.m(target, anchor);
-			insert(target, if_block_anchor, anchor);
-		},
-		p(ctx, dirty) {
-			if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
-				if_block.p(ctx, dirty);
-			} else {
-				if_block.d(1);
-				if_block = current_block_type(ctx);
+  return {
+    c() {
+      if_block.c();
+      if_block_anchor = empty();
+    },
+    m(target, anchor) {
+      if_block.m(target, anchor);
+      insert(target, if_block_anchor, anchor);
+    },
+    p(ctx, dirty) {
+      if (current_block_type === (current_block_type = select_block_type(ctx)) && if_block) {
+        if_block.p(ctx, dirty);
+      } else {
+        if_block.d(1);
+        if_block = current_block_type(ctx);
 
-				if (if_block) {
-					if_block.c();
-					if_block.m(if_block_anchor.parentNode, if_block_anchor);
-				}
-			}
-		},
-		d(detaching) {
-			if_block.d(detaching);
-			if (detaching) detach(if_block_anchor);
-		}
-	};
+        if (if_block) {
+          if_block.c();
+          if_block.m(if_block_anchor.parentNode, if_block_anchor);
+        }
+      }
+    },
+    d(detaching) {
+      if_block.d(detaching);
+      if (detaching) detach(if_block_anchor);
+    }
+  };
 }
 
 // (172:8) {:else}
 function create_else_block(ctx) {
-	let p;
-	let t_1;
-	let if_block0 = /*invalid*/ ctx[18] && create_if_block_13(ctx);
+  let p;
+  let t_1;
+  let if_block0 = /*invalid*/ ctx[18] && create_if_block_13(ctx);
 
-	function select_block_type_1(ctx, dirty) {
-		if (/*inputtype*/ ctx[4] === "time") return create_if_block_7;
-		if (/*inputtype*/ ctx[4] === "date") return create_if_block_8;
-		if (/*inputtype*/ ctx[4] === "datetime") return create_if_block_9;
-		if (/*inputtype*/ ctx[4] === "password") return create_if_block_10;
-		if (/*inputtype*/ ctx[4] === "tel") return create_if_block_11;
-		if (/*inputtype*/ ctx[4] === "url") return create_if_block_12;
-		return create_else_block_1;
-	}
+  function select_block_type_1(ctx, dirty) {
+    if (/*inputtype*/ ctx[4] === "time") return create_if_block_7;
+    if (/*inputtype*/ ctx[4] === "date") return create_if_block_8;
+    if (/*inputtype*/ ctx[4] === "datetime") return create_if_block_9;
+    if (/*inputtype*/ ctx[4] === "password") return create_if_block_10;
+    if (/*inputtype*/ ctx[4] === "tel") return create_if_block_11;
+    if (/*inputtype*/ ctx[4] === "url") return create_if_block_12;
+    return create_else_block_1;
+  }
 
-	let current_block_type = select_block_type_1(ctx);
-	let if_block1 = current_block_type(ctx);
+  let current_block_type = select_block_type_1(ctx);
+  let if_block1 = current_block_type(ctx);
 
-	return {
-		c() {
-			p = element("p");
-			if (if_block0) if_block0.c();
-			t_1 = space();
-			if_block1.c();
-		},
-		m(target, anchor) {
-			insert(target, p, anchor);
-			if (if_block0) if_block0.m(p, null);
-			append(p, t_1);
-			if_block1.m(p, null);
-		},
-		p(ctx, dirty) {
-			if (/*invalid*/ ctx[18]) {
-				if (if_block0) {
-					if_block0.p(ctx, dirty);
-				} else {
-					if_block0 = create_if_block_13(ctx);
-					if_block0.c();
-					if_block0.m(p, t_1);
-				}
-			} else if (if_block0) {
-				if_block0.d(1);
-				if_block0 = null;
-			}
+  return {
+    c() {
+      p = element("p");
+      if (if_block0) if_block0.c();
+      t_1 = space();
+      if_block1.c();
+    },
+    m(target, anchor) {
+      insert(target, p, anchor);
+      if (if_block0) if_block0.m(p, null);
+      append(p, t_1);
+      if_block1.m(p, null);
+    },
+    p(ctx, dirty) {
+      if (/*invalid*/ ctx[18]) {
+        if (if_block0) {
+          if_block0.p(ctx, dirty);
+        } else {
+          if_block0 = create_if_block_13(ctx);
+          if_block0.c();
+          if_block0.m(p, t_1);
+        }
+      } else if (if_block0) {
+        if_block0.d(1);
+        if_block0 = null;
+      }
 
-			if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block1) {
-				if_block1.p(ctx, dirty);
-			} else {
-				if_block1.d(1);
-				if_block1 = current_block_type(ctx);
+      if (current_block_type === (current_block_type = select_block_type_1(ctx)) && if_block1) {
+        if_block1.p(ctx, dirty);
+      } else {
+        if_block1.d(1);
+        if_block1 = current_block_type(ctx);
 
-				if (if_block1) {
-					if_block1.c();
-					if_block1.m(p, null);
-				}
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(p);
-			if (if_block0) if_block0.d();
-			if_block1.d();
-		}
-	};
+        if (if_block1) {
+          if_block1.c();
+          if_block1.m(p, null);
+        }
+      }
+    },
+    d(detaching) {
+      if (detaching) detach(p);
+      if (if_block0) if_block0.d();
+      if_block1.d();
+    }
+  };
 }
 
 // (168:8) {#if inputtype === "number"}
 function create_if_block_6(ctx) {
-	let p;
-	let tangle_number_input;
-	let mounted;
-	let dispose;
+  let p;
+  let tangle_number_input;
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			p = element("p");
-			tangle_number_input = element("tangle-number-input");
-			set_custom_element_data(tangle_number_input, "min", /*min*/ ctx[6]);
-			set_custom_element_data(tangle_number_input, "max", /*max*/ ctx[7]);
-			set_custom_element_data(tangle_number_input, "value", /*value*/ ctx[0]);
-			set_style(p, "display", "flex");
-			set_style(p, "justify-content", "center");
-		},
-		m(target, anchor) {
-			insert(target, p, anchor);
-			append(p, tangle_number_input);
+  return {
+    c() {
+      p = element("p");
+      tangle_number_input = element("tangle-number-input");
+      set_custom_element_data(tangle_number_input, "min", /*min*/ ctx[6]);
+      set_custom_element_data(tangle_number_input, "max", /*max*/ ctx[7]);
+      set_custom_element_data(tangle_number_input, "value", /*value*/ ctx[0]);
+      set_style(p, "display", "flex");
+      set_style(p, "justify-content", "center");
+    },
+    m(target, anchor) {
+      insert(target, p, anchor);
+      append(p, tangle_number_input);
 			/*tangle_number_input_binding*/ ctx[29](tangle_number_input);
 
-			if (!mounted) {
-				dispose = listen(tangle_number_input, "change", /*change_handler*/ ctx[28]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*min*/ 64) {
-				set_custom_element_data(tangle_number_input, "min", /*min*/ ctx[6]);
-			}
+      if (!mounted) {
+        dispose = listen(tangle_number_input, "change", /*change_handler*/ ctx[28]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*min*/ 64) {
+        set_custom_element_data(tangle_number_input, "min", /*min*/ ctx[6]);
+      }
 
-			if (dirty[0] & /*max*/ 128) {
-				set_custom_element_data(tangle_number_input, "max", /*max*/ ctx[7]);
-			}
+      if (dirty[0] & /*max*/ 128) {
+        set_custom_element_data(tangle_number_input, "max", /*max*/ ctx[7]);
+      }
 
-			if (dirty[0] & /*value*/ 1) {
-				set_custom_element_data(tangle_number_input, "value", /*value*/ ctx[0]);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(p);
+      if (dirty[0] & /*value*/ 1) {
+        set_custom_element_data(tangle_number_input, "value", /*value*/ ctx[0]);
+      }
+    },
+    d(detaching) {
+      if (detaching) detach(p);
 			/*tangle_number_input_binding*/ ctx[29](null);
-			mounted = false;
-			dispose();
-		}
-	};
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 // (174:12) {#if invalid}
 function create_if_block_13(ctx) {
-	let small;
-	let t_1;
+  let small;
+  let t_1;
 
-	return {
-		c() {
-			small = element("small");
-			t_1 = text(/*invalidtext*/ ctx[12]);
-			attr(small, "class", "invalidtext");
-		},
-		m(target, anchor) {
-			insert(target, small, anchor);
-			append(small, t_1);
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*invalidtext*/ 4096) set_data(t_1, /*invalidtext*/ ctx[12]);
-		},
-		d(detaching) {
-			if (detaching) detach(small);
-		}
-	};
+  return {
+    c() {
+      small = element("small");
+      t_1 = text(/*invalidtext*/ ctx[12]);
+      attr(small, "class", "invalidtext");
+    },
+    m(target, anchor) {
+      insert(target, small, anchor);
+      append(small, t_1);
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*invalidtext*/ 4096) set_data(t_1, /*invalidtext*/ ctx[12]);
+    },
+    d(detaching) {
+      if (detaching) detach(small);
+    }
+  };
 }
 
 // (191:12) {:else}
 function create_else_block_1(ctx) {
-	let input;
-	let mounted;
-	let dispose;
+  let input;
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			input = element("input");
-			attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			attr(input, "type", "text");
-			attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			attr(input, "class", "tangle-msg-box-dialog-textbox");
-			toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-		},
-		m(target, anchor) {
-			insert(target, input, anchor);
-			set_input_value(input, /*value*/ ctx[0]);
+  return {
+    c() {
+      input = element("input");
+      attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      attr(input, "type", "text");
+      attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      attr(input, "class", "tangle-msg-box-dialog-textbox");
+      toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+    },
+    m(target, anchor) {
+      insert(target, input, anchor);
+      set_input_value(input, /*value*/ ctx[0]);
 			/*input_binding_6*/ ctx[43](input);
 
-			if (!mounted) {
-				dispose = listen(input, "input", /*input_input_handler_6*/ ctx[42]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*maxlength*/ 256) {
-				attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			}
+      if (!mounted) {
+        dispose = listen(input, "input", /*input_input_handler_6*/ ctx[42]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*maxlength*/ 256) {
+        attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      }
 
-			if (dirty[0] & /*placeholder*/ 32) {
-				attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			}
+      if (dirty[0] & /*placeholder*/ 32) {
+        attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      }
 
-			if (dirty[0] & /*value*/ 1 && input.value !== /*value*/ ctx[0]) {
-				set_input_value(input, /*value*/ ctx[0]);
-			}
+      if (dirty[0] & /*value*/ 1 && input.value !== /*value*/ ctx[0]) {
+        set_input_value(input, /*value*/ ctx[0]);
+      }
 
-			if (dirty[0] & /*invalid*/ 262144) {
-				toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(input);
+      if (dirty[0] & /*invalid*/ 262144) {
+        toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+      }
+    },
+    d(detaching) {
+      if (detaching) detach(input);
 			/*input_binding_6*/ ctx[43](null);
-			mounted = false;
-			dispose();
-		}
-	};
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 // (189:42) 
 function create_if_block_12(ctx) {
-	let input;
-	let mounted;
-	let dispose;
+  let input;
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			input = element("input");
-			attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			attr(input, "type", "url");
-			attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			attr(input, "class", "tangle-msg-box-dialog-textbox");
-			toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-		},
-		m(target, anchor) {
-			insert(target, input, anchor);
-			set_input_value(input, /*value*/ ctx[0]);
+  return {
+    c() {
+      input = element("input");
+      attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      attr(input, "type", "url");
+      attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      attr(input, "class", "tangle-msg-box-dialog-textbox");
+      toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+    },
+    m(target, anchor) {
+      insert(target, input, anchor);
+      set_input_value(input, /*value*/ ctx[0]);
 			/*input_binding_5*/ ctx[41](input);
 
-			if (!mounted) {
-				dispose = listen(input, "input", /*input_input_handler_5*/ ctx[40]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*maxlength*/ 256) {
-				attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			}
+      if (!mounted) {
+        dispose = listen(input, "input", /*input_input_handler_5*/ ctx[40]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*maxlength*/ 256) {
+        attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      }
 
-			if (dirty[0] & /*placeholder*/ 32) {
-				attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			}
+      if (dirty[0] & /*placeholder*/ 32) {
+        attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      }
 
-			if (dirty[0] & /*value*/ 1) {
-				set_input_value(input, /*value*/ ctx[0]);
-			}
+      if (dirty[0] & /*value*/ 1) {
+        set_input_value(input, /*value*/ ctx[0]);
+      }
 
-			if (dirty[0] & /*invalid*/ 262144) {
-				toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(input);
+      if (dirty[0] & /*invalid*/ 262144) {
+        toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+      }
+    },
+    d(detaching) {
+      if (detaching) detach(input);
 			/*input_binding_5*/ ctx[41](null);
-			mounted = false;
-			dispose();
-		}
-	};
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 // (187:42) 
 function create_if_block_11(ctx) {
-	let input;
-	let mounted;
-	let dispose;
+  let input;
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			input = element("input");
-			attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			attr(input, "type", "tel");
-			attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			attr(input, "class", "tangle-msg-box-dialog-textbox");
-			toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-		},
-		m(target, anchor) {
-			insert(target, input, anchor);
-			set_input_value(input, /*value*/ ctx[0]);
+  return {
+    c() {
+      input = element("input");
+      attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      attr(input, "type", "tel");
+      attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      attr(input, "class", "tangle-msg-box-dialog-textbox");
+      toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+    },
+    m(target, anchor) {
+      insert(target, input, anchor);
+      set_input_value(input, /*value*/ ctx[0]);
 			/*input_binding_4*/ ctx[39](input);
 
-			if (!mounted) {
-				dispose = listen(input, "input", /*input_input_handler_4*/ ctx[38]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*maxlength*/ 256) {
-				attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			}
+      if (!mounted) {
+        dispose = listen(input, "input", /*input_input_handler_4*/ ctx[38]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*maxlength*/ 256) {
+        attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      }
 
-			if (dirty[0] & /*placeholder*/ 32) {
-				attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			}
+      if (dirty[0] & /*placeholder*/ 32) {
+        attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      }
 
-			if (dirty[0] & /*value*/ 1) {
-				set_input_value(input, /*value*/ ctx[0]);
-			}
+      if (dirty[0] & /*value*/ 1) {
+        set_input_value(input, /*value*/ ctx[0]);
+      }
 
-			if (dirty[0] & /*invalid*/ 262144) {
-				toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(input);
+      if (dirty[0] & /*invalid*/ 262144) {
+        toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+      }
+    },
+    d(detaching) {
+      if (detaching) detach(input);
 			/*input_binding_4*/ ctx[39](null);
-			mounted = false;
-			dispose();
-		}
-	};
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 // (185:47) 
 function create_if_block_10(ctx) {
-	let input;
-	let mounted;
-	let dispose;
+  let input;
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			input = element("input");
-			attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			attr(input, "type", "password");
-			attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			attr(input, "class", "tangle-msg-box-dialog-textbox");
-			toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-		},
-		m(target, anchor) {
-			insert(target, input, anchor);
-			set_input_value(input, /*value*/ ctx[0]);
+  return {
+    c() {
+      input = element("input");
+      attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      attr(input, "type", "password");
+      attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      attr(input, "class", "tangle-msg-box-dialog-textbox");
+      toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+    },
+    m(target, anchor) {
+      insert(target, input, anchor);
+      set_input_value(input, /*value*/ ctx[0]);
 			/*input_binding_3*/ ctx[37](input);
 
-			if (!mounted) {
-				dispose = listen(input, "input", /*input_input_handler_3*/ ctx[36]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*maxlength*/ 256) {
-				attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			}
+      if (!mounted) {
+        dispose = listen(input, "input", /*input_input_handler_3*/ ctx[36]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*maxlength*/ 256) {
+        attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      }
 
-			if (dirty[0] & /*placeholder*/ 32) {
-				attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			}
+      if (dirty[0] & /*placeholder*/ 32) {
+        attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      }
 
-			if (dirty[0] & /*value*/ 1 && input.value !== /*value*/ ctx[0]) {
-				set_input_value(input, /*value*/ ctx[0]);
-			}
+      if (dirty[0] & /*value*/ 1 && input.value !== /*value*/ ctx[0]) {
+        set_input_value(input, /*value*/ ctx[0]);
+      }
 
-			if (dirty[0] & /*invalid*/ 262144) {
-				toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(input);
+      if (dirty[0] & /*invalid*/ 262144) {
+        toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+      }
+    },
+    d(detaching) {
+      if (detaching) detach(input);
 			/*input_binding_3*/ ctx[37](null);
-			mounted = false;
-			dispose();
-		}
-	};
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 // (183:47) 
 function create_if_block_9(ctx) {
-	let input;
-	let mounted;
-	let dispose;
+  let input;
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			input = element("input");
-			attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			attr(input, "type", "datetime");
-			attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			attr(input, "class", "tangle-msg-box-dialog-textbox");
-			toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-		},
-		m(target, anchor) {
-			insert(target, input, anchor);
-			set_input_value(input, /*value*/ ctx[0]);
+  return {
+    c() {
+      input = element("input");
+      attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      attr(input, "type", "datetime");
+      attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      attr(input, "class", "tangle-msg-box-dialog-textbox");
+      toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+    },
+    m(target, anchor) {
+      insert(target, input, anchor);
+      set_input_value(input, /*value*/ ctx[0]);
 			/*input_binding_2*/ ctx[35](input);
 
-			if (!mounted) {
-				dispose = listen(input, "input", /*input_input_handler_2*/ ctx[34]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*maxlength*/ 256) {
-				attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			}
+      if (!mounted) {
+        dispose = listen(input, "input", /*input_input_handler_2*/ ctx[34]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*maxlength*/ 256) {
+        attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      }
 
-			if (dirty[0] & /*placeholder*/ 32) {
-				attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			}
+      if (dirty[0] & /*placeholder*/ 32) {
+        attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      }
 
-			if (dirty[0] & /*value*/ 1) {
-				set_input_value(input, /*value*/ ctx[0]);
-			}
+      if (dirty[0] & /*value*/ 1) {
+        set_input_value(input, /*value*/ ctx[0]);
+      }
 
-			if (dirty[0] & /*invalid*/ 262144) {
-				toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(input);
+      if (dirty[0] & /*invalid*/ 262144) {
+        toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+      }
+    },
+    d(detaching) {
+      if (detaching) detach(input);
 			/*input_binding_2*/ ctx[35](null);
-			mounted = false;
-			dispose();
-		}
-	};
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 // (181:43) 
 function create_if_block_8(ctx) {
-	let input;
-	let mounted;
-	let dispose;
+  let input;
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			input = element("input");
-			attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			attr(input, "type", "date");
-			attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			attr(input, "class", "tangle-msg-box-dialog-textbox");
-			toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-		},
-		m(target, anchor) {
-			insert(target, input, anchor);
-			set_input_value(input, /*value*/ ctx[0]);
+  return {
+    c() {
+      input = element("input");
+      attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      attr(input, "type", "date");
+      attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      attr(input, "class", "tangle-msg-box-dialog-textbox");
+      toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+    },
+    m(target, anchor) {
+      insert(target, input, anchor);
+      set_input_value(input, /*value*/ ctx[0]);
 			/*input_binding_1*/ ctx[33](input);
 
-			if (!mounted) {
-				dispose = listen(input, "input", /*input_input_handler_1*/ ctx[32]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*maxlength*/ 256) {
-				attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			}
+      if (!mounted) {
+        dispose = listen(input, "input", /*input_input_handler_1*/ ctx[32]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*maxlength*/ 256) {
+        attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      }
 
-			if (dirty[0] & /*placeholder*/ 32) {
-				attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			}
+      if (dirty[0] & /*placeholder*/ 32) {
+        attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      }
 
-			if (dirty[0] & /*value*/ 1) {
-				set_input_value(input, /*value*/ ctx[0]);
-			}
+      if (dirty[0] & /*value*/ 1) {
+        set_input_value(input, /*value*/ ctx[0]);
+      }
 
-			if (dirty[0] & /*invalid*/ 262144) {
-				toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(input);
+      if (dirty[0] & /*invalid*/ 262144) {
+        toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+      }
+    },
+    d(detaching) {
+      if (detaching) detach(input);
 			/*input_binding_1*/ ctx[33](null);
-			mounted = false;
-			dispose();
-		}
-	};
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 // (179:12) {#if inputtype === "time"}
 function create_if_block_7(ctx) {
-	let input;
-	let mounted;
-	let dispose;
+  let input;
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			input = element("input");
-			attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			attr(input, "type", "time");
-			attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			attr(input, "class", "tangle-msg-box-dialog-textbox");
-			toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-		},
-		m(target, anchor) {
-			insert(target, input, anchor);
-			set_input_value(input, /*value*/ ctx[0]);
+  return {
+    c() {
+      input = element("input");
+      attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      attr(input, "type", "time");
+      attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      attr(input, "class", "tangle-msg-box-dialog-textbox");
+      toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+    },
+    m(target, anchor) {
+      insert(target, input, anchor);
+      set_input_value(input, /*value*/ ctx[0]);
 			/*input_binding*/ ctx[31](input);
 
-			if (!mounted) {
-				dispose = listen(input, "input", /*input_input_handler*/ ctx[30]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*maxlength*/ 256) {
-				attr(input, "maxlength", /*maxlength*/ ctx[8]);
-			}
+      if (!mounted) {
+        dispose = listen(input, "input", /*input_input_handler*/ ctx[30]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*maxlength*/ 256) {
+        attr(input, "maxlength", /*maxlength*/ ctx[8]);
+      }
 
-			if (dirty[0] & /*placeholder*/ 32) {
-				attr(input, "placeholder", /*placeholder*/ ctx[5]);
-			}
+      if (dirty[0] & /*placeholder*/ 32) {
+        attr(input, "placeholder", /*placeholder*/ ctx[5]);
+      }
 
-			if (dirty[0] & /*value*/ 1) {
-				set_input_value(input, /*value*/ ctx[0]);
-			}
+      if (dirty[0] & /*value*/ 1) {
+        set_input_value(input, /*value*/ ctx[0]);
+      }
 
-			if (dirty[0] & /*invalid*/ 262144) {
-				toggle_class(input, "invalid", /*invalid*/ ctx[18]);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(input);
+      if (dirty[0] & /*invalid*/ 262144) {
+        toggle_class(input, "invalid", /*invalid*/ ctx[18]);
+      }
+    },
+    d(detaching) {
+      if (detaching) detach(input);
 			/*input_binding*/ ctx[31](null);
-			mounted = false;
-			dispose();
-		}
-	};
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 // (197:6) {#if type === "choose" && content !== ""}
 function create_if_block_4(ctx) {
-	let div;
+  let div;
 
-	return {
-		c() {
-			div = element("div");
-			set_style(div, "height", "12px");
-		},
-		m(target, anchor) {
-			insert(target, div, anchor);
-		},
-		d(detaching) {
-			if (detaching) detach(div);
-		}
-	};
+  return {
+    c() {
+      div = element("div");
+      set_style(div, "height", "12px");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
+    },
+    d(detaching) {
+      if (detaching) detach(div);
+    }
+  };
 }
 
 // (200:6) {#if type === "choose"}
 function create_if_block_3(ctx) {
-	let div;
-	let each_blocks = [];
-	let each_1_lookup = new Map();
-	let each_value = /*options*/ ctx[19];
-	const get_key = ctx => /*o*/ ctx[53].value;
+  let div;
+  let each_blocks = [];
+  let each_1_lookup = new Map();
+  let each_value = /*options*/ ctx[19];
+  const get_key = ctx => /*o*/ ctx[53].value;
 
-	for (let i = 0; i < each_value.length; i += 1) {
-		let child_ctx = get_each_context(ctx, each_value, i);
-		let key = get_key(child_ctx);
-		each_1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
-	}
+  for (let i = 0; i < each_value.length; i += 1) {
+    let child_ctx = get_each_context(ctx, each_value, i);
+    let key = get_key(child_ctx);
+    each_1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
+  }
 
-	return {
-		c() {
-			div = element("div");
+  return {
+    c() {
+      div = element("div");
 
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].c();
-			}
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].c();
+      }
 
-			attr(div, "class", "choose-box");
-		},
-		m(target, anchor) {
-			insert(target, div, anchor);
+      attr(div, "class", "choose-box");
+    },
+    m(target, anchor) {
+      insert(target, div, anchor);
 
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].m(div, null);
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*options, value, handleChooseOption*/ 17301505) {
-				each_value = /*options*/ ctx[19];
-				each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, div, destroy_block, create_each_block, null, get_each_context);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(div);
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].m(div, null);
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*options, value, handleChooseOption*/ 17301505) {
+        each_value = /*options*/ ctx[19];
+        each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, div, destroy_block, create_each_block, null, get_each_context);
+      }
+    },
+    d(detaching) {
+      if (detaching) detach(div);
 
-			for (let i = 0; i < each_blocks.length; i += 1) {
-				each_blocks[i].d();
-			}
-		}
-	};
+      for (let i = 0; i < each_blocks.length; i += 1) {
+        each_blocks[i].d();
+      }
+    }
+  };
 }
 
 // (202:10) {#each options as o (o.value)}
 function create_each_block(key_1, ctx) {
-	let button;
-	let span;
-	let span_style_value;
-	let t_1_value = /*o*/ ctx[53].label + "";
-	let t_1;
-	let mounted;
-	let dispose;
+  let button;
+  let span;
+  let span_style_value;
+  let t_1_value = /*o*/ ctx[53].label + "";
+  let t_1;
+  let mounted;
+  let dispose;
 
-	function click_handler() {
-		return /*click_handler*/ ctx[44](/*o*/ ctx[53]);
-	}
+  function click_handler() {
+    return /*click_handler*/ ctx[44](/*o*/ ctx[53]);
+  }
 
-	return {
-		key: key_1,
-		first: null,
-		c() {
-			button = element("button");
-			span = element("span");
-			t_1 = text(t_1_value);
-			attr(span, "class", "icon");
-			attr(span, "style", span_style_value = "background: " + /*o*/ ctx[53].icon);
-			attr(button, "class", "tangle-msg-box-dialog-option option");
-			toggle_class(button, "selected", /*o*/ ctx[53].value === /*value*/ ctx[0]);
-			this.first = button;
-		},
-		m(target, anchor) {
-			insert(target, button, anchor);
-			append(button, span);
-			append(button, t_1);
+  return {
+    key: key_1,
+    first: null,
+    c() {
+      button = element("button");
+      span = element("span");
+      t_1 = text(t_1_value);
+      attr(span, "class", "icon");
+      attr(span, "style", span_style_value = "background: " + /*o*/ ctx[53].icon);
+      attr(button, "class", "tangle-msg-box-dialog-option option");
+      toggle_class(button, "selected", /*o*/ ctx[53].value === /*value*/ ctx[0]);
+      this.first = button;
+    },
+    m(target, anchor) {
+      insert(target, button, anchor);
+      append(button, span);
+      append(button, t_1);
 
-			if (!mounted) {
-				dispose = listen(button, "click", click_handler);
-				mounted = true;
-			}
-		},
-		p(new_ctx, dirty) {
-			ctx = new_ctx;
+      if (!mounted) {
+        dispose = listen(button, "click", click_handler);
+        mounted = true;
+      }
+    },
+    p(new_ctx, dirty) {
+      ctx = new_ctx;
 
-			if (dirty[0] & /*options*/ 524288 && span_style_value !== (span_style_value = "background: " + /*o*/ ctx[53].icon)) {
-				attr(span, "style", span_style_value);
-			}
+      if (dirty[0] & /*options*/ 524288 && span_style_value !== (span_style_value = "background: " + /*o*/ ctx[53].icon)) {
+        attr(span, "style", span_style_value);
+      }
 
-			if (dirty[0] & /*options*/ 524288 && t_1_value !== (t_1_value = /*o*/ ctx[53].label + "")) set_data(t_1, t_1_value);
+      if (dirty[0] & /*options*/ 524288 && t_1_value !== (t_1_value = /*o*/ ctx[53].label + "")) set_data(t_1, t_1_value);
 
-			if (dirty[0] & /*options, value*/ 524289) {
-				toggle_class(button, "selected", /*o*/ ctx[53].value === /*value*/ ctx[0]);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(button);
-			mounted = false;
-			dispose();
-		}
-	};
+      if (dirty[0] & /*options, value*/ 524289) {
+        toggle_class(button, "selected", /*o*/ ctx[53].value === /*value*/ ctx[0]);
+      }
+    },
+    d(detaching) {
+      if (detaching) detach(button);
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 // (209:6) {#if type !== "alert" && !secondary && cancel !== "null"}
 function create_if_block_2(ctx) {
-	let button;
-	let t_1_value = (/*cancel*/ ctx[11] || /*t*/ ctx[20]("Zrušit")) + "";
-	let t_1;
-	let mounted;
-	let dispose;
+  let button;
+  let t_1_value = (/*cancel*/ ctx[11] || /*t*/ ctx[20]("Zrušit")) + "";
+  let t_1;
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			button = element("button");
-			t_1 = text(t_1_value);
-			attr(button, "class", "tangle-msg-box-dialog-button cancel");
-		},
-		m(target, anchor) {
-			insert(target, button, anchor);
-			append(button, t_1);
+  return {
+    c() {
+      button = element("button");
+      t_1 = text(t_1_value);
+      attr(button, "class", "tangle-msg-box-dialog-button cancel");
+    },
+    m(target, anchor) {
+      insert(target, button, anchor);
+      append(button, t_1);
 			/*button_binding*/ ctx[45](button);
 
-			if (!mounted) {
-				dispose = listen(button, "click", /*exitDialog*/ ctx[21]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*cancel*/ 2048 && t_1_value !== (t_1_value = (/*cancel*/ ctx[11] || /*t*/ ctx[20]("Zrušit")) + "")) set_data(t_1, t_1_value);
-		},
-		d(detaching) {
-			if (detaching) detach(button);
+      if (!mounted) {
+        dispose = listen(button, "click", /*exitDialog*/ ctx[21]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*cancel*/ 2048 && t_1_value !== (t_1_value = (/*cancel*/ ctx[11] || /*t*/ ctx[20]("Zrušit")) + "")) set_data(t_1, t_1_value);
+    },
+    d(detaching) {
+      if (detaching) detach(button);
 			/*button_binding*/ ctx[45](null);
-			mounted = false;
-			dispose();
-		}
-	};
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 // (212:6) {#if secondary && secondary !== "null"}
 function create_if_block_1(ctx) {
-	let button;
-	let t_1;
-	let mounted;
-	let dispose;
+  let button;
+  let t_1;
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			button = element("button");
-			t_1 = text(/*secondary*/ ctx[10]);
-			attr(button, "class", "tangle-msg-box-dialog-button secondary");
-		},
-		m(target, anchor) {
-			insert(target, button, anchor);
-			append(button, t_1);
+  return {
+    c() {
+      button = element("button");
+      t_1 = text(/*secondary*/ ctx[10]);
+      attr(button, "class", "tangle-msg-box-dialog-button secondary");
+    },
+    m(target, anchor) {
+      insert(target, button, anchor);
+      append(button, t_1);
 
-			if (!mounted) {
-				dispose = listen(button, "click", /*confirmDialogSecondary*/ ctx[23]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*secondary*/ 1024) set_data(t_1, /*secondary*/ ctx[10]);
-		},
-		d(detaching) {
-			if (detaching) detach(button);
-			mounted = false;
-			dispose();
-		}
-	};
+      if (!mounted) {
+        dispose = listen(button, "click", /*confirmDialogSecondary*/ ctx[23]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*secondary*/ 1024) set_data(t_1, /*secondary*/ ctx[10]);
+    },
+    d(detaching) {
+      if (detaching) detach(button);
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 // (215:6) {#if confirm !== "null"}
 function create_if_block(ctx) {
-	let button;
-	let t_1_value = (/*confirm*/ ctx[9] || /*t*/ ctx[20]("Potvrdit")) + "";
-	let t_1;
-	let mounted;
-	let dispose;
+  let button;
+  let t_1_value = (/*confirm*/ ctx[9] || /*t*/ ctx[20]("Potvrdit")) + "";
+  let t_1;
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			button = element("button");
-			t_1 = text(t_1_value);
-			attr(button, "class", "tangle-msg-box-dialog-button");
-		},
-		m(target, anchor) {
-			insert(target, button, anchor);
-			append(button, t_1);
+  return {
+    c() {
+      button = element("button");
+      t_1 = text(t_1_value);
+      attr(button, "class", "tangle-msg-box-dialog-button");
+    },
+    m(target, anchor) {
+      insert(target, button, anchor);
+      append(button, t_1);
 			/*button_binding_1*/ ctx[46](button);
 
-			if (!mounted) {
-				dispose = listen(button, "click", /*confirmDialog*/ ctx[22]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (dirty[0] & /*confirm*/ 512 && t_1_value !== (t_1_value = (/*confirm*/ ctx[9] || /*t*/ ctx[20]("Potvrdit")) + "")) set_data(t_1, t_1_value);
-		},
-		d(detaching) {
-			if (detaching) detach(button);
+      if (!mounted) {
+        dispose = listen(button, "click", /*confirmDialog*/ ctx[22]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (dirty[0] & /*confirm*/ 512 && t_1_value !== (t_1_value = (/*confirm*/ ctx[9] || /*t*/ ctx[20]("Potvrdit")) + "")) set_data(t_1, t_1_value);
+    },
+    d(detaching) {
+      if (detaching) detach(button);
 			/*button_binding_1*/ ctx[46](null);
-			mounted = false;
-			dispose();
-		}
-	};
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 function create_fragment$1(ctx) {
-	let div5;
-	let div4;
-	let div1;
-	let div0;
-	let t0;
-	let t1;
-	let t2;
-	let div2;
-	let p;
-	let t3;
-	let t4;
-	let t5;
-	let t6;
-	let t7;
-	let div3;
-	let t8;
-	let t9;
-	let t10;
-	let html_tag;
-	let raw_value = "<style>" + window.___tangleMsgBoxStyles + "</style>" + "";
-	let mounted;
-	let dispose;
-	let if_block0 = /*type*/ ctx[1] !== "alert" && create_if_block_14();
-	let if_block1 = /*type*/ ctx[1] === "prompt" && create_if_block_5(ctx);
-	let if_block2 = /*type*/ ctx[1] === "choose" && /*content*/ ctx[3] !== "" && create_if_block_4();
-	let if_block3 = /*type*/ ctx[1] === "choose" && create_if_block_3(ctx);
-	let if_block4 = /*type*/ ctx[1] !== "alert" && !/*secondary*/ ctx[10] && /*cancel*/ ctx[11] !== "null" && create_if_block_2(ctx);
-	let if_block5 = /*secondary*/ ctx[10] && /*secondary*/ ctx[10] !== "null" && create_if_block_1(ctx);
-	let if_block6 = /*confirm*/ ctx[9] !== "null" && create_if_block(ctx);
+  let div5;
+  let div4;
+  let div1;
+  let div0;
+  let t0;
+  let t1;
+  let t2;
+  let div2;
+  let p;
+  let t3;
+  let t4;
+  let t5;
+  let t6;
+  let t7;
+  let div3;
+  let t8;
+  let t9;
+  let t10;
+  let html_tag;
+  let raw_value = "<style>" + window.___tangleMsgBoxStyles + "</style>" + "";
+  let mounted;
+  let dispose;
+  let if_block0 = /*type*/ ctx[1] !== "alert" && create_if_block_14();
+  let if_block1 = /*type*/ ctx[1] === "prompt" && create_if_block_5(ctx);
+  let if_block2 = /*type*/ ctx[1] === "choose" && /*content*/ ctx[3] !== "" && create_if_block_4();
+  let if_block3 = /*type*/ ctx[1] === "choose" && create_if_block_3(ctx);
+  let if_block4 = /*type*/ ctx[1] !== "alert" && !/*secondary*/ ctx[10] && /*cancel*/ ctx[11] !== "null" && create_if_block_2(ctx);
+  let if_block5 = /*secondary*/ ctx[10] && /*secondary*/ ctx[10] !== "null" && create_if_block_1(ctx);
+  let if_block6 = /*confirm*/ ctx[9] !== "null" && create_if_block(ctx);
 
-	return {
-		c() {
-			div5 = element("div");
-			div4 = element("div");
-			div1 = element("div");
-			div0 = element("div");
-			if (if_block0) if_block0.c();
-			t0 = space();
-			t1 = text(/*title*/ ctx[2]);
-			t2 = space();
-			div2 = element("div");
-			p = element("p");
-			t3 = text(/*content*/ ctx[3]);
-			t4 = space();
-			if (if_block1) if_block1.c();
-			t5 = space();
-			if (if_block2) if_block2.c();
-			t6 = space();
-			if (if_block3) if_block3.c();
-			t7 = space();
-			div3 = element("div");
-			if (if_block4) if_block4.c();
-			t8 = space();
-			if (if_block5) if_block5.c();
-			t9 = space();
-			if (if_block6) if_block6.c();
-			t10 = space();
-			html_tag = new HtmlTag();
-			this.c = noop$1;
-			attr(div0, "id", "exitElm");
-			attr(div1, "class", "tangle-msg-box-dialog-header");
-			attr(div2, "class", "tangle-msg-box-dialog-body");
-			attr(div3, "class", "tangle-msg-box-dialog-footer");
-			attr(div4, "class", "tangle-msg-box-dialog");
-			toggle_class(div4, "tangle-msg-box-dialog-hide", /*msgboxCloseDialog*/ ctx[15]);
-			html_tag.a = null;
-			attr(div5, "class", "tangle-msg-box-modal");
-		},
-		m(target, anchor) {
-			insert(target, div5, anchor);
-			append(div5, div4);
-			append(div4, div1);
-			append(div1, div0);
-			if (if_block0) if_block0.m(div0, null);
-			append(div1, t0);
-			append(div1, t1);
-			append(div4, t2);
-			append(div4, div2);
-			append(div2, p);
-			append(p, t3);
-			append(div2, t4);
-			if (if_block1) if_block1.m(div2, null);
-			append(div2, t5);
-			if (if_block2) if_block2.m(div2, null);
-			append(div2, t6);
-			if (if_block3) if_block3.m(div2, null);
-			append(div4, t7);
-			append(div4, div3);
-			if (if_block4) if_block4.m(div3, null);
-			append(div3, t8);
-			if (if_block5) if_block5.m(div3, null);
-			append(div3, t9);
-			if (if_block6) if_block6.m(div3, null);
+  return {
+    c() {
+      div5 = element("div");
+      div4 = element("div");
+      div1 = element("div");
+      div0 = element("div");
+      if (if_block0) if_block0.c();
+      t0 = space();
+      t1 = text(/*title*/ ctx[2]);
+      t2 = space();
+      div2 = element("div");
+      p = element("p");
+      t3 = text(/*content*/ ctx[3]);
+      t4 = space();
+      if (if_block1) if_block1.c();
+      t5 = space();
+      if (if_block2) if_block2.c();
+      t6 = space();
+      if (if_block3) if_block3.c();
+      t7 = space();
+      div3 = element("div");
+      if (if_block4) if_block4.c();
+      t8 = space();
+      if (if_block5) if_block5.c();
+      t9 = space();
+      if (if_block6) if_block6.c();
+      t10 = space();
+      html_tag = new HtmlTag();
+      this.c = noop$1;
+      attr(div0, "id", "exitElm");
+      attr(div1, "class", "tangle-msg-box-dialog-header");
+      attr(div2, "class", "tangle-msg-box-dialog-body");
+      attr(div3, "class", "tangle-msg-box-dialog-footer");
+      attr(div4, "class", "tangle-msg-box-dialog");
+      toggle_class(div4, "tangle-msg-box-dialog-hide", /*msgboxCloseDialog*/ ctx[15]);
+      html_tag.a = null;
+      attr(div5, "class", "tangle-msg-box-modal");
+    },
+    m(target, anchor) {
+      insert(target, div5, anchor);
+      append(div5, div4);
+      append(div4, div1);
+      append(div1, div0);
+      if (if_block0) if_block0.m(div0, null);
+      append(div1, t0);
+      append(div1, t1);
+      append(div4, t2);
+      append(div4, div2);
+      append(div2, p);
+      append(p, t3);
+      append(div2, t4);
+      if (if_block1) if_block1.m(div2, null);
+      append(div2, t5);
+      if (if_block2) if_block2.m(div2, null);
+      append(div2, t6);
+      if (if_block3) if_block3.m(div2, null);
+      append(div4, t7);
+      append(div4, div3);
+      if (if_block4) if_block4.m(div3, null);
+      append(div3, t8);
+      if (if_block5) if_block5.m(div3, null);
+      append(div3, t9);
+      if (if_block6) if_block6.m(div3, null);
 			/*div4_binding*/ ctx[47](div4);
-			append(div5, t10);
-			html_tag.m(raw_value, div5);
+      append(div5, t10);
+      html_tag.m(raw_value, div5);
 
-			if (!mounted) {
-				dispose = listen(div0, "click", /*exitDialog*/ ctx[21]);
-				mounted = true;
-			}
-		},
-		p(ctx, dirty) {
-			if (/*type*/ ctx[1] !== "alert") {
-				if (if_block0) ; else {
-					if_block0 = create_if_block_14();
-					if_block0.c();
-					if_block0.m(div0, null);
-				}
-			} else if (if_block0) {
-				if_block0.d(1);
-				if_block0 = null;
-			}
+      if (!mounted) {
+        dispose = listen(div0, "click", /*exitDialog*/ ctx[21]);
+        mounted = true;
+      }
+    },
+    p(ctx, dirty) {
+      if (/*type*/ ctx[1] !== "alert") {
+        if (if_block0); else {
+          if_block0 = create_if_block_14();
+          if_block0.c();
+          if_block0.m(div0, null);
+        }
+      } else if (if_block0) {
+        if_block0.d(1);
+        if_block0 = null;
+      }
 
-			if (dirty[0] & /*title*/ 4) set_data(t1, /*title*/ ctx[2]);
-			if (dirty[0] & /*content*/ 8) set_data(t3, /*content*/ ctx[3]);
+      if (dirty[0] & /*title*/ 4) set_data(t1, /*title*/ ctx[2]);
+      if (dirty[0] & /*content*/ 8) set_data(t3, /*content*/ ctx[3]);
 
-			if (/*type*/ ctx[1] === "prompt") {
-				if (if_block1) {
-					if_block1.p(ctx, dirty);
-				} else {
-					if_block1 = create_if_block_5(ctx);
-					if_block1.c();
-					if_block1.m(div2, t5);
-				}
-			} else if (if_block1) {
-				if_block1.d(1);
-				if_block1 = null;
-			}
+      if (/*type*/ ctx[1] === "prompt") {
+        if (if_block1) {
+          if_block1.p(ctx, dirty);
+        } else {
+          if_block1 = create_if_block_5(ctx);
+          if_block1.c();
+          if_block1.m(div2, t5);
+        }
+      } else if (if_block1) {
+        if_block1.d(1);
+        if_block1 = null;
+      }
 
-			if (/*type*/ ctx[1] === "choose" && /*content*/ ctx[3] !== "") {
-				if (if_block2) ; else {
-					if_block2 = create_if_block_4();
-					if_block2.c();
-					if_block2.m(div2, t6);
-				}
-			} else if (if_block2) {
-				if_block2.d(1);
-				if_block2 = null;
-			}
+      if (/*type*/ ctx[1] === "choose" && /*content*/ ctx[3] !== "") {
+        if (if_block2); else {
+          if_block2 = create_if_block_4();
+          if_block2.c();
+          if_block2.m(div2, t6);
+        }
+      } else if (if_block2) {
+        if_block2.d(1);
+        if_block2 = null;
+      }
 
-			if (/*type*/ ctx[1] === "choose") {
-				if (if_block3) {
-					if_block3.p(ctx, dirty);
-				} else {
-					if_block3 = create_if_block_3(ctx);
-					if_block3.c();
-					if_block3.m(div2, null);
-				}
-			} else if (if_block3) {
-				if_block3.d(1);
-				if_block3 = null;
-			}
+      if (/*type*/ ctx[1] === "choose") {
+        if (if_block3) {
+          if_block3.p(ctx, dirty);
+        } else {
+          if_block3 = create_if_block_3(ctx);
+          if_block3.c();
+          if_block3.m(div2, null);
+        }
+      } else if (if_block3) {
+        if_block3.d(1);
+        if_block3 = null;
+      }
 
-			if (/*type*/ ctx[1] !== "alert" && !/*secondary*/ ctx[10] && /*cancel*/ ctx[11] !== "null") {
-				if (if_block4) {
-					if_block4.p(ctx, dirty);
-				} else {
-					if_block4 = create_if_block_2(ctx);
-					if_block4.c();
-					if_block4.m(div3, t8);
-				}
-			} else if (if_block4) {
-				if_block4.d(1);
-				if_block4 = null;
-			}
+      if (/*type*/ ctx[1] !== "alert" && !/*secondary*/ ctx[10] && /*cancel*/ ctx[11] !== "null") {
+        if (if_block4) {
+          if_block4.p(ctx, dirty);
+        } else {
+          if_block4 = create_if_block_2(ctx);
+          if_block4.c();
+          if_block4.m(div3, t8);
+        }
+      } else if (if_block4) {
+        if_block4.d(1);
+        if_block4 = null;
+      }
 
-			if (/*secondary*/ ctx[10] && /*secondary*/ ctx[10] !== "null") {
-				if (if_block5) {
-					if_block5.p(ctx, dirty);
-				} else {
-					if_block5 = create_if_block_1(ctx);
-					if_block5.c();
-					if_block5.m(div3, t9);
-				}
-			} else if (if_block5) {
-				if_block5.d(1);
-				if_block5 = null;
-			}
+      if (/*secondary*/ ctx[10] && /*secondary*/ ctx[10] !== "null") {
+        if (if_block5) {
+          if_block5.p(ctx, dirty);
+        } else {
+          if_block5 = create_if_block_1(ctx);
+          if_block5.c();
+          if_block5.m(div3, t9);
+        }
+      } else if (if_block5) {
+        if_block5.d(1);
+        if_block5 = null;
+      }
 
-			if (/*confirm*/ ctx[9] !== "null") {
-				if (if_block6) {
-					if_block6.p(ctx, dirty);
-				} else {
-					if_block6 = create_if_block(ctx);
-					if_block6.c();
-					if_block6.m(div3, null);
-				}
-			} else if (if_block6) {
-				if_block6.d(1);
-				if_block6 = null;
-			}
+      if (/*confirm*/ ctx[9] !== "null") {
+        if (if_block6) {
+          if_block6.p(ctx, dirty);
+        } else {
+          if_block6 = create_if_block(ctx);
+          if_block6.c();
+          if_block6.m(div3, null);
+        }
+      } else if (if_block6) {
+        if_block6.d(1);
+        if_block6 = null;
+      }
 
-			if (dirty[0] & /*msgboxCloseDialog*/ 32768) {
-				toggle_class(div4, "tangle-msg-box-dialog-hide", /*msgboxCloseDialog*/ ctx[15]);
-			}
-		},
-		i: noop$1,
-		o: noop$1,
-		d(detaching) {
-			if (detaching) detach(div5);
-			if (if_block0) if_block0.d();
-			if (if_block1) if_block1.d();
-			if (if_block2) if_block2.d();
-			if (if_block3) if_block3.d();
-			if (if_block4) if_block4.d();
-			if (if_block5) if_block5.d();
-			if (if_block6) if_block6.d();
+      if (dirty[0] & /*msgboxCloseDialog*/ 32768) {
+        toggle_class(div4, "tangle-msg-box-dialog-hide", /*msgboxCloseDialog*/ ctx[15]);
+      }
+    },
+    i: noop$1,
+    o: noop$1,
+    d(detaching) {
+      if (detaching) detach(div5);
+      if (if_block0) if_block0.d();
+      if (if_block1) if_block1.d();
+      if (if_block2) if_block2.d();
+      if (if_block3) if_block3.d();
+      if (if_block4) if_block4.d();
+      if (if_block5) if_block5.d();
+      if (if_block6) if_block6.d();
 			/*div4_binding*/ ctx[47](null);
-			mounted = false;
-			dispose();
-		}
-	};
+      mounted = false;
+      dispose();
+    }
+  };
 }
 
 function instance$1($$self, $$props, $$invalidate) {
-	let options;
-	let regexForValidation;
-	let invalid;
-	const { t } = i18;
-	const component = get_current_component();
-	const svelteDispatch = createEventDispatcher();
+  let options;
+  let regexForValidation;
+  let invalid;
+  const { t } = i18;
+  const component = get_current_component();
+  const svelteDispatch = createEventDispatcher();
 
-	const dispatch = (name, detail) => {
-		svelteDispatch(name, detail);
-		component.dispatchEvent && component.dispatchEvent(new CustomEvent(name, { detail }));
+  const dispatch = (name, detail) => {
+    svelteDispatch(name, detail);
+    component.dispatchEvent && component.dispatchEvent(new CustomEvent(name, { detail }));
 
-		if (typeof window !== "undefined" && window.top) {
-			window.top.postMessage(JSON.stringify({ name, detail }), "*");
-		}
-	};
+    if (typeof window !== "undefined" && window.top) {
+      window.top.postMessage(JSON.stringify({ name, detail }), "*");
+    }
+  };
 
-	let inputField;
+  let inputField;
 
-	onMount(async () => {
-		console.log(inputtype);
-		$$invalidate(0, value = value || defaultvalue);
-		component.focus();
-		const style = document.createElement("style");
-		style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`;
-		component.appendChild(style);
+  onMount(async () => {
+    console.log(inputtype);
+    $$invalidate(0, value = value || defaultvalue);
+    component.focus();
+    const style = document.createElement("style");
+    style.innerHTML = `@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');`;
+    component.appendChild(style);
 
-		setTimeout(
-			() => {
-				if (inputtype.match(/text|email|tel|url/)) {
-					inputField && inputField.focus();
-					inputField && inputField.click();
+    setTimeout(
+      () => {
+        if (inputtype.match(/text|email|tel|url/)) {
+          inputField && inputField.focus();
+          inputField && inputField.click();
 
-					inputField && setTimeout(
-						() => {
-							document.execCommand("selectall", null, false);
-						},
-						0
-					);
-				}
-			},
-			0
-		);
+          inputField && setTimeout(
+            () => {
+              document.execCommand("selectall", null, false);
+            },
+            0
+          );
+        }
+      },
+      0
+    );
 
-		return () => style.remove();
-	});
+    return () => style.remove();
+  });
 
-	document.addEventListener("keydown", e => {
-		e.key === "Enter" && confirmDialog();
-		e.key === "Escape" && exitDialog();
-	});
+  document.addEventListener("keydown", e => {
+    e.key === "Enter" && confirmDialog();
+    e.key === "Escape" && exitDialog();
+  });
 
-	let msgboxDialog;
-	let msgboxCloseDialog = false;
+  let msgboxDialog;
+  let msgboxCloseDialog = false;
 
-	function exitDialog() {
-		const dialogElm = msgboxDialog;
-		$$invalidate(15, msgboxCloseDialog = true);
+  function exitDialog() {
+    const dialogElm = msgboxDialog;
+    $$invalidate(15, msgboxCloseDialog = true);
 
-		dialogElm.addEventListener("animationend", function dialogElmAnimationEnd(evt) {
-			if (evt.animationName === "msg-box-dialog-hide") {
-				dialogElm.removeEventListener("animationend", dialogElmAnimationEnd);
-				dispatch("submit", undefined);
-				component.remove();
-			}
-		});
-	}
+    dialogElm.addEventListener("animationend", function dialogElmAnimationEnd(evt) {
+      if (evt.animationName === "msg-box-dialog-hide") {
+        dialogElm.removeEventListener("animationend", dialogElmAnimationEnd);
+        dispatch("submit", undefined);
+        component.remove();
+      }
+    });
+  }
 
-	function confirmDialog() {
-		if (!invalid) {
-			const dialogElm = msgboxDialog;
-			$$invalidate(15, msgboxCloseDialog = true);
+  function confirmDialog() {
+    if (!invalid) {
+      const dialogElm = msgboxDialog;
+      $$invalidate(15, msgboxCloseDialog = true);
 
-			dialogElm.addEventListener("animationend", function dialogElmAnimationEnd(evt) {
-				if (evt.animationName === "msg-box-dialog-hide") {
-					dialogElm.removeEventListener("animationend", dialogElmAnimationEnd);
-					dispatch("submit", type === "prompt" || type === "choose" ? value : true);
-					component.remove();
-				}
-			});
-		}
-	}
+      dialogElm.addEventListener("animationend", function dialogElmAnimationEnd(evt) {
+        if (evt.animationName === "msg-box-dialog-hide") {
+          dialogElm.removeEventListener("animationend", dialogElmAnimationEnd);
+          dispatch("submit", type === "prompt" || type === "choose" ? value : true);
+          component.remove();
+        }
+      });
+    }
+  }
 
-	function confirmDialogSecondary() {
-		const dialogElm = msgboxDialog;
-		$$invalidate(15, msgboxCloseDialog = true);
+  function confirmDialogSecondary() {
+    const dialogElm = msgboxDialog;
+    $$invalidate(15, msgboxCloseDialog = true);
 
-		dialogElm.addEventListener("animationend", function dialogElmAnimationEnd(evt) {
-			if (evt.animationName === "msg-box-dialog-hide") {
-				dialogElm.removeEventListener("animationend", dialogElmAnimationEnd);
-				dispatch("submit", "secondary");
-				component.remove();
-			}
-		});
-	}
+    dialogElm.addEventListener("animationend", function dialogElmAnimationEnd(evt) {
+      if (evt.animationName === "msg-box-dialog-hide") {
+        dialogElm.removeEventListener("animationend", dialogElmAnimationEnd);
+        dispatch("submit", "secondary");
+        component.remove();
+      }
+    });
+  }
 
-	let { type = "prompt" } = $$props;
-	let { title = "" } = $$props;
-	let { content = "" } = $$props;
-	let { inputtype = "text" } = $$props;
-	let { placeholder = "" } = $$props;
-	let { min = -999999999 } = $$props;
-	let { max = 999999999 } = $$props;
-	let { maxlength = 999999999 } = $$props;
-	let { confirm = "" } = $$props;
-	let { secondary = "" } = $$props;
-	let { cancel = "" } = $$props;
-	let { regex = /.*/ } = $$props;
-	let { jsonoptions = "[]" } = $$props;
-	let { defaultvalue = "" } = $$props;
-	let { value = "" } = $$props;
+  let { type = "prompt" } = $$props;
+  let { title = "" } = $$props;
+  let { content = "" } = $$props;
+  let { inputtype = "text" } = $$props;
+  let { placeholder = "" } = $$props;
+  let { min = -999999999 } = $$props;
+  let { max = 999999999 } = $$props;
+  let { maxlength = 999999999 } = $$props;
+  let { confirm = "" } = $$props;
+  let { secondary = "" } = $$props;
+  let { cancel = "" } = $$props;
+  let { regex = /.*/ } = $$props;
+  let { jsonoptions = "[]" } = $$props;
+  let { defaultvalue = "" } = $$props;
+  let { value = "" } = $$props;
 
-	function handleChooseOption(v) {
-		$$invalidate(0, value = v);
+  function handleChooseOption(v) {
+    $$invalidate(0, value = v);
 
-		if (!(confirm && confirm !== "null")) {
-			confirmDialog();
-		}
-	}
+    if (!(confirm && confirm !== "null")) {
+      confirmDialog();
+    }
+  }
 
-	let { invalidtext = t("Zadejte platnou hodnotu") } = $$props;
+  let { invalidtext = t("Zadejte platnou hodnotu") } = $$props;
 
-	function validate(value) {
-		return regexForValidation.test(value);
-	}
+  function validate(value) {
+    return regexForValidation.test(value);
+  }
 
-	// new RegExp('.+\\*.+')
-	let confirmBtn;
+  // new RegExp('.+\\*.+')
+  let confirmBtn;
 
-	let cancelBtn;
-	const change_handler = e => $$invalidate(0, value = e.detail.value);
+  let cancelBtn;
+  const change_handler = e => $$invalidate(0, value = e.detail.value);
 
-	function tangle_number_input_binding($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			inputField = $$value;
-			$$invalidate(13, inputField);
-		});
-	}
+  function tangle_number_input_binding($$value) {
+    binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+      inputField = $$value;
+      $$invalidate(13, inputField);
+    });
+  }
 
-	function input_input_handler() {
-		value = this.value;
-		$$invalidate(0, value);
-	}
+  function input_input_handler() {
+    value = this.value;
+    $$invalidate(0, value);
+  }
 
-	function input_binding($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			inputField = $$value;
-			$$invalidate(13, inputField);
-		});
-	}
+  function input_binding($$value) {
+    binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+      inputField = $$value;
+      $$invalidate(13, inputField);
+    });
+  }
 
-	function input_input_handler_1() {
-		value = this.value;
-		$$invalidate(0, value);
-	}
+  function input_input_handler_1() {
+    value = this.value;
+    $$invalidate(0, value);
+  }
 
-	function input_binding_1($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			inputField = $$value;
-			$$invalidate(13, inputField);
-		});
-	}
+  function input_binding_1($$value) {
+    binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+      inputField = $$value;
+      $$invalidate(13, inputField);
+    });
+  }
 
-	function input_input_handler_2() {
-		value = this.value;
-		$$invalidate(0, value);
-	}
+  function input_input_handler_2() {
+    value = this.value;
+    $$invalidate(0, value);
+  }
 
-	function input_binding_2($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			inputField = $$value;
-			$$invalidate(13, inputField);
-		});
-	}
+  function input_binding_2($$value) {
+    binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+      inputField = $$value;
+      $$invalidate(13, inputField);
+    });
+  }
 
-	function input_input_handler_3() {
-		value = this.value;
-		$$invalidate(0, value);
-	}
+  function input_input_handler_3() {
+    value = this.value;
+    $$invalidate(0, value);
+  }
 
-	function input_binding_3($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			inputField = $$value;
-			$$invalidate(13, inputField);
-		});
-	}
+  function input_binding_3($$value) {
+    binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+      inputField = $$value;
+      $$invalidate(13, inputField);
+    });
+  }
 
-	function input_input_handler_4() {
-		value = this.value;
-		$$invalidate(0, value);
-	}
+  function input_input_handler_4() {
+    value = this.value;
+    $$invalidate(0, value);
+  }
 
-	function input_binding_4($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			inputField = $$value;
-			$$invalidate(13, inputField);
-		});
-	}
+  function input_binding_4($$value) {
+    binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+      inputField = $$value;
+      $$invalidate(13, inputField);
+    });
+  }
 
-	function input_input_handler_5() {
-		value = this.value;
-		$$invalidate(0, value);
-	}
+  function input_input_handler_5() {
+    value = this.value;
+    $$invalidate(0, value);
+  }
 
-	function input_binding_5($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			inputField = $$value;
-			$$invalidate(13, inputField);
-		});
-	}
+  function input_binding_5($$value) {
+    binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+      inputField = $$value;
+      $$invalidate(13, inputField);
+    });
+  }
 
-	function input_input_handler_6() {
-		value = this.value;
-		$$invalidate(0, value);
-	}
+  function input_input_handler_6() {
+    value = this.value;
+    $$invalidate(0, value);
+  }
 
-	function input_binding_6($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			inputField = $$value;
-			$$invalidate(13, inputField);
-		});
-	}
+  function input_binding_6($$value) {
+    binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+      inputField = $$value;
+      $$invalidate(13, inputField);
+    });
+  }
 
-	const click_handler = o => handleChooseOption(o.value);
+  const click_handler = o => handleChooseOption(o.value);
 
-	function button_binding($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			cancelBtn = $$value;
-			$$invalidate(17, cancelBtn);
-		});
-	}
+  function button_binding($$value) {
+    binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+      cancelBtn = $$value;
+      $$invalidate(17, cancelBtn);
+    });
+  }
 
-	function button_binding_1($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			confirmBtn = $$value;
-			$$invalidate(16, confirmBtn);
-		});
-	}
+  function button_binding_1($$value) {
+    binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+      confirmBtn = $$value;
+      $$invalidate(16, confirmBtn);
+    });
+  }
 
-	function div4_binding($$value) {
-		binding_callbacks[$$value ? 'unshift' : 'push'](() => {
-			msgboxDialog = $$value;
-			$$invalidate(14, msgboxDialog);
-		});
-	}
+  function div4_binding($$value) {
+    binding_callbacks[$$value ? 'unshift' : 'push'](() => {
+      msgboxDialog = $$value;
+      $$invalidate(14, msgboxDialog);
+    });
+  }
 
-	$$self.$$set = $$props => {
-		if ('type' in $$props) $$invalidate(1, type = $$props.type);
-		if ('title' in $$props) $$invalidate(2, title = $$props.title);
-		if ('content' in $$props) $$invalidate(3, content = $$props.content);
-		if ('inputtype' in $$props) $$invalidate(4, inputtype = $$props.inputtype);
-		if ('placeholder' in $$props) $$invalidate(5, placeholder = $$props.placeholder);
-		if ('min' in $$props) $$invalidate(6, min = $$props.min);
-		if ('max' in $$props) $$invalidate(7, max = $$props.max);
-		if ('maxlength' in $$props) $$invalidate(8, maxlength = $$props.maxlength);
-		if ('confirm' in $$props) $$invalidate(9, confirm = $$props.confirm);
-		if ('secondary' in $$props) $$invalidate(10, secondary = $$props.secondary);
-		if ('cancel' in $$props) $$invalidate(11, cancel = $$props.cancel);
-		if ('regex' in $$props) $$invalidate(25, regex = $$props.regex);
-		if ('jsonoptions' in $$props) $$invalidate(26, jsonoptions = $$props.jsonoptions);
-		if ('defaultvalue' in $$props) $$invalidate(27, defaultvalue = $$props.defaultvalue);
-		if ('value' in $$props) $$invalidate(0, value = $$props.value);
-		if ('invalidtext' in $$props) $$invalidate(12, invalidtext = $$props.invalidtext);
-	};
+  $$self.$$set = $$props => {
+    if ('type' in $$props) $$invalidate(1, type = $$props.type);
+    if ('title' in $$props) $$invalidate(2, title = $$props.title);
+    if ('content' in $$props) $$invalidate(3, content = $$props.content);
+    if ('inputtype' in $$props) $$invalidate(4, inputtype = $$props.inputtype);
+    if ('placeholder' in $$props) $$invalidate(5, placeholder = $$props.placeholder);
+    if ('min' in $$props) $$invalidate(6, min = $$props.min);
+    if ('max' in $$props) $$invalidate(7, max = $$props.max);
+    if ('maxlength' in $$props) $$invalidate(8, maxlength = $$props.maxlength);
+    if ('confirm' in $$props) $$invalidate(9, confirm = $$props.confirm);
+    if ('secondary' in $$props) $$invalidate(10, secondary = $$props.secondary);
+    if ('cancel' in $$props) $$invalidate(11, cancel = $$props.cancel);
+    if ('regex' in $$props) $$invalidate(25, regex = $$props.regex);
+    if ('jsonoptions' in $$props) $$invalidate(26, jsonoptions = $$props.jsonoptions);
+    if ('defaultvalue' in $$props) $$invalidate(27, defaultvalue = $$props.defaultvalue);
+    if ('value' in $$props) $$invalidate(0, value = $$props.value);
+    if ('invalidtext' in $$props) $$invalidate(12, invalidtext = $$props.invalidtext);
+  };
 
-	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*jsonoptions*/ 67108864) {
-			$$invalidate(19, options = JSON.parse(jsonoptions));
-		}
+  $$self.$$.update = () => {
+    if ($$self.$$.dirty[0] & /*jsonoptions*/ 67108864) {
+      $$invalidate(19, options = JSON.parse(jsonoptions));
+    }
 
-		if ($$self.$$.dirty[0] & /*regex*/ 33554432) {
-			regexForValidation = new RegExp(regex.toString().slice(1, -1));
-		}
+    if ($$self.$$.dirty[0] & /*regex*/ 33554432) {
+      regexForValidation = new RegExp(regex.toString().slice(1, -1));
+    }
 
-		if ($$self.$$.dirty[0] & /*value*/ 1) {
-			$$invalidate(18, invalid = !validate(value));
-		}
-	};
+    if ($$self.$$.dirty[0] & /*value*/ 1) {
+      $$invalidate(18, invalid = !validate(value));
+    }
+  };
 
-	return [
-		value,
-		type,
-		title,
-		content,
-		inputtype,
-		placeholder,
-		min,
-		max,
-		maxlength,
-		confirm,
-		secondary,
-		cancel,
-		invalidtext,
-		inputField,
-		msgboxDialog,
-		msgboxCloseDialog,
-		confirmBtn,
-		cancelBtn,
-		invalid,
-		options,
-		t,
-		exitDialog,
-		confirmDialog,
-		confirmDialogSecondary,
-		handleChooseOption,
-		regex,
-		jsonoptions,
-		defaultvalue,
-		change_handler,
-		tangle_number_input_binding,
-		input_input_handler,
-		input_binding,
-		input_input_handler_1,
-		input_binding_1,
-		input_input_handler_2,
-		input_binding_2,
-		input_input_handler_3,
-		input_binding_3,
-		input_input_handler_4,
-		input_binding_4,
-		input_input_handler_5,
-		input_binding_5,
-		input_input_handler_6,
-		input_binding_6,
-		click_handler,
-		button_binding,
-		button_binding_1,
-		div4_binding
-	];
+  return [
+    value,
+    type,
+    title,
+    content,
+    inputtype,
+    placeholder,
+    min,
+    max,
+    maxlength,
+    confirm,
+    secondary,
+    cancel,
+    invalidtext,
+    inputField,
+    msgboxDialog,
+    msgboxCloseDialog,
+    confirmBtn,
+    cancelBtn,
+    invalid,
+    options,
+    t,
+    exitDialog,
+    confirmDialog,
+    confirmDialogSecondary,
+    handleChooseOption,
+    regex,
+    jsonoptions,
+    defaultvalue,
+    change_handler,
+    tangle_number_input_binding,
+    input_input_handler,
+    input_binding,
+    input_input_handler_1,
+    input_binding_1,
+    input_input_handler_2,
+    input_binding_2,
+    input_input_handler_3,
+    input_binding_3,
+    input_input_handler_4,
+    input_binding_4,
+    input_input_handler_5,
+    input_binding_5,
+    input_input_handler_6,
+    input_binding_6,
+    click_handler,
+    button_binding,
+    button_binding_1,
+    div4_binding
+  ];
 }
 
 class DialogModal extends SvelteElement {
-	constructor(options) {
-		super();
-		this.shadowRoot.innerHTML = `<style>:root{--body-bg:#191919;--text:#9b9b9b}*{font-family:"Poppins", sans-serif !important}.tangle-msg-box-modal{font-family:inherit;width:100%;height:100%;display:flex;justify-content:center;align-items:center;overflow:auto;position:fixed;top:0;left:0;z-index:100000}.tangle-msg-box-dialog{width:calc(100% - 2em);max-width:314px;overflow:hidden;box-sizing:border-box;box-shadow:0 0.5em 1em rgba(0, 0, 0, 0.5);border-radius:25px;animation:msg-box-dialog-show 265ms cubic-bezier(0.18, 0.89, 0.32, 1.28);background:#191919}.tangle-msg-box-dialog .tangle-msg-box-dialog-header,.tangle-msg-box-dialog .tangle-msg-box-dialog-body,.tangle-msg-box-dialog .tangle-msg-box-dialog-footer{background-color:inherit}.tangle-msg-box-dialog-header{color:inherit;text-align:center;font-weight:500;font-size:16px;padding:16px;padding-top:42px;padding-bottom:0px}.tangle-msg-box-dialog-body{color:inherit;padding-bottom:24px;padding-top:16px}.tangle-msg-box-dialog-body>p{text-align:center;font-size:12px;color:var(--text);line-height:18px;font-weight:300;padding:0;margin:0;margin-left:22px;margin-right:22px;overflow-wrap:break-word}.tangle-msg-box-dialog-footer{color:inherit;display:flex;flex-direction:column-reverse;justify-content:stretch;padding-left:22px;padding-right:22px;padding-bottom:20px}.tangle-msg-box-dialog-button{color:inherit;font-family:inherit;font-size:inherit;background-color:rgba(0, 0, 0, 0);width:100%;max-width:100%;margin-top:8px;padding:16px;padding-top:14.5px;padding-bottom:14.5px;border:none;outline:0;border-radius:0px;transition:background-color 225ms ease-out}.tangle-msg-box-dialog-button:focus{background-color:rgba(0, 0, 0, 0.05)}.tangle-msg-box-dialog-button:active{background-color:rgba(0, 0, 0, 0.15)}.tangle-msg-box-dialog-textbox{width:100%;margin-top:16px;transition:border 125ms ease-out, border 125ms ease-out;border-radius:10px;background:#303030;padding:13px 0px;border:none;text-align:center;font-family:"Poppins", sans-serif;-moz-appearance:textfield;font-size:16px;font-weight:500;color:white;margin-bottom:-10px !important;outline:none !important}.tangle-msg-box-dialog-textbox:focus{box-shadow:none}.tangle-msg-box-modal{background-color:rgba(31, 31, 31, 0.5)}.tangle-msg-box-dialog{color:white}.tangle-msg-box-dialog-textbox{background-color:#2f2f2f}.tangle-msg-box-dialog-header{background:#191919}.tangle-msg-box-dialog-button{border-radius:20px;font-weight:500;font-size:14px;color:#777777 !important;cursor:pointer}.tangle-msg-box-dialog-button:hover{color:white}.tangle-msg-box-dialog-button:last-of-type{background:#ff257e !important;color:white !important}.tangle-msg-box-dialog-button:last-of-type:hover{background:#ff4a94 !important}.tangle-msg-box-dialog-button.cancel{margin-bottom:-10px}.tangle-msg-box-dialog-option{color:inherit;font-family:inherit;font-size:inherit;background-color:rgba(0, 0, 0, 0);width:100%;max-width:100%;margin-top:8px;padding:16px;padding-top:14.5px;padding-bottom:14.5px;border:none;outline:0;border-radius:0px;transition:background-color 225ms ease-out;border-radius:20px;font-weight:500;font-size:14px;color:#777777 !important;cursor:pointer;display:flex;background:#303030;border:1px solid transparent;align-items:center;color:white !important}.tangle-msg-box-dialog-option.selected{background:#5a5a5a !important;border:1px solid white}#exitElm{height:0;width:0;margin-top:-30px;float:right;transform:translateX(-20px)}.tangle-msg-box-dialog.tangle-msg-box-dialog-hide{opacity:0;animation:msg-box-dialog-hide 265ms ease-in}@keyframes msg-box-dialog-show{0%{opacity:0;transform:translateY(-100%)}100%{opacity:1;transform:translateX(0)}}@keyframes msg-box-dialog-hide{0%{opacity:1;transform:translateX(0)}100%{opacity:0;transform:translateY(-50%)}}.invalidtext{color:red;margin-top:8px;display:block}.invalid{border:1px solid red}.secondary{background:#303030 !important;margin-top:15px}.icon{width:20px;height:20px;margin-right:16px;display:block;background-repeat:no-repeat;background-size:cover !important}.choose-box{margin-left:22px;margin-right:22px;margin-bottom:-10px}</style>`;
+  constructor(options) {
+    super();
+    this.shadowRoot.innerHTML = `<style>:root{--body-bg:#191919;--text:#9b9b9b}*{font-family:"Poppins", sans-serif !important}.tangle-msg-box-modal{font-family:inherit;width:100%;height:100%;display:flex;justify-content:center;align-items:center;overflow:auto;position:fixed;top:0;left:0;z-index:100000}.tangle-msg-box-dialog{width:calc(100% - 2em);max-width:314px;overflow:hidden;box-sizing:border-box;box-shadow:0 0.5em 1em rgba(0, 0, 0, 0.5);border-radius:25px;animation:msg-box-dialog-show 265ms cubic-bezier(0.18, 0.89, 0.32, 1.28);background:#191919}.tangle-msg-box-dialog .tangle-msg-box-dialog-header,.tangle-msg-box-dialog .tangle-msg-box-dialog-body,.tangle-msg-box-dialog .tangle-msg-box-dialog-footer{background-color:inherit}.tangle-msg-box-dialog-header{color:inherit;text-align:center;font-weight:500;font-size:16px;padding:16px;padding-top:42px;padding-bottom:0px}.tangle-msg-box-dialog-body{color:inherit;padding-bottom:24px;padding-top:16px}.tangle-msg-box-dialog-body>p{text-align:center;font-size:12px;color:var(--text);line-height:18px;font-weight:300;padding:0;margin:0;margin-left:22px;margin-right:22px;overflow-wrap:break-word}.tangle-msg-box-dialog-footer{color:inherit;display:flex;flex-direction:column-reverse;justify-content:stretch;padding-left:22px;padding-right:22px;padding-bottom:20px}.tangle-msg-box-dialog-button{color:inherit;font-family:inherit;font-size:inherit;background-color:rgba(0, 0, 0, 0);width:100%;max-width:100%;margin-top:8px;padding:16px;padding-top:14.5px;padding-bottom:14.5px;border:none;outline:0;border-radius:0px;transition:background-color 225ms ease-out}.tangle-msg-box-dialog-button:focus{background-color:rgba(0, 0, 0, 0.05)}.tangle-msg-box-dialog-button:active{background-color:rgba(0, 0, 0, 0.15)}.tangle-msg-box-dialog-textbox{width:100%;margin-top:16px;transition:border 125ms ease-out, border 125ms ease-out;border-radius:10px;background:#303030;padding:13px 0px;border:none;text-align:center;font-family:"Poppins", sans-serif;-moz-appearance:textfield;font-size:16px;font-weight:500;color:white;margin-bottom:-10px !important;outline:none !important}.tangle-msg-box-dialog-textbox:focus{box-shadow:none}.tangle-msg-box-modal{background-color:rgba(31, 31, 31, 0.5)}.tangle-msg-box-dialog{color:white}.tangle-msg-box-dialog-textbox{background-color:#2f2f2f}.tangle-msg-box-dialog-header{background:#191919}.tangle-msg-box-dialog-button{border-radius:20px;font-weight:500;font-size:14px;color:#777777 !important;cursor:pointer}.tangle-msg-box-dialog-button:hover{color:white}.tangle-msg-box-dialog-button:last-of-type{background:#ff257e !important;color:white !important}.tangle-msg-box-dialog-button:last-of-type:hover{background:#ff4a94 !important}.tangle-msg-box-dialog-button.cancel{margin-bottom:-10px}.tangle-msg-box-dialog-option{color:inherit;font-family:inherit;font-size:inherit;background-color:rgba(0, 0, 0, 0);width:100%;max-width:100%;margin-top:8px;padding:16px;padding-top:14.5px;padding-bottom:14.5px;border:none;outline:0;border-radius:0px;transition:background-color 225ms ease-out;border-radius:20px;font-weight:500;font-size:14px;color:#777777 !important;cursor:pointer;display:flex;background:#303030;border:1px solid transparent;align-items:center;color:white !important}.tangle-msg-box-dialog-option.selected{background:#5a5a5a !important;border:1px solid white}#exitElm{height:0;width:0;margin-top:-30px;float:right;transform:translateX(-20px)}.tangle-msg-box-dialog.tangle-msg-box-dialog-hide{opacity:0;animation:msg-box-dialog-hide 265ms ease-in}@keyframes msg-box-dialog-show{0%{opacity:0;transform:translateY(-100%)}100%{opacity:1;transform:translateX(0)}}@keyframes msg-box-dialog-hide{0%{opacity:1;transform:translateX(0)}100%{opacity:0;transform:translateY(-50%)}}.invalidtext{color:red;margin-top:8px;display:block}.invalid{border:1px solid red}.secondary{background:#303030 !important;margin-top:15px}.icon{width:20px;height:20px;margin-right:16px;display:block;background-repeat:no-repeat;background-size:cover !important}.choose-box{margin-left:22px;margin-right:22px;margin-bottom:-10px}</style>`;
 
-		init(
-			this,
-			{
-				target: this.shadowRoot,
-				props: attribute_to_object(this.attributes),
-				customElement: true
-			},
-			instance$1,
-			create_fragment$1,
-			not_equal,
-			{
-				type: 1,
-				title: 2,
-				content: 3,
-				inputtype: 4,
-				placeholder: 5,
-				min: 6,
-				max: 7,
-				maxlength: 8,
-				confirm: 9,
-				secondary: 10,
-				cancel: 11,
-				regex: 25,
-				jsonoptions: 26,
-				defaultvalue: 27,
-				value: 0,
-				invalidtext: 12
-			},
-			null,
-			[-1, -1]
-		);
+    init(
+      this,
+      {
+        target: this.shadowRoot,
+        props: attribute_to_object(this.attributes),
+        customElement: true
+      },
+      instance$1,
+      create_fragment$1,
+      not_equal,
+      {
+        type: 1,
+        title: 2,
+        content: 3,
+        inputtype: 4,
+        placeholder: 5,
+        min: 6,
+        max: 7,
+        maxlength: 8,
+        confirm: 9,
+        secondary: 10,
+        cancel: 11,
+        regex: 25,
+        jsonoptions: 26,
+        defaultvalue: 27,
+        value: 0,
+        invalidtext: 12
+      },
+      null,
+      [-1, -1]
+    );
 
-		if (options) {
-			if (options.target) {
-				insert(options.target, this, options.anchor);
-			}
+    if (options) {
+      if (options.target) {
+        insert(options.target, this, options.anchor);
+      }
 
-			if (options.props) {
-				this.$set(options.props);
-				flush();
-			}
-		}
-	}
+      if (options.props) {
+        this.$set(options.props);
+        flush();
+      }
+    }
+  }
 
-	static get observedAttributes() {
-		return [
-			"type",
-			"title",
-			"content",
-			"inputtype",
-			"placeholder",
-			"min",
-			"max",
-			"maxlength",
-			"confirm",
-			"secondary",
-			"cancel",
-			"regex",
-			"jsonoptions",
-			"defaultvalue",
-			"value",
-			"invalidtext"
-		];
-	}
+  static get observedAttributes() {
+    return [
+      "type",
+      "title",
+      "content",
+      "inputtype",
+      "placeholder",
+      "min",
+      "max",
+      "maxlength",
+      "confirm",
+      "secondary",
+      "cancel",
+      "regex",
+      "jsonoptions",
+      "defaultvalue",
+      "value",
+      "invalidtext"
+    ];
+  }
 
-	get type() {
-		return this.$$.ctx[1];
-	}
+  get type() {
+    return this.$$.ctx[1];
+  }
 
-	set type(type) {
-		this.$$set({ type });
-		flush();
-	}
+  set type(type) {
+    this.$$set({ type });
+    flush();
+  }
 
-	get title() {
-		return this.$$.ctx[2];
-	}
+  get title() {
+    return this.$$.ctx[2];
+  }
 
-	set title(title) {
-		this.$$set({ title });
-		flush();
-	}
+  set title(title) {
+    this.$$set({ title });
+    flush();
+  }
 
-	get content() {
-		return this.$$.ctx[3];
-	}
+  get content() {
+    return this.$$.ctx[3];
+  }
 
-	set content(content) {
-		this.$$set({ content });
-		flush();
-	}
+  set content(content) {
+    this.$$set({ content });
+    flush();
+  }
 
-	get inputtype() {
-		return this.$$.ctx[4];
-	}
+  get inputtype() {
+    return this.$$.ctx[4];
+  }
 
-	set inputtype(inputtype) {
-		this.$$set({ inputtype });
-		flush();
-	}
+  set inputtype(inputtype) {
+    this.$$set({ inputtype });
+    flush();
+  }
 
-	get placeholder() {
-		return this.$$.ctx[5];
-	}
+  get placeholder() {
+    return this.$$.ctx[5];
+  }
 
-	set placeholder(placeholder) {
-		this.$$set({ placeholder });
-		flush();
-	}
+  set placeholder(placeholder) {
+    this.$$set({ placeholder });
+    flush();
+  }
 
-	get min() {
-		return this.$$.ctx[6];
-	}
+  get min() {
+    return this.$$.ctx[6];
+  }
 
-	set min(min) {
-		this.$$set({ min });
-		flush();
-	}
+  set min(min) {
+    this.$$set({ min });
+    flush();
+  }
 
-	get max() {
-		return this.$$.ctx[7];
-	}
+  get max() {
+    return this.$$.ctx[7];
+  }
 
-	set max(max) {
-		this.$$set({ max });
-		flush();
-	}
+  set max(max) {
+    this.$$set({ max });
+    flush();
+  }
 
-	get maxlength() {
-		return this.$$.ctx[8];
-	}
+  get maxlength() {
+    return this.$$.ctx[8];
+  }
 
-	set maxlength(maxlength) {
-		this.$$set({ maxlength });
-		flush();
-	}
+  set maxlength(maxlength) {
+    this.$$set({ maxlength });
+    flush();
+  }
 
-	get confirm() {
-		return this.$$.ctx[9];
-	}
+  get confirm() {
+    return this.$$.ctx[9];
+  }
 
-	set confirm(confirm) {
-		this.$$set({ confirm });
-		flush();
-	}
+  set confirm(confirm) {
+    this.$$set({ confirm });
+    flush();
+  }
 
-	get secondary() {
-		return this.$$.ctx[10];
-	}
+  get secondary() {
+    return this.$$.ctx[10];
+  }
 
-	set secondary(secondary) {
-		this.$$set({ secondary });
-		flush();
-	}
+  set secondary(secondary) {
+    this.$$set({ secondary });
+    flush();
+  }
 
-	get cancel() {
-		return this.$$.ctx[11];
-	}
+  get cancel() {
+    return this.$$.ctx[11];
+  }
 
-	set cancel(cancel) {
-		this.$$set({ cancel });
-		flush();
-	}
+  set cancel(cancel) {
+    this.$$set({ cancel });
+    flush();
+  }
 
-	get regex() {
-		return this.$$.ctx[25];
-	}
+  get regex() {
+    return this.$$.ctx[25];
+  }
 
-	set regex(regex) {
-		this.$$set({ regex });
-		flush();
-	}
+  set regex(regex) {
+    this.$$set({ regex });
+    flush();
+  }
 
-	get jsonoptions() {
-		return this.$$.ctx[26];
-	}
+  get jsonoptions() {
+    return this.$$.ctx[26];
+  }
 
-	set jsonoptions(jsonoptions) {
-		this.$$set({ jsonoptions });
-		flush();
-	}
+  set jsonoptions(jsonoptions) {
+    this.$$set({ jsonoptions });
+    flush();
+  }
 
-	get defaultvalue() {
-		return this.$$.ctx[27];
-	}
+  get defaultvalue() {
+    return this.$$.ctx[27];
+  }
 
-	set defaultvalue(defaultvalue) {
-		this.$$set({ defaultvalue });
-		flush();
-	}
+  set defaultvalue(defaultvalue) {
+    this.$$set({ defaultvalue });
+    flush();
+  }
 
-	get value() {
-		return this.$$.ctx[0];
-	}
+  get value() {
+    return this.$$.ctx[0];
+  }
 
-	set value(value) {
-		this.$$set({ value });
-		flush();
-	}
+  set value(value) {
+    this.$$set({ value });
+    flush();
+  }
 
-	get invalidtext() {
-		return this.$$.ctx[12];
-	}
+  get invalidtext() {
+    return this.$$.ctx[12];
+  }
 
-	set invalidtext(invalidtext) {
-		this.$$set({ invalidtext });
-		flush();
-	}
+  set invalidtext(invalidtext) {
+    this.$$set({ invalidtext });
+    flush();
+  }
 }
 
 customElements.define("tangle-modal", DialogModal);
@@ -5066,195 +5067,195 @@ customElements.define("tangle-modal", DialogModal);
 /* src\NumberPicker.svelte generated by Svelte v3.45.0 */
 
 function create_fragment(ctx) {
-	let main;
-	let div0;
-	let t0;
-	let input;
-	let t1;
-	let div1;
-	let t2;
-	let html_tag;
-	let raw_value = "<style>" + window.___tangleMsgBoxStyles + "</style>" + "";
-	let mounted;
-	let dispose;
+  let main;
+  let div0;
+  let t0;
+  let input;
+  let t1;
+  let div1;
+  let t2;
+  let html_tag;
+  let raw_value = "<style>" + window.___tangleMsgBoxStyles + "</style>" + "";
+  let mounted;
+  let dispose;
 
-	return {
-		c() {
-			main = element("main");
-			div0 = element("div");
-			div0.innerHTML = `<svg width="18" height="28" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.620667 10.5L13.6138 0.540707L13.6138 20.4593L0.620667 10.5Z" fill="white"></path></svg>`;
-			t0 = space();
-			input = element("input");
-			t1 = space();
-			div1 = element("div");
-			div1.innerHTML = `<svg width="18" height="28" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.0483 10.5L0.0551758 20.4593L0.0551758 0.540708L13.0483 10.5Z" fill="white"></path></svg>`;
-			t2 = space();
-			html_tag = new HtmlTag();
-			this.c = noop$1;
-			attr(input, "type", "number");
-			attr(input, "min", /*min*/ ctx[1]);
-			attr(input, "max", /*max*/ ctx[2]);
-			html_tag.a = null;
-		},
-		m(target, anchor) {
-			insert(target, main, anchor);
-			append(main, div0);
-			append(main, t0);
-			append(main, input);
-			set_input_value(input, /*value*/ ctx[0]);
-			append(main, t1);
-			append(main, div1);
-			append(main, t2);
-			html_tag.m(raw_value, main);
+  return {
+    c() {
+      main = element("main");
+      div0 = element("div");
+      div0.innerHTML = `<svg width="18" height="28" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.620667 10.5L13.6138 0.540707L13.6138 20.4593L0.620667 10.5Z" fill="white"></path></svg>`;
+      t0 = space();
+      input = element("input");
+      t1 = space();
+      div1 = element("div");
+      div1.innerHTML = `<svg width="18" height="28" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.0483 10.5L0.0551758 20.4593L0.0551758 0.540708L13.0483 10.5Z" fill="white"></path></svg>`;
+      t2 = space();
+      html_tag = new HtmlTag();
+      this.c = noop$1;
+      attr(input, "type", "number");
+      attr(input, "min", /*min*/ ctx[1]);
+      attr(input, "max", /*max*/ ctx[2]);
+      html_tag.a = null;
+    },
+    m(target, anchor) {
+      insert(target, main, anchor);
+      append(main, div0);
+      append(main, t0);
+      append(main, input);
+      set_input_value(input, /*value*/ ctx[0]);
+      append(main, t1);
+      append(main, div1);
+      append(main, t2);
+      html_tag.m(raw_value, main);
 
-			if (!mounted) {
-				dispose = [
-					listen(div0, "click", /*click_handler*/ ctx[3]),
-					listen(input, "input", /*input_input_handler*/ ctx[4]),
-					listen(div1, "click", /*click_handler_1*/ ctx[5])
-				];
+      if (!mounted) {
+        dispose = [
+          listen(div0, "click", /*click_handler*/ ctx[3]),
+          listen(input, "input", /*input_input_handler*/ ctx[4]),
+          listen(div1, "click", /*click_handler_1*/ ctx[5])
+        ];
 
-				mounted = true;
-			}
-		},
-		p(ctx, [dirty]) {
-			if (dirty & /*min*/ 2) {
-				attr(input, "min", /*min*/ ctx[1]);
-			}
+        mounted = true;
+      }
+    },
+    p(ctx, [dirty]) {
+      if (dirty & /*min*/ 2) {
+        attr(input, "min", /*min*/ ctx[1]);
+      }
 
-			if (dirty & /*max*/ 4) {
-				attr(input, "max", /*max*/ ctx[2]);
-			}
+      if (dirty & /*max*/ 4) {
+        attr(input, "max", /*max*/ ctx[2]);
+      }
 
-			if (dirty & /*value*/ 1 && to_number(input.value) !== /*value*/ ctx[0]) {
-				set_input_value(input, /*value*/ ctx[0]);
-			}
-		},
-		i: noop$1,
-		o: noop$1,
-		d(detaching) {
-			if (detaching) detach(main);
-			mounted = false;
-			run_all(dispose);
-		}
-	};
+      if (dirty & /*value*/ 1 && to_number(input.value) !== /*value*/ ctx[0]) {
+        set_input_value(input, /*value*/ ctx[0]);
+      }
+    },
+    i: noop$1,
+    o: noop$1,
+    d(detaching) {
+      if (detaching) detach(main);
+      mounted = false;
+      run_all(dispose);
+    }
+  };
 }
 
 function instance($$self, $$props, $$invalidate) {
-	let { min = -999999999 } = $$props;
-	let { max = 999999999 } = $$props;
-	let { value = 0 } = $$props;
-	const component = get_current_component();
-	const svelteDispatch = createEventDispatcher();
+  let { min = -999999999 } = $$props;
+  let { max = 999999999 } = $$props;
+  let { value = 0 } = $$props;
+  const component = get_current_component();
+  const svelteDispatch = createEventDispatcher();
 
-	const dispatch = (name, detail) => {
-		svelteDispatch(name, detail);
-		component.dispatchEvent && component.dispatchEvent(new CustomEvent(name, { detail }));
-	};
+  const dispatch = (name, detail) => {
+    svelteDispatch(name, detail);
+    component.dispatchEvent && component.dispatchEvent(new CustomEvent(name, { detail }));
+  };
 
-	function limitNumber(val) {
-		console.log({ val, min, max });
+  function limitNumber(val) {
+    console.log({ val, min, max });
 
-		if (val < min) {
-			$$invalidate(0, value = min);
-		}
+    if (val < min) {
+      $$invalidate(0, value = min);
+    }
 
-		if (val > max) {
-			$$invalidate(0, value = max);
-		}
+    if (val > max) {
+      $$invalidate(0, value = max);
+    }
 
-		return val;
-	}
+    return val;
+  }
 
-	const click_handler = _ => value > min && $$invalidate(0, value--, value);
+  const click_handler = _ => value > min && $$invalidate(0, value--, value);
 
-	function input_input_handler() {
-		value = to_number(this.value);
-		$$invalidate(0, value);
-	}
+  function input_input_handler() {
+    value = to_number(this.value);
+    $$invalidate(0, value);
+  }
 
-	const click_handler_1 = _ => value < max && $$invalidate(0, value++, value);
+  const click_handler_1 = _ => value < max && $$invalidate(0, value++, value);
 
-	$$self.$$set = $$props => {
-		if ('min' in $$props) $$invalidate(1, min = $$props.min);
-		if ('max' in $$props) $$invalidate(2, max = $$props.max);
-		if ('value' in $$props) $$invalidate(0, value = $$props.value);
-	};
+  $$self.$$set = $$props => {
+    if ('min' in $$props) $$invalidate(1, min = $$props.min);
+    if ('max' in $$props) $$invalidate(2, max = $$props.max);
+    if ('value' in $$props) $$invalidate(0, value = $$props.value);
+  };
 
-	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*value*/ 1) {
-			dispatch("change", { value });
-		}
+  $$self.$$.update = () => {
+    if ($$self.$$.dirty & /*value*/ 1) {
+      dispatch("change", { value });
+    }
 
-		if ($$self.$$.dirty & /*value*/ 1) {
-			limitNumber(value);
-		}
-	};
+    if ($$self.$$.dirty & /*value*/ 1) {
+      limitNumber(value);
+    }
+  };
 
-	return [value, min, max, click_handler, input_input_handler, click_handler_1];
+  return [value, min, max, click_handler, input_input_handler, click_handler_1];
 }
 
 class NumberPicker extends SvelteElement {
-	constructor(options) {
-		super();
-		this.shadowRoot.innerHTML = `<style>main{display:flex;align-items:center;margin-top:4px;margin-bottom:-16px}input{width:75.79px;border-radius:10px;background:#303030;padding:13px 0px;border:none;text-align:center;font-family:"Poppins", sans-serif;-moz-appearance:textfield;font-size:16px;font-weight:500;color:white;outline:none !important;box-shadow:none !important}input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none}div{padding:26px}svg{padding-top:4px}</style>`;
+  constructor(options) {
+    super();
+    this.shadowRoot.innerHTML = `<style>main{display:flex;align-items:center;margin-top:4px;margin-bottom:-16px}input{width:75.79px;border-radius:10px;background:#303030;padding:13px 0px;border:none;text-align:center;font-family:"Poppins", sans-serif;-moz-appearance:textfield;font-size:16px;font-weight:500;color:white;outline:none !important;box-shadow:none !important}input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none}div{padding:26px}svg{padding-top:4px}</style>`;
 
-		init(
-			this,
-			{
-				target: this.shadowRoot,
-				props: attribute_to_object(this.attributes),
-				customElement: true
-			},
-			instance,
-			create_fragment,
-			not_equal,
-			{ min: 1, max: 2, value: 0 },
-			null
-		);
+    init(
+      this,
+      {
+        target: this.shadowRoot,
+        props: attribute_to_object(this.attributes),
+        customElement: true
+      },
+      instance,
+      create_fragment,
+      not_equal,
+      { min: 1, max: 2, value: 0 },
+      null
+    );
 
-		if (options) {
-			if (options.target) {
-				insert(options.target, this, options.anchor);
-			}
+    if (options) {
+      if (options.target) {
+        insert(options.target, this, options.anchor);
+      }
 
-			if (options.props) {
-				this.$set(options.props);
-				flush();
-			}
-		}
-	}
+      if (options.props) {
+        this.$set(options.props);
+        flush();
+      }
+    }
+  }
 
-	static get observedAttributes() {
-		return ["min", "max", "value"];
-	}
+  static get observedAttributes() {
+    return ["min", "max", "value"];
+  }
 
-	get min() {
-		return this.$$.ctx[1];
-	}
+  get min() {
+    return this.$$.ctx[1];
+  }
 
-	set min(min) {
-		this.$$set({ min });
-		flush();
-	}
+  set min(min) {
+    this.$$set({ min });
+    flush();
+  }
 
-	get max() {
-		return this.$$.ctx[2];
-	}
+  get max() {
+    return this.$$.ctx[2];
+  }
 
-	set max(max) {
-		this.$$set({ max });
-		flush();
-	}
+  set max(max) {
+    this.$$set({ max });
+    flush();
+  }
 
-	get value() {
-		return this.$$.ctx[0];
-	}
+  get value() {
+    return this.$$.ctx[0];
+  }
 
-	set value(value) {
-		this.$$set({ value });
-		flush();
-	}
+  set value(value) {
+    this.$$set({ value });
+    flush();
+  }
 }
 
 customElements.define("tangle-number-input", NumberPicker);
