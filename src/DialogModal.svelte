@@ -243,6 +243,7 @@
     top: 0;
     left: 0;
     z-index: 100000;
+    user-select: none !important;
     /* user-select: none; */
   }
 
