@@ -20,7 +20,6 @@
   });
 
   function limitNumber(val) {
-    console.log({ val, min, max });
     if (val < min) {
       value = min;
     }
