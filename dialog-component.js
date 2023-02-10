@@ -5155,7 +5155,6 @@ function instance($$self, $$props, $$invalidate) {
   };
 
   function limitNumber(val) {
-    console.log({ val, min, max });
 
     if (val < min) {
       $$invalidate(0, value = min);
