@@ -118,3 +118,13 @@ document.getElementById("contact").onclick = async () => {
       window.open("tel:+420880880880");
   }
 };
+
+document.getElementById("link").onclick = async () => {
+  const confirmation = await TangleMsgBox.confirm("Inovujeme! Pro pohodlné ovládání vašich lamp a podporu všech funkcí si proto, prosím, nainstalujte novou aplikaci Spectoda Connect.", "Tato aplikace již není aktuální", {
+    confirm: "Pokračovat",
+    confirmlink: "https://www.spectoda.com",
+    secondary: "Více informací",
+    secondarylink: "https://www.spectoda.com/404",
+  });
+  TangleMsgBox.alert(`Vybral jsi: ${confirmation}`);
+};

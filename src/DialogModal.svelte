@@ -100,7 +100,9 @@
   export let maxlength = 999999999;
 
   export let confirm = "";
+  export let confirmlink = "";
   export let secondary = "";
+  export let secondarylink = "";
   export let cancel = "";
   export let regex = /.*/;
 
@@ -209,12 +211,27 @@
       {#if type !== "alert" && !secondary && cancel !== "null"}
         <button class="tangle-msg-box-dialog-button cancel" bind:this={cancelBtn} on:click={exitDialog}>{cancel || t("Zrušit")}</button>
       {/if}
+
       {#if secondary && secondary !== "null"}
+      {#if secondarylink}
+        <a target="_blank" href="{secondarylink}" >
+          <button class="tangle-msg-box-dialog-button secondary" on:click={confirmDialogSecondary}>{secondary}</button>
+        </a>
+      {:else}
         <button class="tangle-msg-box-dialog-button secondary" on:click={confirmDialogSecondary}>{secondary}</button>
       {/if}
-      {#if confirm !== "null"}
-        <button class="tangle-msg-box-dialog-button" bind:this={confirmBtn} on:click={confirmDialog}>{confirm || t("Potvrdit")}</button>
       {/if}
+      {#if confirm !== "null"}
+      {#if confirmlink}
+          <a target="_blank" href="{confirmlink}">
+            <button class="tangle-msg-box-dialog-button" bind:this={confirmBtn} on:click={confirmDialog}>{confirm || t("Potvrdit")}</button>
+          </a>
+        {:else}
+          <button class="tangle-msg-box-dialog-button" bind:this={confirmBtn} on:click={confirmDialog}>{confirm || t("Potvrdit")}</button>
+        {/if}
+      {/if}
+     
+
     </div>
   </div>
   {@html "<style>" + window.___tangleMsgBoxStyles + "</style>"}
@@ -380,11 +397,11 @@
   }
   /* Pokračovat button */
   .tangle-msg-box-dialog-button:last-of-type {
-    background: #ff257e !important;
+    background: #ff257e ;
     color: white !important;
   }
   .tangle-msg-box-dialog-button:last-of-type:hover {
-    background: #ff4a94 !important;
+    background: #ff4a94 ;
   }
   .tangle-msg-box-dialog-button.cancel {
     margin-bottom: -10px;

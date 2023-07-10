@@ -64,7 +64,7 @@ export class TangleMsgBox {
    * @returns {Promise<boolean>}
    * Creates the confirm dialog element
    */
-  static async confirm(content, title = "", { confirm, cancel, secondary } = {}) {
+  static async confirm(content, title = "", { confirm, cancel, secondary, confirmlink, secondarylink } = {}) {
     const dialogBox = document.createElement("tangle-modal");
 
     dialogBox.setAttribute("title", title);
@@ -74,6 +74,14 @@ export class TangleMsgBox {
     dialogBox.setAttribute("confirm", confirm || t("Potvrdit"));
     dialogBox.setAttribute("cancel", cancel || t("Zrušit"));
     (secondary || secondary === "") && dialogBox.setAttribute("secondary", secondary);
+
+    // Set confirmlink and secondarylink attributes if they exist
+    if (confirmlink) {
+      dialogBox.setAttribute("confirmlink", confirmlink);
+    }
+    if (secondarylink) {
+      dialogBox.setAttribute("secondarylink", secondarylink);
+    }
 
     document.body.appendChild(dialogBox);
 
